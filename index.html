@@ -1,11 +1,12 @@
 
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Trang Chủ Công Cụ iBasic</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
+<meta charset="utf-8"/>
+<title>Trang Chủ Công Cụ iBasic</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #ff00ff, #00ffcc);
@@ -64,18 +65,860 @@
       color: #555;
     }
   </style>
-</head>
-<body>
-  <div class="container">
-    <h1>✨ Công Cụ Hỗ Trợ iBasic ✨</h1>
-    <div class="nav">
-      <button onclick="showFrame('frame1')">🎬 Kịch Bản Livestream</button>
-      <button onclick="showFrame('frame2')">🖼️ Tạo Thumbnail</button>
-      <button onclick="showFrame('frame3')">📝 Mô Tả Sản Phẩm</button>
-    </div>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <div id="frame1" class="iframe-container active">
-      <script type="text/javascript">
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        h1::before {
+            content: '🎨';
+            position: absolute;
+            left: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            animation: rotate 4s linear infinite;
+        }
+
+        h1::after {
+            content: '✨';
+            position: absolute;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: translateY(-50%) rotate(0deg); }
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+            50% { opacity: 0.5; transform: translateY(-50%) scale(1.2); }
+        }
+
+        .upload-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .upload-box {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(102, 126, 234, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .upload-box:hover {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .upload-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status.success {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .status.error {
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .controls-section {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .controls-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .control-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-item label {
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .control-item input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .control-item input[type="number"] {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .control-item input[type="number"]:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .download-section {
+            background: rgba(118, 75, 162, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .download-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(45deg, transparent 33%, rgba(255,255,255,0.3) 33%, rgba(255,255,255,0.3) 66%, transparent 66%);
+            animation: progress-animation 1s linear infinite;
+        }
+
+        @keyframes progress-animation {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .thumbnails-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .thumbnail-item {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .thumbnail-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .thumbnail-item.selected {
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+        }
+
+        .thumbnail-canvas {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: block;
+            object-fit: cover;
+            margin: 0 auto;
+        }
+
+        .thumbnail-info {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .thumbnail-name {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #d32f2f;
+            transform: scale(1.05);
+        }
+
+        .workspace-info {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .copyright-section {
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copyright-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .copyright-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .copyright-text {
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+
+        .copyright-icon {
+            font-size: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .copyright-icon:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .copyright-icon:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+
+        .cute-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cute-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .cute-icon:nth-child(1) { animation-delay: 0s; }
+        .cute-icon:nth-child(2) { animation-delay: 0.6s; }
+        .cute-icon:nth-child(3) { animation-delay: 1.2s; }
+        .cute-icon:nth-child(4) { animation-delay: 1.8s; }
+        .cute-icon:nth-child(5) { animation-delay: 2.4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(5deg); }
+            50% { transform: translateY(-5px) rotate(-5deg); }
+            75% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        .cute-icon:hover {
+            transform: scale(1.5) rotate(360deg);
+            filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+        }
+
+        .selected-info {
+            background: rgba(102, 126, 234, 0.2);
+            border: 3px solid rgba(102, 126, 234, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            animation: pulse-selection 2s infinite;
+        }
+
+        @keyframes pulse-selection {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            }
+        }
+
+        .current-editing {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .upload-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .thumbnails-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+        }
+    </style><style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            width: 100%;
+        }
+
+        .output-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 12px;
+            background: #4ecdc4;
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .file-upload-label:hover {
+            background: #45b7aa;
+            transform: translateY(-2px);
+        }
+
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .file-preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .output-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 400px;
+            border: 1px solid #e9ecef;
+        }
+
+        .product-title {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .product-description {
+            font-size: 12pt;
+            line-height: 1.6;
+            color: #34495e;
+        }
+
+        .product-description ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .product-description li {
+            font-size: 12pt;
+            margin-bottom: 10px;
+        }
+
+        .specs {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .specs p {
+            font-size: 12pt;
+            margin-bottom: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .copy-btn, .download-btn, .regenerate-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .download-btn {
+            background: #007bff;
+        }
+
+        .regenerate-btn {
+            background: #ff6b6b;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
+        .download-btn:hover {
+            background: #0056b3;
+        }
+
+        .regenerate-btn:hover {
+            background: #e55a5a;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4ecdc4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ai-note {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .ai-note strong {
+            color: #d63384;
+        }
+
+        .copyright {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style></head>
+<body>
+<div class="container">
+<h1>✨ Công Cụ Hỗ Trợ iBasic ✨</h1>
+<div class="nav">
+<button onclick="showFrame('frame1')">🎬 Kịch Bản Livestream</button>
+<button onclick="showFrame('frame2')">🖼️ Tạo Thumbnail</button>
+<button onclick="showFrame('frame3')">📝 Mô Tả Sản Phẩm</button>
+</div>
+<div class="iframe-container active" id="frame1">
+<script type="text/javascript">
         var gk_isXlsx = false;
         var gk_xlsxFileLookup = {};
         var gk_fileData = {};
@@ -115,14 +958,15 @@
         return gk_fileData[filename] || "";
         }
         </script><!DOCTYPE html>
+
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo Kịch Bản Livestream AI</title>
-    <script src="https://unpkg.com/docx@7.8.2/build/index.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tạo Kịch Bản Livestream AI</title>
+<script src="https://unpkg.com/docx@7.8.2/build/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -632,177 +1476,163 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎬 Tạo Kịch Bản Livestream AI</h1>
-            <p>Công cụ thông minh tích hợp Google Gemini AI để tạo kịch bản livestream chuyên nghiệp</p>
-        </div>
-
-        <div class="api-section">
-            <h3>🔑 Cấu hình API Google Gemini</h3>
-            <input type="password" id="apiKey" class="api-input" placeholder="Nhập API Key của bạn (AIza...)">
-            <div class="api-status" id="apiStatus" style="display: none;"></div>
-            <p style="font-size: 12px; color: #666; margin-top: 5px;">
+<div class="container">
+<div class="header">
+<h1>🎬 Tạo Kịch Bản Livestream AI</h1>
+<p>Công cụ thông minh tích hợp Google Gemini AI để tạo kịch bản livestream chuyên nghiệp</p>
+</div>
+<div class="api-section">
+<h3>🔑 Cấu hình API Google Gemini</h3>
+<input class="api-input" id="apiKey" placeholder="Nhập API Key của bạn (AIza...)" type="password"/>
+<div class="api-status" id="apiStatus" style="display: none;"></div>
+<p style="font-size: 12px; color: #666; margin-top: 5px;">
                 API Key sẽ chỉ lưu trong session này và không được gửi đến máy chủ nào khác.
                 <a href="https://makersuite.google.com/app/apikey" target="_blank">Lấy API Key tại đây</a>
-            </p>
-        </div>
-
-        <div class="main-content">
-            <div class="input-section">
-                <h2>📝 Thông Tin Đầu Vào</h2>
-                <form id="scriptForm">
-                    <div class="form-group">
-                        <label for="topic">🎯 Chủ đề live:</label>
-                        <input type="text" id="topic" name="topic" placeholder="Ví dụ: Giảm giá sốc Black Friday, Ra mắt sản phẩm mới...">
-                    </div>
-
-                    <div class="form-group">
-                        <label>🎭 Phong cách kịch bản:</label>
-                        <div class="style-options">
-                            <div class="style-option" data-style="friendly">
-                                <h4>🌟 Thân thiện</h4>
-                                <p>Dễ thương, gần gũi với khán giả</p>
-                            </div>
-                            <div class="style-option" data-style="professional">
-                                <h4>💼 Chuyên nghiệp</h4>
-                                <p>Lịch sự, tin cậy, thuyết phục</p>
-                            </div>
-                            <div class="style-option" data-style="energetic">
-                                <h4>⚡ Năng động</h4>
-                                <p>Sôi động, tạo cảm giác khẩn cấp, thúc đẩy hành động</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>📦 Mô tả Hot Products:</label>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <label>Sản phẩm 1:</label>
-                                <textarea id="product1" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
-                            </div>
-                            <div class="product-item">
-                                <label>Sản phẩm 2:</label>
-                                <textarea id="product2" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
-                            </div>
-                            <div class="product-item">
-                                <label>Sản phẩm 3:</label>
-                                <textarea id="product3" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
-                            </div>
-                            <div class="product-item">
-                                <label>Sản phẩm 4:</label>
-                                <textarea id="product4" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <label>Sản phẩm 5:</label>
-                            <textarea id="product5" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="seasonality">🌸 Seasonality:</label>
-                        <textarea id="seasonality" name="seasonality" placeholder="Sự kiện theo mùa hoặc dịp đặc biệt:
+</p>
+</div>
+<div class="main-content">
+<div class="input-section">
+<h2>📝 Thông Tin Đầu Vào</h2>
+<form id="scriptForm">
+<div class="form-group">
+<label for="topic">🎯 Chủ đề live:</label>
+<input id="topic" name="topic" placeholder="Ví dụ: Giảm giá sốc Black Friday, Ra mắt sản phẩm mới..." type="text"/>
+</div>
+<div class="form-group">
+<label>🎭 Phong cách kịch bản:</label>
+<div class="style-options">
+<div class="style-option" data-style="friendly">
+<h4>🌟 Thân thiện</h4>
+<p>Dễ thương, gần gũi với khán giả</p>
+</div>
+<div class="style-option" data-style="professional">
+<h4>💼 Chuyên nghiệp</h4>
+<p>Lịch sự, tin cậy, thuyết phục</p>
+</div>
+<div class="style-option" data-style="energetic">
+<h4>⚡ Năng động</h4>
+<p>Sôi động, tạo cảm giác khẩn cấp, thúc đẩy hành động</p>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label>📦 Mô tả Hot Products:</label>
+<div class="product-grid">
+<div class="product-item">
+<label>Sản phẩm 1:</label>
+<textarea id="product1" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
+</div>
+<div class="product-item">
+<label>Sản phẩm 2:</label>
+<textarea id="product2" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
+</div>
+<div class="product-item">
+<label>Sản phẩm 3:</label>
+<textarea id="product3" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
+</div>
+<div class="product-item">
+<label>Sản phẩm 4:</label>
+<textarea id="product4" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
+</div>
+</div>
+<div class="product-item">
+<label>Sản phẩm 5:</label>
+<textarea id="product5" placeholder="Tên sản phẩm, giá, tính năng nổi bật..."></textarea>
+</div>
+</div>
+<div class="form-group">
+<label for="seasonality">🌸 Seasonality:</label>
+<textarea id="seasonality" name="seasonality" placeholder="Sự kiện theo mùa hoặc dịp đặc biệt:
 - Dịp lễ (Tết, Giáng sinh, v.v.)
 - Chủ đề theo mùa (Hè, Đông, v.v.)
 - Sự kiện đặc biệt (Back to School, Black Friday, v.v.)"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gamification">🎮 Gamification:</label>
-                        <textarea id="gamification" name="gamification" placeholder="Trò chơi hoặc hoạt động giải trí trong livestream:
+</div>
+<div class="form-group">
+<label for="gamification">🎮 Gamification:</label>
+<textarea id="gamification" name="gamification" placeholder="Trò chơi hoặc hoạt động giải trí trong livestream:
 - Mini-game (bốc thăm may mắn, đoán giá, v.v.)
 - Câu đố tương tác
 - Thử thách cho khán giả
 - Phần thưởng (quà tặng, mã giảm giá, v.v.)"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tipsHacks">💡 TIP/HACK:</label>
-                        <textarea id="tipsHacks" name="tipsHacks" placeholder="Mẹo hoặc thủ thuật liên quan livestream:
+</div>
+<div class="form-group">
+<label for="tipsHacks">💡 TIP/HACK:</label>
+<textarea id="tipsHacks" name="tipsHacks" placeholder="Mẹo hoặc thủ thuật liên quan livestream:
 - Mẹo mua sắm
 - Cách sử dụng sản phẩm
 - Lời khuyên cho khán giả"></textarea>
-                    </div>
-
-                    <div class="brand-policy-grid">
-                        <div class="form-group">
-                            <label for="brandStory">🏢 Brand Story:</label>
-                            <textarea id="brandStory" name="brandStory" placeholder="Câu chuyện thương hiệu:
+</div>
+<div class="brand-policy-grid">
+<div class="form-group">
+<label for="brandStory">🏢 Brand Story:</label>
+<textarea id="brandStory" name="brandStory" placeholder="Câu chuyện thương hiệu:
 - Lịch sử hình thành
 - Sứ mệnh, tầm nhìn
 - Giá trị cốt lõi
 - Thành tựu đáng tự hào
 - Cam kết với khách hàng"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="policy">📋 Policy Product:</label>
-                            <textarea id="policy" name="policy" placeholder="Chính sách sản phẩm:
+</div>
+<div class="form-group">
+<label for="policy">📋 Policy Product:</label>
+<textarea id="policy" name="policy" placeholder="Chính sách sản phẩm:
 - Chính sách bảo hành
 - Chính sách đổi trả
 - Chính sách giao hàng
 - Chính sách thanh toán
 - Hỗ trợ khách hàng"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="cta-promotion-grid">
-                        <div class="form-group">
-                            <label for="cta">🎯 CTA (Call to Action):</label>
-                            <textarea id="cta" name="cta" placeholder="Kêu gọi hành động:
+</div>
+</div>
+<div class="cta-promotion-grid">
+<div class="form-group">
+<label for="cta">🎯 CTA (Call to Action):</label>
+<textarea id="cta" name="cta" placeholder="Kêu gọi hành động:
 - Hướng dẫn đặt hàng
 - Kêu gọi tương tác (comment, share, v.v.)
 - Lời thúc đẩy mua hàng"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="promotion">🎁 Promotion:</label>
-                            <textarea id="promotion" name="promotion" placeholder="Khuyến mãi đặc biệt:
+</div>
+<div class="form-group">
+<label for="promotion">🎁 Promotion:</label>
+<textarea id="promotion" name="promotion" placeholder="Khuyến mãi đặc biệt:
 - Mã giảm giá
 - Quà tặng kèm
 - Ưu đãi đặc biệt
 - Thời gian có hạn"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="submit" class="generate-btn" id="generateBtn">
+</div>
+</div>
+<div class="button-group">
+<button class="generate-btn" id="generateBtn" type="submit">
                             🚀 Tạo Kịch Bản AI
                         </button>
-                        <button type="button" class="regenerate-btn" id="regenerateBtn" disabled>
+<button class="regenerate-btn" disabled="" id="regenerateBtn" type="button">
                             🔄 Tạo Lại Kịch Bản
                         </button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="output-section">
-                <h2>📜 Kịch Bản Livestream</h2>
-                <div class="button-group">
-                    <button class="copy-btn" onclick="copyScript()" id="copyBtn" disabled>📋 Copy</button>
-                    <button class="download-btn" onclick="downloadScript()" id="downloadBtn" disabled>📥 Tải DOCX</button>
-                </div>
-                
-                <div class="script-tabs" id="scriptTabs" style="display: none;">
-                    <button class="tab-btn active" onclick="showScript(1)">Kịch bản 1</button>
-                    <button class="tab-btn" onclick="showScript(2)">Kịch bản 2</button>
-                </div>
-
-                <div class="script-output active" id="script1">
-                    <div class="empty-state">
+</div>
+</form>
+</div>
+<div class="output-section">
+<h2>📜 Kịch Bản Livestream</h2>
+<div class="button-group">
+<button class="copy-btn" disabled="" id="copyBtn" onclick="copyScript()">📋 Copy</button>
+<button class="download-btn" disabled="" id="downloadBtn" onclick="downloadScript()">📥 Tải DOCX</button>
+</div>
+<div class="script-tabs" id="scriptTabs" style="display: none;">
+<button class="tab-btn active" onclick="showScript(1)">Kịch bản 1</button>
+<button class="tab-btn" onclick="showScript(2)">Kịch bản 2</button>
+</div>
+<div class="script-output active" id="script1">
+<div class="empty-state">
                         Kịch bản sẽ xuất hiện ở đây sau khi bạn điền thông tin và nhấn "Tạo Kịch Bản AI"
                     </div>
-                </div>
-                <div class="script-output" id="script2"></div>
-                <div class="circle-nav" id="circleNav1"></div>
-                <div class="circle-nav" id="circleNav2"></div>
-                <div class="loading" id="loading">Gemini AI đang tạo kịch bản...</div>
-                <div class="error-message" id="errorMessage" style="display: none;"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
+</div>
+<div class="script-output" id="script2"></div>
+<div class="circle-nav" id="circleNav1"></div>
+<div class="circle-nav" id="circleNav2"></div>
+<div class="loading" id="loading">Gemini AI đang tạo kịch bản...</div>
+<div class="error-message" id="errorMessage" style="display: none;"></div>
+</div>
+</div>
+</div>
+<script>
         let currentScript = 1;
         let selectedStyle = 'friendly';
         let scriptGenerationCount = 0;
@@ -1180,620 +2010,102 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
     </script>
 </body>
 </html>
-    </div>
-    <div id="frame2" class="iframe-container">
-      <!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thumbnail Maker Tool - Professional</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-        }
-
-        h1::before {
-            content: '🎨';
-            position: absolute;
-            left: -60px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8em;
-            animation: rotate 4s linear infinite;
-        }
-
-        h1::after {
-            content: '✨';
-            position: absolute;
-            right: -60px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8em;
-            animation: twinkle 2s ease-in-out infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: translateY(-50%) rotate(0deg); }
-            to { transform: translateY(-50%) rotate(360deg); }
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
-            50% { opacity: 0.5; transform: translateY(-50%) scale(1.2); }
-        }
-
-        .upload-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .upload-box {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            background: rgba(102, 126, 234, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .upload-box:hover {
-            border-color: #764ba2;
-            background: rgba(118, 75, 162, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .upload-box h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .upload-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 500;
-            display: none;
-        }
-
-        .status.success {
-            background: rgba(76, 175, 80, 0.1);
-            color: #4caf50;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .status.error {
-            background: rgba(244, 67, 54, 0.1);
-            color: #f44336;
-            border: 1px solid rgba(244, 67, 54, 0.3);
-        }
-
-        .controls-section {
-            background: rgba(102, 126, 234, 0.05);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .controls-section h3 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 1.4em;
-        }
-
-        .control-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .control-item {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .control-item label {
-            color: #555;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .control-item input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: #ddd;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .control-item input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-        }
-
-        .control-item input[type="number"] {
-            padding: 8px 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        .control-item input[type="number"]:focus {
-            border-color: #667eea;
-            outline: none;
-        }
-
-        .control-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .control-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .control-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .download-section {
-            background: rgba(118, 75, 162, 0.05);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .download-section h3 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 1.4em;
-        }
-
-        .download-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .download-btn {
-            background: linear-gradient(45deg, #764ba2, #667eea);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
-        }
-
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4);
-        }
-
-        .download-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            width: 0%;
-            transition: width 0.3s ease;
-            position: relative;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(45deg, transparent 33%, rgba(255,255,255,0.3) 33%, rgba(255,255,255,0.3) 66%, transparent 66%);
-            animation: progress-animation 1s linear infinite;
-        }
-
-        @keyframes progress-animation {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .thumbnails-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .thumbnail-item {
-            background: white;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            border: 3px solid transparent;
-        }
-
-        .thumbnail-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-
-        .thumbnail-item.selected {
-            border-color: #667eea;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
-        }
-
-        .thumbnail-canvas {
-            width: 100%;
-            height: 150px;
-            border-radius: 10px;
-            cursor: pointer;
-            display: block;
-            object-fit: cover;
-        }
-
-        .thumbnail-info {
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .thumbnail-name {
-            font-size: 12px;
-            color: #666;
-            font-weight: 500;
-            max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .delete-btn {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .delete-btn:hover {
-            background: #d32f2f;
-            transform: scale(1.05);
-        }
-
-        .workspace-info {
-            text-align: center;
-            color: #666;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        .copyright-section {
-            margin-top: 40px;
-            padding: 25px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border-radius: 20px;
-            text-align: center;
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .copyright-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .copyright-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .copyright-text {
-            font-size: 16px;
-            font-weight: 600;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 0.5px;
-        }
-
-        .copyright-icon {
-            font-size: 20px;
-            animation: bounce 2s infinite;
-        }
-
-        .copyright-icon:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .copyright-icon:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-8px); }
-            60% { transform: translateY(-4px); }
-        }
-
-        .cute-icons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cute-icon {
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .cute-icon:nth-child(1) { animation-delay: 0s; }
-        .cute-icon:nth-child(2) { animation-delay: 0.6s; }
-        .cute-icon:nth-child(3) { animation-delay: 1.2s; }
-        .cute-icon:nth-child(4) { animation-delay: 1.8s; }
-        .cute-icon:nth-child(5) { animation-delay: 2.4s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(5deg); }
-            50% { transform: translateY(-5px) rotate(-5deg); }
-            75% { transform: translateY(-15px) rotate(3deg); }
-        }
-
-        .cute-icon:hover {
-            transform: scale(1.5) rotate(360deg);
-            filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
-        }
-
-        .selected-info {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        @media (max-width: 768px) {
-            .upload-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .control-group {
-                grid-template-columns: 1fr;
-            }
-            
-            .thumbnails-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🎨 Thumbnail Maker Tool - Professional</h1>
-        
-        <!-- Upload Section -->
-        <div class="upload-section">
-            <div class="upload-box">
-                <h3>📷 Upload Phông Nền</h3>
-                <p>Kích thước khuyến nghị: 1200x1200px</p>
-                <input type="file" id="backgroundInput" class="file-input" accept="image/*">
-                <button class="upload-btn" onclick="document.getElementById('backgroundInput').click()">
+</div>
+<div class="iframe-container" id="frame2"><div class="container">
+<h1>🎨 Thumbnail Maker Tool - Professional</h1>
+<!-- Upload Section -->
+<div class="upload-section">
+<div class="upload-box">
+<h3>📷 Upload Phông Nền</h3>
+<p>Kích thước khuyến nghị: 1200x1200px</p>
+<input accept="image/*" class="file-input" id="backgroundInput" type="file"/>
+<button class="upload-btn" onclick="document.getElementById('backgroundInput').click()">
                     Chọn Phông Nền
                 </button>
-                <div id="backgroundStatus" class="status"></div>
-            </div>
-            
-            <div class="upload-box">
-                <h3>🛍️ Upload Sản Phẩm</h3>
-                <p>Chọn nhiều file, tự động xóa phông nền</p>
-                <input type="file" id="productInput" class="file-input" accept="image/*" multiple>
-                <button class="upload-btn" onclick="document.getElementById('productInput').click()">
+<div class="status" id="backgroundStatus"></div>
+</div>
+<div class="upload-box">
+<h3>🛍️ Upload Sản Phẩm</h3>
+<p>Chọn nhiều file, tự động xóa phông nền</p>
+<input accept="image/*" class="file-input" id="productInput" multiple="" type="file"/>
+<button class="upload-btn" onclick="document.getElementById('productInput').click()">
                     Chọn Sản Phẩm
                 </button>
-                <div id="productStatus" class="status"></div>
+<div class="status" id="productStatus"></div>
+</div>
+</div>
+<!-- Controls Section -->
+<div class="controls-section">
+<h3>⚙️ Chỉnh Sửa</h3>
+<div class="current-editing" id="currentEditing" style="display: none;">
+<strong>Đang chỉnh sửa:</strong> <span id="currentProductName">Không có</span>
+</div>
+<div class="selected-info" id="selectedInfo" style="display: none;">
+<strong>🎯 ĐÃ CHỌN HÀNG LOẠT:</strong> <span id="selectedCount">0</span> thumbnail(s) - Sẵn sàng chỉnh sửa!
             </div>
-        </div>
-
-        <!-- Controls Section -->
-        <div class="controls-section">
-            <h3>⚙️ Chỉnh Sửa Hàng Loạt</h3>
-            
-            <div class="selected-info" id="selectedInfo" style="display: none;">
-                <strong>Đã chọn:</strong> <span id="selectedCount">0</span> thumbnail(s)
-            </div>
-            
-            <div class="control-group">
-                <div class="control-item">
-                    <label>Scale Toàn Bộ (0.1x - 3x)</label>
-                    <input type="range" id="globalScale" min="0.1" max="3" step="0.1" value="0.6">
-                    <span id="globalScaleValue">0.6x</span>
-                </div>
-                
-                <div class="control-item">
-                    <label>Vị Trí X</label>
-                    <input type="number" id="globalX" min="-600" max="600" value="0" placeholder="Vị trí X">
-                </div>
-                
-                <div class="control-item">
-                    <label>Vị Trí Y</label>
-                    <input type="number" id="globalY" min="-600" max="600" value="0" placeholder="Vị trí Y">
-                </div>
-            </div>
-            
-            <div class="control-buttons">
-                <button class="control-btn" onclick="applyGlobalChanges()">Áp Dụng Hàng Loạt</button>
-                <button class="control-btn" onclick="centerAllProducts()">Căn Giữa Tất Cả</button>
-                <button class="control-btn" onclick="resetAllPositions()">Reset Vị Trí</button>
-                <button class="control-btn" onclick="selectAllThumbnails()">Chọn Tất Cả</button>
-                <button class="control-btn" onclick="deselectAllThumbnails()">Bỏ Chọn Tất Cả</button>
-            </div>
-        </div>
-
-        <!-- Download Section -->
-        <div class="download-section">
-            <h3>💾 Tải Xuống</h3>
-            <div class="download-buttons">
-                <button class="download-btn" id="downloadSelected" onclick="downloadSelected()" disabled>
+<div class="control-group">
+<div class="control-item">
+<label>Scale (0.1x - 3x)</label>
+<input id="globalScale" max="3" min="0.1" step="0.1" type="range" value="0.6"/>
+<span id="globalScaleValue">0.6x</span>
+</div>
+<div class="control-item">
+<label>Vị Trí X</label>
+<input id="globalX" max="600" min="-600" placeholder="Vị trí X" type="number" value="0"/>
+</div>
+<div class="control-item">
+<label>Vị Trí Y</label>
+<input id="globalY" max="600" min="-600" placeholder="Vị trí Y" type="number" value="0"/>
+</div>
+</div>
+<div class="control-buttons">
+<button class="control-btn" onclick="applyChanges()">Áp Dụng</button>
+<button class="control-btn" onclick="centerProducts()">Căn Giữa</button>
+<button class="control-btn" onclick="resetPositions()">Reset Vị Trí</button>
+<button class="control-btn" onclick="selectAllThumbnails()">Chọn Tất Cả</button>
+<button class="control-btn" onclick="deselectAllThumbnails()">Bỏ Chọn Tất Cả</button>
+</div>
+</div>
+<!-- Download Section -->
+<div class="download-section">
+<h3>💾 Tải Xuống</h3>
+<div class="download-buttons">
+<button class="download-btn" disabled="" id="downloadSelected" onclick="downloadSelected()">
                     Tải Thumbnail Đã Chọn
                 </button>
-                <button class="download-btn" id="downloadAll" onclick="downloadAll()" disabled>
+<button class="download-btn" disabled="" id="downloadAll" onclick="downloadAll()">
                     Tải Tất Cả Thumbnail
                 </button>
-            </div>
-            <div class="progress-bar" id="progressBar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-        </div>
-
-        <!-- Thumbnails Grid -->
-        <div class="thumbnails-grid" id="thumbnailsGrid"></div>
-        
-        <div class="workspace-info" id="workspaceInfo">
+</div>
+<div class="progress-bar" id="progressBar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+</div>
+<!-- Thumbnails Grid -->
+<div class="thumbnails-grid" id="thumbnailsGrid"></div>
+<div class="workspace-info" id="workspaceInfo">
             Tải lên phông nền và sản phẩm để bắt đầu tạo thumbnail
         </div>
-        
-        <!-- Copyright Section -->
-        <div class="copyright-section">
-            <div class="copyright-content">
-                <span class="copyright-icon">🎨</span>
-                <span class="copyright-text">Copyright © 2025 Tien Hoang</span>
-                <span class="copyright-icon">✨</span>
-            </div>
-            <div class="cute-icons">
-                <span class="cute-icon">🐱</span>
-                <span class="cute-icon">🌸</span>
-                <span class="cute-icon">💫</span>
-                <span class="cute-icon">🦄</span>
-                <span class="cute-icon">🌈</span>
-            </div>
-        </div>
-    </div>
-
-    <script>
+<!-- Copyright Section -->
+<div class="copyright-section">
+<div class="copyright-content">
+<span class="copyright-icon">🎨</span>
+<span class="copyright-text">Copyright © 2025 Tien Hoang</span>
+<span class="copyright-icon">✨</span>
+</div>
+<div class="cute-icons">
+<span class="cute-icon">🐱</span>
+<span class="cute-icon">🌸</span>
+<span class="cute-icon">💫</span>
+<span class="cute-icon">🦄</span>
+<span class="cute-icon">🌈</span>
+</div>
+</div>
+</div><script>
         let backgroundImage = null;
         let products = [];
         let selectedThumbnails = new Set();
+        let currentEditingProduct = null;
 
         // Remove background from image
         function removeBackground(imageData, canvas) {
@@ -1846,6 +2158,7 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
                         showStatus('backgroundStatus', 'Phông nền đã tải lên thành công!', 'success');
                         updateDownloadButtons();
                         updateWorkspaceInfo();
+                        generateThumbnails();
                     };
                     img.src = e.target.result;
                 };
@@ -1915,16 +2228,32 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
                 thumbnailDiv.className = 'thumbnail-item';
                 thumbnailDiv.setAttribute('data-id', product.id);
                 
+                // Update selection state
+                if (selectedThumbnails.has(product.id)) {
+                    thumbnailDiv.classList.add('selected');
+                }
+                
                 const canvas = document.createElement('canvas');
                 canvas.width = 200;
-                canvas.height = 150;
+                canvas.height = 200;
                 canvas.className = 'thumbnail-canvas';
                 
                 const ctx = canvas.getContext('2d');
                 
-                // Draw background if available
+                // Clear canvas with white background
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw background if available (fit to square)
                 if (backgroundImage) {
-                    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+                    // Calculate scale to fit square while maintaining aspect ratio
+                    const bgScale = Math.min(canvas.width / backgroundImage.width, canvas.height / backgroundImage.height);
+                    const bgWidth = backgroundImage.width * bgScale;
+                    const bgHeight = backgroundImage.height * bgScale;
+                    const bgX = (canvas.width - bgWidth) / 2;
+                    const bgY = (canvas.height - bgHeight) / 2;
+                    
+                    ctx.drawImage(backgroundImage, bgX, bgY, bgWidth, bgHeight);
                 }
                 
                 // Draw product
@@ -1955,18 +2284,65 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
                 thumbnailDiv.appendChild(canvas);
                 thumbnailDiv.appendChild(info);
                 
-                // Add click event for selection
+                // Add click event for selection/editing
                 thumbnailDiv.addEventListener('click', function(e) {
                     if (e.target.classList.contains('delete-btn')) return;
-                    toggleThumbnailSelection(product.id);
+                    
+                    // If holding Ctrl/Cmd, toggle selection for batch editing
+                    if (e.ctrlKey || e.metaKey) {
+                        toggleThumbnailSelection(product.id);
+                    } else {
+                        // Single click - select for individual editing
+                        setCurrentEditingProduct(product.id);
+                    }
                 });
                 
                 grid.appendChild(thumbnailDiv);
             });
         }
 
-        // Toggle thumbnail selection
+        // Set current editing product
+        function setCurrentEditingProduct(productId) {
+            currentEditingProduct = productId;
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                // Update control values to match current product
+                document.getElementById('globalScale').value = product.scale;
+                document.getElementById('globalX').value = product.x;
+                document.getElementById('globalY').value = product.y;
+                document.getElementById('globalScaleValue').textContent = product.scale + 'x';
+                
+                // Update current editing display
+                document.getElementById('currentEditing').style.display = 'block';
+                document.getElementById('currentProductName').textContent = product.name;
+                
+                // Clear batch selection when editing individual product
+                selectedThumbnails.clear();
+                updateSelectedInfo();
+                updateDownloadButtons();
+                
+                // Remove all selection highlights and add editing highlight
+                document.querySelectorAll('.thumbnail-item').forEach(item => {
+                    item.classList.remove('selected');
+                    if (item.getAttribute('data-id') == productId) {
+                        item.style.border = '3px solid #ffc107';
+                    } else {
+                        item.style.border = '3px solid transparent';
+                    }
+                });
+            }
+        }
+
+        // Toggle thumbnail selection for batch editing
         function toggleThumbnailSelection(productId) {
+            // Clear individual editing mode
+            currentEditingProduct = null;
+            document.getElementById('currentEditing').style.display = 'none';
+            document.querySelectorAll('.thumbnail-item').forEach(item => {
+                item.style.border = '3px solid transparent';
+            });
+            
             const thumbnailDiv = document.querySelector(`[data-id="${productId}"]`);
             
             if (selectedThumbnails.has(productId)) {
@@ -1983,6 +2359,12 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
 
         // Select all thumbnails
         function selectAllThumbnails() {
+            currentEditingProduct = null;
+            document.getElementById('currentEditing').style.display = 'none';
+            document.querySelectorAll('.thumbnail-item').forEach(item => {
+                item.style.border = '3px solid transparent';
+            });
+            
             products.forEach(product => {
                 selectedThumbnails.add(product.id);
                 const thumbnailDiv = document.querySelector(`[data-id="${product.id}"]`);
@@ -1994,9 +2376,13 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
 
         // Deselect all thumbnails
         function deselectAllThumbnails() {
+            currentEditingProduct = null;
+            document.getElementById('currentEditing').style.display = 'none';
+            
             selectedThumbnails.clear();
             document.querySelectorAll('.thumbnail-item').forEach(item => {
                 item.classList.remove('selected');
+                item.style.border = '3px solid transparent';
             });
             updateSelectedInfo();
             updateDownloadButtons();
@@ -2019,21 +2405,36 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
         function deleteProduct(productId) {
             products = products.filter(p => p.id !== productId);
             selectedThumbnails.delete(productId);
+            if (currentEditingProduct === productId) {
+                currentEditingProduct = null;
+                document.getElementById('currentEditing').style.display = 'none';
+            }
             generateThumbnails();
             updateSelectedInfo();
             updateDownloadButtons();
             updateWorkspaceInfo();
         }
 
-        // Apply global changes
-        function applyGlobalChanges() {
+        // Apply changes (works for both individual and batch editing)
+        function applyChanges() {
             const scale = parseFloat(document.getElementById('globalScale').value);
             const x = parseInt(document.getElementById('globalX').value) || 0;
             const y = parseInt(document.getElementById('globalY').value) || 0;
             
-            const targetProducts = selectedThumbnails.size > 0 
-                ? products.filter(p => selectedThumbnails.has(p.id))
-                : products;
+            let targetProducts = [];
+            
+            // If editing individual product
+            if (currentEditingProduct) {
+                targetProducts = products.filter(p => p.id === currentEditingProduct);
+            }
+            // If batch editing selected products
+            else if (selectedThumbnails.size > 0) {
+                targetProducts = products.filter(p => selectedThumbnails.has(p.id));
+            }
+            // If nothing selected, apply to all
+            else {
+                targetProducts = products;
+            }
             
             targetProducts.forEach(product => {
                 product.scale = scale;
@@ -2044,25 +2445,50 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
             generateThumbnails();
         }
 
-        // Center all products
-        function centerAllProducts() {
-            const targetProducts = selectedThumbnails.size > 0 
-                ? products.filter(p => selectedThumbnails.has(p.id))
-                : products;
+        // Center products
+        function centerProducts() {
+            let targetProducts = [];
+            
+            // If editing individual product
+            if (currentEditingProduct) {
+                targetProducts = products.filter(p => p.id === currentEditingProduct);
+            }
+            // If batch editing selected products
+            else if (selectedThumbnails.size > 0) {
+                targetProducts = products.filter(p => selectedThumbnails.has(p.id));
+            }
+            // If nothing selected, apply to all
+            else {
+                targetProducts = products;
+            }
             
             targetProducts.forEach(product => {
                 product.x = 0;
                 product.y = 0;
             });
             
+            document.getElementById('globalX').value = 0;
+            document.getElementById('globalY').value = 0;
+            
             generateThumbnails();
         }
 
-        // Reset all positions
-        function resetAllPositions() {
-            const targetProducts = selectedThumbnails.size > 0 
-                ? products.filter(p => selectedThumbnails.has(p.id))
-                : products;
+        // Reset positions
+        function resetPositions() {
+            let targetProducts = [];
+            
+            // If editing individual product
+            if (currentEditingProduct) {
+                targetProducts = products.filter(p => p.id === currentEditingProduct);
+            }
+            // If batch editing selected products
+            else if (selectedThumbnails.size > 0) {
+                targetProducts = products.filter(p => selectedThumbnails.has(p.id));
+            }
+            // If nothing selected, apply to all
+            else {
+                targetProducts = products;
+            }
             
             targetProducts.forEach(product => {
                 product.scale = 0.6;
@@ -2247,581 +2673,177 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
         // Initialize
         updateDownloadButtons();
         updateWorkspaceInfo();
-    </script>
-</body>
-</html>
-    </div>
-    <div id="frame3" class="iframe-container">
-      <script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo Mô Tả Sản Phẩm - iBasic Việt Nam</title>
-    <script src="https://unpkg.com/docx@7.8.2/build/index.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            padding: 30px;
-        }
-
-        .input-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid #e9ecef;
-            width: 100%;
-        }
-
-        .output-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid #e9ecef;
-            width: 100%;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #34495e;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #4ecdc4;
-            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .file-upload {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .file-upload input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .file-upload-label {
-            display: block;
-            padding: 12px;
-            background: #4ecdc4;
-            color: white;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .file-upload-label:hover {
-            background: #45b7aa;
-            transform: translateY(-2px);
-        }
-
-        .file-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .file-preview img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
-        }
-
-        .generate-btn {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .output-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            min-height: 400px;
-            border: 1px solid #e9ecef;
-        }
-
-        .product-title {
-            font-size: 14pt;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-
-        .product-description {
-            font-size: 12pt;
-            line-height: 1.6;
-            color: #34495e;
-        }
-
-        .product-description ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .product-description li {
-            font-size: 12pt;
-            margin-bottom: 10px;
-        }
-
-        .specs {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .specs p {
-            font-size: 12pt;
-            margin-bottom: 5px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .copy-btn, .download-btn, .regenerate-btn {
-            background: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 15px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .download-btn {
-            background: #007bff;
-        }
-
-        .regenerate-btn {
-            background: #ff6b6b;
-        }
-
-        .copy-btn:hover {
-            background: #218838;
-        }
-
-        .download-btn:hover {
-            background: #0056b3;
-        }
-
-        .regenerate-btn:hover {
-            background: #e55a5a;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #6c757d;
-        }
-
-        .loading::after {
-            content: '';
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #4ecdc4;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .ai-note {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #ffeaa7;
-        }
-
-        .ai-note strong {
-            color: #d63384;
-        }
-
-        .copyright {
-            text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            color: #6c757d;
-            font-size: 14px;
-            margin-top: 20px;
-            border-radius: 8px;
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .button-group {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🌙 Tạo Mô Tả Sản Phẩm - iBasic Việt Nam</h1>
-            <p>Công cụ tạo mô tả sản phẩm chuyên nghiệp với AI</p>
-        </div>
-
-        <div class="main-content">
-            <div class="input-section">
-                <div class="section-title">
+    </script></div>
+<div class="iframe-container" id="frame3"><div class="container">
+<div class="header">
+<h1>🌙 Tạo Mô Tả Sản Phẩm - iBasic Việt Nam</h1>
+<p>Công cụ tạo mô tả sản phẩm chuyên nghiệp với AI</p>
+</div>
+<div class="main-content">
+<div class="input-section">
+<div class="section-title">
                     📝 INPUT A - Thông tin sản phẩm
                 </div>
-
-                <div class="section-title" style="margin-bottom: 10px;">
+<div class="section-title" style="margin-bottom: 10px;">
                     🔧 Cấu hình API Google Gemini
                 </div>
-                
-                <div class="form-group">
-                    <label for="apiKey">API Key Google Gemini:</label>
-                    <input type="password" id="apiKey" placeholder="Nhập API Key của bạn (AIza...)" style="font-family: monospace;">
-                    <small style="color: #6c757d; font-size: 12px;">
+<div class="form-group">
+<label for="apiKey">API Key Google Gemini:</label>
+<input id="apiKey" placeholder="Nhập API Key của bạn (AIza...)" style="font-family: monospace;" type="password"/>
+<small style="color: #6c757d; font-size: 12px;">
                         API Key sẽ chỉ lưu trong session này và không được gửi đến máy chủ nào khác. 
-                        <a href="https://makersuite.google.com/app/apikey" target="_blank" style="color: #4ecdc4;">Lấy API Key tại đây</a>
-                    </small>
+                        <a href="https://makersuite.google.com/app/apikey" style="color: #4ecdc4;" target="_blank">Lấy API Key tại đây</a>
+</small>
+</div>
+<div class="ai-note">
+<strong>Hướng dẫn:</strong> Nhập API Key Google Gemini để sử dụng AI thực tế. Nếu để trống, hệ thống sẽ tạo mô tả mẫu.
                 </div>
-
-                <div class="ai-note">
-                    <strong>Hướng dẫn:</strong> Nhập API Key Google Gemini để sử dụng AI thực tế. Nếu để trống, hệ thống sẽ tạo mô tả mẫu.
-                </div>
-
-                <form id="productForm">
-                    <div class="form-group">
-                        <label for="productType">Loại sản phẩm:</label>
-                        <select id="productType" name="productType" required>
-                            <option value="">Chọn loại sản phẩm</option>
-                            <option value="quần lót">Quần lót</option>
-                            <option value="áo ngực">Áo ngực</option>
-                            <option value="pyjama">Pyjama</option>
-                            <option value="đầm ngủ">Đầm ngủ</option>
-                            <option value="khác">Khác</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="productName">Tên sản phẩm:</label>
-                        <input type="text" id="productName" name="productName" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="material">Chất liệu:</label>
-                        <input type="text" id="material" name="material" required>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="style">Kiểu dáng:</label>
-                            <textarea id="style" name="style" placeholder="Mô tả kiểu dáng tổng quát"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="design">Thiết kế:</label>
-                            <textarea id="design" name="design" placeholder="Mô tả thiết kế chi tiết"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="topFit">Phom áo:</label>
-                        <input type="text" id="topFit" name="topFit">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="bottomFit">Phom quần:</label>
-                        <input type="text" id="bottomFit" name="bottomFit">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="padding">Mút:</label>
-                        <input type="text" id="padding" name="padding">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="straps">Dây vai:</label>
-                        <input type="text" id="straps" name="straps">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="waistband">Bản lưng:</label>
-                        <input type="text" id="waistband" name="waistband">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="clasp">Mắc cài:</label>
-                        <input type="text" id="clasp" name="clasp">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="color">Màu sắc:</label>
-                        <input type="text" id="color" name="color" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="size">Kích thước:</label>
-                        <input type="text" id="size" name="size" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gender">Giới tính:</label>
-                        <select id="gender" name="gender" required>
-                            <option value="">Chọn giới tính</option>
-                            <option value="nữ">Nữ</option>
-                            <option value="nam">Nam</option>
-                            <option value="bé gái">Bé gái</option>
-                            <option value="bé trai">Bé trai</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="age">Độ tuổi:</label>
-                        <select id="age" name="age">
-                            <option value="">Không xác định</option>
-                            <option value="học sinh">Học sinh</option>
-                            <option value="người lớn">Người lớn</option>
-                            <option value="trẻ em">Trẻ em</option>
-                            <option value="mọi lứa tuổi">Mọi lứa tuổi</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="descriptionStyle">Loại mô tả theo phong cách:</label>
-                        <select id="descriptionStyle" name="descriptionStyle">
-                            <option value="">Chọn phong cách</option>
-                            <option value="storytelling">Phong cách kể chuyện (Storytelling)</option>
-                            <option value="minimalist">Phong cách tối giản (Minimalist)</option>
-                            <option value="luxury">Phong cách sang trọng, cao cấp (Luxury/Exclusive)</option>
-                            <option value="friendly">Phong cách thân thiện, gần gũi (Friendly, Approachable)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="other">Nội dung khác:</label>
-                        <textarea id="other" name="other"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="mixMatch">Mix - Match:</label>
-                        <textarea id="mixMatch" name="mixMatch"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="composition">Thành phần:</label>
-                        <textarea id="composition" name="composition"></textarea>
-                    </div>
-                </form>
-
-                <div class="section-title" style="margin-top: 30px;">
+<form id="productForm">
+<div class="form-group">
+<label for="productType">Loại sản phẩm:</label>
+<select id="productType" name="productType" required="">
+<option value="">Chọn loại sản phẩm</option>
+<option value="quần lót">Quần lót</option>
+<option value="áo ngực">Áo ngực</option>
+<option value="pyjama">Pyjama</option>
+<option value="đầm ngủ">Đầm ngủ</option>
+<option value="khác">Khác</option>
+</select>
+</div>
+<div class="form-group">
+<label for="productName">Tên sản phẩm:</label>
+<input id="productName" name="productName" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="material">Chất liệu:</label>
+<input id="material" name="material" required="" type="text"/>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="style">Kiểu dáng:</label>
+<textarea id="style" name="style" placeholder="Mô tả kiểu dáng tổng quát"></textarea>
+</div>
+<div class="form-group">
+<label for="design">Thiết kế:</label>
+<textarea id="design" name="design" placeholder="Mô tả thiết kế chi tiết"></textarea>
+</div>
+</div>
+<div class="form-group">
+<label for="topFit">Phom áo:</label>
+<input id="topFit" name="topFit" type="text"/>
+</div>
+<div class="form-group">
+<label for="bottomFit">Phom quần:</label>
+<input id="bottomFit" name="bottomFit" type="text"/>
+</div>
+<div class="form-group">
+<label for="padding">Mút:</label>
+<input id="padding" name="padding" type="text"/>
+</div>
+<div class="form-group">
+<label for="straps">Dây vai:</label>
+<input id="straps" name="straps" type="text"/>
+</div>
+<div class="form-group">
+<label for="waistband">Bản lưng:</label>
+<input id="waistband" name="waistband" type="text"/>
+</div>
+<div class="form-group">
+<label for="clasp">Mắc cài:</label>
+<input id="clasp" name="clasp" type="text"/>
+</div>
+<div class="form-group">
+<label for="color">Màu sắc:</label>
+<input id="color" name="color" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="size">Kích thước:</label>
+<input id="size" name="size" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="gender">Giới tính:</label>
+<select id="gender" name="gender" required="">
+<option value="">Chọn giới tính</option>
+<option value="nữ">Nữ</option>
+<option value="nam">Nam</option>
+<option value="bé gái">Bé gái</option>
+<option value="bé trai">Bé trai</option>
+</select>
+</div>
+<div class="form-group">
+<label for="age">Độ tuổi:</label>
+<select id="age" name="age">
+<option value="">Không xác định</option>
+<option value="học sinh">Học sinh</option>
+<option value="người lớn">Người lớn</option>
+<option value="trẻ em">Trẻ em</option>
+<option value="mọi lứa tuổi">Mọi lứa tuổi</option>
+</select>
+</div>
+<div class="form-group">
+<label for="descriptionStyle">Loại mô tả theo phong cách:</label>
+<select id="descriptionStyle" name="descriptionStyle">
+<option value="">Chọn phong cách</option>
+<option value="storytelling">Phong cách kể chuyện (Storytelling)</option>
+<option value="minimalist">Phong cách tối giản (Minimalist)</option>
+<option value="luxury">Phong cách sang trọng, cao cấp (Luxury/Exclusive)</option>
+<option value="friendly">Phong cách thân thiện, gần gũi (Friendly, Approachable)</option>
+</select>
+</div>
+<div class="form-group">
+<label for="other">Nội dung khác:</label>
+<textarea id="other" name="other"></textarea>
+</div>
+<div class="form-group">
+<label for="mixMatch">Mix - Match:</label>
+<textarea id="mixMatch" name="mixMatch"></textarea>
+</div>
+<div class="form-group">
+<label for="composition">Thành phần:</label>
+<textarea id="composition" name="composition"></textarea>
+</div>
+</form>
+<div class="section-title" style="margin-top: 30px;">
                     📷 INPUT B - Hình ảnh sản phẩm
                 </div>
-
-                <div class="form-group">
-                    <label>Hình ảnh sản phẩm (tối đa 3 hình):</label>
-                    <div class="file-upload">
-                        <input type="file" id="images" accept="image/*" multiple>
-                        <label for="images" class="file-upload-label">📸 Chọn hình ảnh sản phẩm</label>
-                    </div>
-                    <div id="imagePreview" class="file-preview"></div>
-                </div>
-
-                <button type="button" class="generate-btn" onclick="generateDescription()">
+<div class="form-group">
+<label>Hình ảnh sản phẩm (tối đa 3 hình):</label>
+<div class="file-upload">
+<input accept="image/*" id="images" multiple="" type="file"/>
+<label class="file-upload-label" for="images">📸 Chọn hình ảnh sản phẩm</label>
+</div>
+<div class="file-preview" id="imagePreview"></div>
+</div>
+<button class="generate-btn" onclick="generateDescription()" type="button">
                     🤖 Tạo Mô Tả Sản Phẩm với AI
                 </button>
-            </div>
-
-            <div class="output-section">
-                <div class="section-title">
+</div>
+<div class="output-section">
+<div class="section-title">
                     ✨ Kết quả mô tả sản phẩm
                 </div>
-                <div class="output-content" id="outputContent">
-                    <p style="text-align: center; color: #6c757d; padding: 40px;">
+<div class="output-content" id="outputContent">
+<p style="text-align: center; color: #6c757d; padding: 40px;">
                         Nhập thông tin sản phẩm và nhấn "Tạo Mô Tả Sản Phẩm" để xem kết quả
                     </p>
-                </div>
-                <div class="button-group">
-                    <button class="copy-btn" onclick="copyToClipboard()" style="display: none;" id="copyBtn">
+</div>
+<div class="button-group">
+<button class="copy-btn" id="copyBtn" onclick="copyToClipboard()" style="display: none;">
                         📋 Sao chép mô tả
                     </button>
-                    <button class="regenerate-btn" onclick="regenerateDescription()" style="display: none;" id="regenerateBtn">
+<button class="regenerate-btn" id="regenerateBtn" onclick="regenerateDescription()" style="display: none;">
                         🔄 Tạo lại mô tả
                     </button>
-                    <button class="download-btn" onclick="downloadDocx()" style="display: none;" id="downloadBtn">
+<button class="download-btn" id="downloadBtn" onclick="downloadDocx()" style="display: none;">
                         📥 Tải xuống DOCX
                     </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="copyright">
+</div>
+</div>
+</div>
+<div class="copyright">
             © 2025 by Tien Hoang 🌟
         </div>
-    </div>
-
-    <script>
+</div><script>
         // Store product data and API key for regeneration
         let lastProductData = null;
         let lastApiKey = null;
@@ -3332,17 +3354,12 @@ Chỉ trả về nội dung mô tả, không cần giải thích thêm.
                 alert('Lỗi khi tạo file DOCX!');
             });
         }
-    </script>
-</body>
-</html>
-    </div>
-
-    <footer>
+    </script></div>
+<footer>
       Copyright © Tien Hoang 2025
     </footer>
-  </div>
-
-  <script>
+</div>
+<script>
     function showFrame(id) {
       document.querySelectorAll('.iframe-container').forEach(el => el.classList.remove('active'));
       document.getElementById(id).classList.add('active');
