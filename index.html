@@ -2674,12 +2674,7 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
         updateDownloadButtons();
         updateWorkspaceInfo();
     </script></div>
-<div class="iframe-container" id="frame3"><div class="container">
-<div class="header">
-<h1>🌙 Tạo Mô Tả Sản Phẩm - iBasic Việt Nam</h1>
-<p>Công cụ tạo mô tả sản phẩm chuyên nghiệp với AI</p>
-</div>
-<div class="main-content">
+<div class="iframe-container" id="frame3"><div class="main-content">
 <div class="input-section">
 <div class="section-title">
                     📝 INPUT A - Thông tin sản phẩm
@@ -2839,11 +2834,57 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
                     </button>
 </div>
 </div>
+</div></div>
+<footer>
+      Copyright © Tien Hoang 2025
+    </footer>
 </div>
-<div class="copyright">
-            © 2025 by Tien Hoang 🌟
-        </div>
-</div><script>
+<script>
+    function showFrame(id) {
+      document.querySelectorAll('.iframe-container').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><script src="https://unpkg.com/docx@7.8.2/build/index.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script><script>
         // Store product data and API key for regeneration
         let lastProductData = null;
         let lastApiKey = null;
@@ -3354,16 +3395,5 @@ Chỉ trả về nội dung mô tả, không cần giải thích thêm.
                 alert('Lỗi khi tạo file DOCX!');
             });
         }
-    </script></div>
-<footer>
-      Copyright © Tien Hoang 2025
-    </footer>
-</div>
-<script>
-    function showFrame(id) {
-      document.querySelectorAll('.iframe-container').forEach(el => el.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-  </script>
-</body>
+    </script></body>
 </html>
