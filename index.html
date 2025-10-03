@@ -1572,7 +1572,7 @@
                             }]
                         }],
                         generationConfig: {
-                            temperature: 0.7,
+                            temperature: 0.9,
                             topK: 40,
                             topP: 0.95,
                             maxOutputTokens: 2048
@@ -4291,16 +4291,8 @@
                 scriptGenerationCount++;
                 
                 // Tạo 2 kịch bản khác nhau
-                const script1LoadingEl = document.getElementById('script1');
-                const script2LoadingEl = document.getElementById('script2');
-                // Per-script loading states
-                script1LoadingEl.innerHTML = '<div class="empty-state">Đang tạo kịch bản 1... <i class="fas fa-spinner loading"></i></div>';
-                const script1 = await generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, selectedStyle, 1, scriptGenerationCount, 180000);
-                script1LoadingEl.innerHTML = '';
-
-                script2LoadingEl.innerHTML = '<div class="empty-state">Đang tạo kịch bản 2... <i class="fas fa-spinner loading"></i></div>';
-                const script2 = await generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, selectedStyle, 2, scriptGenerationCount, 180000);
-                script2LoadingEl.innerHTML = '';
+                const script1 = await generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, selectedStyle, 1, scriptGenerationCount);
+                const script2 = await generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, selectedStyle, 2, scriptGenerationCount);
                 
                 scriptContent[1] = script1;
                 scriptContent[2] = script2;
@@ -4329,7 +4321,7 @@
             }
         }
 
-        async function generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, style, version, generationCount, timeoutMs = 120000) {
+        async function generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, style, version, generationCount) {
             const styleDescriptions = {
                 'friendly': 'thân thiện, dễ thương, gần gũi với khán giả',
                 'professional': 'chuyên nghiệp, lịch sự, tin cậy và thuyết phục',
@@ -4341,7 +4333,7 @@
                 2: 'Tạo kịch bản với cách tiếp cận khác, tập trung vào việc tạo urgency và call-to-action mạnh mẽ'
             };
 
-            const productList = products.map((product, index) => `Sản phẩm ${index + 1}: ${product}`).join('\n');
+            const productList = products.map((product, index) =&gt; `Sản phẩm ${index + 1}: ${product}`).join('\n');
 
             const prompt = `
 Tôi cần bạn tạo một kịch bản livestream hoàn chỉnh với các yêu cầu sau:
@@ -4358,7 +4350,7 @@ ${productList}
 THEO MÙA:
 ${seasonality}
 
-TRÒ CHƠI & GIẢI TRÍ:
+TRÒ CHƠI &amp; GIẢI TRÍ:
 ${gamification}
 
 TIP/HACK:
@@ -4378,10 +4370,10 @@ ${promotion}
 
 YÊU CẦU KỊCH BẢN:
 1. Tạo kịch bản livestream hoàn chỉnh khoảng 60 phút
-2. Chia thành các phần rõ ràng: Khai mạc, Giới thiệu thương hiệu, Trình bày sản phẩm, Theo mùa, Trò chơi & Giải trí, TIP/HACK, Chính sách, Khuyến mãi và CTA, Kết thúc
+2. Chia thành các phần rõ ràng: Khai mạc, Giới thiệu thương hiệu, Trình bày sản phẩm, Theo mùa, Trò chơi &amp; Giải trí, TIP/HACK, Chính sách, Khuyến mãi và CTA, Kết thúc
 3. Bao gồm timing cụ thể cho từng phần
 4. Có dialogue tự nhiên, phù hợp với phong cách ${styleDescriptions[style]}
-5. Tích hợp các câu tương tác với khán giả, đặc biệt trong phần Trò chơi & Giải trí
+5. Tích hợp các câu tương tác với khán giả, đặc biệt trong phần Trò chơi &amp; Giải trí
 6. Bao gồm call-to-action hiệu quả
 7. Định dạng rõ ràng, dễ đọc
 8. Sử dụng tiếng Việt chuẩn Unicode để đảm bảo hiển thị đúng trên mọi nền tảng
@@ -4390,95 +4382,61 @@ YÊU CẦU KỊCH BẢN:
 Hãy tạo kịch bản chi tiết và chuyên nghiệp.
 `;
 
-            // Cập nhật API URL sử dụng Gemini 2.5 Flash (preview)
+            // Cập nhật API URL sử dụng Gemini 2.5 Flash
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
-            // Setup timeout with AbortController
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: prompt
+                        }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.9, // Tăng temperature để tăng tính đa dạng trong cách diễn đạt
+                        topK: 1,
+                        topP: 1,
+                        maxOutputTokens: 8192,
                     },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: prompt
-                            }]
-                        }],
-                        generationConfig: {
-                            temperature: 0.9, // Tăng temperature để tăng tính đa dạng trong cách diễn đạt
-                            topK: 1,
-                            topP: 1,
-                            maxOutputTokens: 8192,
+                    safetySettings: [
+                        {
+                            category: &quot;HARM_CATEGORY_HARASSMENT&quot;,
+                            threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot;
                         },
-                        safetySettings: [
-                            {
-                                category: "HARM_CATEGORY_HARASSMENT",
-                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                            },
-                            {
-                                category: "HARM_CATEGORY_HATE_SPEECH",
-                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                            },
-                            {
-                                category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                            },
-                            {
-                                category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-                                threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                            }
-                        ]
-                    }),
-                    signal: controller.signal
-                });
+                        {
+                            category: &quot;HARM_CATEGORY_HATE_SPEECH&quot;,
+                            threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot;
+                        },
+                        {
+                            category: &quot;HARM_CATEGORY_SEXUALLY_EXPLICIT&quot;,
+                            threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot;
+                        },
+                        {
+                            category: &quot;HARM_CATEGORY_DANGEROUS_CONTENT&quot;,
+                            threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot;
+                        }
+                    ]
+                })
+            });
 
-                clearTimeout(timeout);
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error?.message || 'Lỗi khi gọi API Gemini');
+            }
 
-                if (!response.ok) {
-                    // Try to parse error
-                    let errorText = await response.text().catch(() => '');
-                    let errorMessage = `HTTP error! status: ${response.status}`;
-                    try {
-                        const errObj = JSON.parse(errorText || '{}');
-                        if (errObj.error && errObj.error.message) errorMessage = errObj.error.message;
-                    } catch (e) {
-                        // ignore parse errors
-                    }
-
-                    // Add guidance for common statuses
-                    if (response.status === 429) {
-                        errorMessage = 'Rate limit exceeded (429). Hãy thử lại sau ít phút hoặc giảm tần suất yêu cầu.';
-                    } else if (response.status === 503) {
-                        errorMessage = 'Service unavailable (503). API có thể đang bận. Thử lại sau.';
-                    } else if (response.status === 401 || response.status === 403) {
-                        errorMessage = 'API Key không hợp lệ hoặc bị từ chối (401/403). Vui lòng kiểm tra API Key.';
-                    }
-
-                    throw new Error(errorMessage);
-                }
-
-                const data = await response.json();
-                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                    return data.candidates[0].content.parts[0].text;
-                } else {
-                    throw new Error('Không nhận được phản hồi hợp lệ từ Gemini AI');
-                }
-            } catch (err) {
-                if (err.name === 'AbortError') {
-                    throw new Error('Yêu cầu tới Gemini API đã hết thời gian chờ (timeout). Vui lòng thử lại.');
-                }
-                throw err;
-            } finally {
-                clearTimeout(timeout);
+            const data = await response.json();
+            if (data.candidates &amp;&amp; data.candidates[0] &amp;&amp; data.candidates[0].content) {
+                return data.candidates[0].content.parts[0].text;
+            } else {
+                throw new Error('Không nhận được phản hồi từ Gemini AI');
             }
         }
 
-        function showScript(scriptNumber) {(scriptNumber) {
+        function showScript(scriptNumber) {
             currentScript = scriptNumber;
             
             // Ẩn tất cả script và circle navigation
@@ -5783,7 +5741,7 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
                             }]
                         }],
                         generationConfig: {
-                            temperature: 0.7,
+                            temperature: 0.9,
                             maxOutputTokens: 2048,
                             topP: 0.8
                         }
@@ -6665,7 +6623,7 @@ QUAN TRỌNG:
                             }]
                         }],
                         generationConfig: {
-                            temperature: 0.7,
+                            temperature: 0.9,
                             topK: 40,
                             topP: 0.95,
                             maxOutputTokens: 2048,
