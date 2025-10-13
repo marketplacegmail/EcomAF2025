@@ -1,8 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Bộ Tool Ecommerce (Standalone)</title>
 <style>
   :root{--bg:#f4f6fb;--card:#fff;--accent:#6c5ce7;--muted:#6b7280}
@@ -30,35 +31,35 @@
 </head>
 <body>
 <div class="app">
-  <header>
-    <h1>Bộ Tool Ecommerce</h1>
-    <div class="tools">
-      <button data-tool="enhanced" class="active">Dashboard Metrics</button>
-      <button data-tool="thumbnail">Thumbnail Maker</button>
-      <button data-tool="script">Kịch Bản Livestream</button>
-      <button data-tool="dashboard">Livestream Dashboard</button>
-      <button data-tool="storytelling">Storytelling Nội Y</button>
-      <button data-tool="descriptions">Mô Tả Sản Phẩm</button>
-    </div>
-  </header>
-  <div class="container">
-    <nav class="sidebar">
-      <h2>Các tool</h2>
-      <div class="nav-list">
-        <div class="nav-item active" data-tool="enhanced">📊 Dashboard Metrics</div>
-        <div class="nav-item" data-tool="thumbnail">🎨 Thumbnail Maker</div>
-        <div class="nav-item" data-tool="script">🎬 Kịch Bản Livestream</div>
-        <div class="nav-item" data-tool="dashboard">🎥 Livestream Management</div>
-        <div class="nav-item" data-tool="storytelling">✍️ Storytelling Nội Y</div>
-        <div class="nav-item" data-tool="descriptions">🧾 Mô Tả Sản Phẩm</div>
-      </div>
-    </nav>
-    <main class="view">
-      <div class="view-header">
-        <div id="viewTitle">Dashboard Metrics</div>
-      </div>
-      <div class="iframe-wrap" id="iframes">
-        <iframe id="iframe-enhanced" class="tool-iframe visible" title="Dashboard Metrics" srcdoc="&lt;!DOCTYPE html&gt;
+<header>
+<h1>Bộ Tool Ecommerce</h1>
+<div class="tools">
+<button class="active" data-tool="enhanced">Dashboard Metrics</button>
+<button data-tool="thumbnail">Thumbnail Maker</button>
+<button data-tool="script">Kịch Bản Livestream</button>
+<button data-tool="dashboard">Livestream Dashboard</button>
+<button data-tool="storytelling">Storytelling Nội Y</button>
+<button data-tool="descriptions">Mô Tả Sản Phẩm</button>
+</div>
+</header>
+<div class="container">
+<nav class="sidebar">
+<h2>Các tool</h2>
+<div class="nav-list">
+<div class="nav-item active" data-tool="enhanced">📊 Dashboard Metrics</div>
+<div class="nav-item" data-tool="thumbnail">🎨 Thumbnail Maker</div>
+<div class="nav-item" data-tool="script">🎬 Kịch Bản Livestream</div>
+<div class="nav-item" data-tool="dashboard">🎥 Livestream Management</div>
+<div class="nav-item" data-tool="storytelling">✍️ Storytelling Nội Y</div>
+<div class="nav-item" data-tool="descriptions">🧾 Mô Tả Sản Phẩm</div>
+</div>
+</nav>
+<main class="view">
+<div class="view-header">
+<div id="viewTitle">Dashboard Metrics</div>
+</div>
+<div class="iframe-wrap" id="iframes">
+<iframe class="tool-iframe visible" id="iframe-enhanced" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -2013,8 +2014,8 @@
         });
     &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"></iframe>
-<iframe id="iframe-thumbnail" class="tool-iframe " title="Thumbnail Maker" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;/html&gt;" title="Dashboard Metrics"></iframe>
+<iframe class="tool-iframe" id="iframe-thumbnail" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -3475,47 +3476,8 @@
         updateWorkspaceInfo();
     &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"></iframe>
-<iframe id="iframe-script" class="tool-iframe " title="Kịch Bản Livestream" srcdoc="&lt;script type=&quot;text/javascript&quot;&gt;
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' &amp;&amp; cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx &amp;&amp; gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row =&gt; row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =&gt;
-                  row.filter(filledCell).length &gt;= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex &gt; 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return &quot;&quot;;
-            }
-        }
-        return gk_fileData[filename] || &quot;&quot;;
-        }
-        &lt;/script&gt;&lt;!DOCTYPE html&gt;
+&lt;/html&gt;" title="Thumbnail Maker"></iframe>
+<iframe class="tool-iframe" id="iframe-script" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -3532,7 +3494,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff00ff 0%, #00ffcc 100%); /* Y2K gradient: neon pink to cyan */
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffcc 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -3548,7 +3510,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #ff33cc, #00ff99); /* Y2K neon gradient */
+            background: linear-gradient(135deg, #ff33cc, #00ff99);
             color: white;
             text-align: center;
             padding: 40px 20px;
@@ -3591,7 +3553,7 @@
             padding: 20px;
             margin: 20px;
             border-radius: 10px;
-            border-left: 4px solid #ff33cc; /* Y2K neon pink */
+            border-left: 4px solid #ff33cc;
         }
 
         .api-section h3 {
@@ -3611,31 +3573,12 @@
 
         .api-input:focus {
             outline: none;
-            border-color: #ff33cc; /* Y2K neon pink */
-        }
-
-        .api-status {
-            font-size: 14px;
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .api-status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .api-status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            border-color: #ff33cc;
         }
 
         .main-content {
             display: flex;
-            flex-direction: column; /* Stack sections vertically */
+            flex-direction: column;
             gap: 30px;
             padding: 40px;
         }
@@ -3666,8 +3609,7 @@
         }
 
         .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group textarea {
             width: 100%;
             padding: 15px;
             border: 2px solid #e0e0e0;
@@ -3678,12 +3620,11 @@
         }
 
         .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        .form-group textarea:focus {
             outline: none;
-            border-color: #ff33cc; /* Y2K neon pink */
+            border-color: #ff33cc;
             background: white;
-            box-shadow: 0 0 0 3px rgba(255, 51, 204, 0.1); /* Y2K neon pink shadow */
+            box-shadow: 0 0 0 3px rgba(255, 51, 204, 0.1);
         }
 
         .form-group textarea {
@@ -3736,13 +3677,13 @@
         }
 
         .style-option:hover {
-            border-color: #ff33cc; /* Y2K neon pink */
-            background: #fff0f5; /* Light pink Y2K accent */
+            border-color: #ff33cc;
+            background: #fff0f5;
         }
 
         .style-option.selected {
-            border-color: #ff33cc; /* Y2K neon pink */
-            background: #ff33cc; /* Y2K neon pink */
+            border-color: #ff33cc;
+            background: #ff33cc;
             color: white;
         }
 
@@ -3758,14 +3699,14 @@
 
         .brand-policy-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Side-by-side for Brand Story and Policy */
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-bottom: 25px;
         }
 
         .cta-promotion-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Side-by-side for CTA and Promotion */
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-bottom: 25px;
         }
@@ -3780,7 +3721,7 @@
         .regenerate-btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #ff33cc, #00ff99); /* Y2K neon gradient */
+            background: linear-gradient(135deg, #ff33cc, #00ff99);
             color: white;
             border: none;
             border-radius: 10px;
@@ -3793,13 +3734,13 @@
         }
 
         .regenerate-btn {
-            background: linear-gradient(135deg, #00ff99, #ff33cc); /* Reversed Y2K gradient */
+            background: linear-gradient(135deg, #00ff99, #ff33cc);
         }
 
         .generate-btn:hover,
         .regenerate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 51, 204, 0.3); /* Y2K neon pink shadow */
+            box-shadow: 0 10px 20px rgba(255, 51, 204, 0.3);
         }
 
         .generate-btn:active,
@@ -3830,7 +3771,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #ff33cc, #00ff99, #ff00ff, #00ccff); /* Y2K neon gradient */
+            background: linear-gradient(90deg, #ff33cc, #00ff99, #ff00ff, #00ccff);
             animation: gradient-shift 3s linear infinite;
         }
 
@@ -3863,9 +3804,9 @@
         }
 
         .tab-btn.active {
-            background: #ff33cc; /* Y2K neon pink */
+            background: #ff33cc;
             color: white;
-            border-color: #ff33cc; /* Y2K neon pink */
+            border-color: #ff33cc;
         }
 
         .script-output {
@@ -3873,7 +3814,7 @@
             border-radius: 10px;
             padding: 20px;
             min-height: 400px;
-            border-left: 4px solid #ff33cc; /* Y2K neon pink */
+            border-left: 4px solid #ff33cc;
             font-family: 'Consolas', 'Monaco', monospace;
             line-height: 1.6;
             white-space: pre-wrap;
@@ -3895,8 +3836,10 @@
         .loading {
             display: none;
             text-align: center;
-            color: #ff33cc; /* Y2K neon pink */
+            color: #ff33cc;
             font-style: italic;
+            font-size: 1.1em;
+            padding: 20px;
         }
 
         .loading::after {
@@ -3910,51 +3853,10 @@
             60%, 100% { content: '...'; }
         }
 
-        .circle-nav {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 20px auto;
-            display: none;
-        }
-
-        .circle-nav.active {
-            display: block;
-        }
-
-        .circle-point {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #ff33cc; /* Y2K neon pink */
-            border-radius: 50%;
-            transform-origin: 50% 150px;
-            transition: transform 0.3s ease, background 0.3s ease;
-            cursor: pointer;
-        }
-
-        .circle-point:hover {
-            background: #00ff99; /* Y2K neon green */
-            transform: scale(1.2);
-        }
-
-        .tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            white-space: normal;
-            max-width: 200px;
-            display: none;
-            z-index: 10;
-        }
-
         .copy-btn,
         .download-btn {
             padding: 10px 15px;
-            background: #00ff99; /* Y2K neon green */
+            background: #00ff99;
             color: white;
             border: none;
             border-radius: 5px;
@@ -3966,8 +3868,15 @@
 
         .copy-btn:hover,
         .download-btn:hover {
-            background: #00cc88; /* Darker Y2K neon green */
+            background: #00cc88;
             transform: scale(1.05);
+        }
+
+        .copy-btn:disabled,
+        .download-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .error-message {
@@ -3981,53 +3890,26 @@
 
         @media (max-width: 768px) {
             .main-content {
-                flex-direction: column; /* Ensure vertical stacking on mobile */
-                gap: 20px;
                 padding: 20px;
             }
-            
+
             .header h1 {
                 font-size: 2em;
             }
-            
+
             .header p {
                 font-size: 1em;
             }
 
-            .product-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .brand-policy-grid {
-                grid-template-columns: 1fr; /* Stack Brand Story and Policy on mobile */
-            }
-
-            .cta-promotion-grid {
-                grid-template-columns: 1fr; /* Stack CTA and Promotion on mobile */
-            }
-
+            .product-grid,
+            .brand-policy-grid,
+            .cta-promotion-grid,
             .style-options {
-                grid-template-columns: 1fr; /* Stack style options vertically on mobile */
-            }
-
-            .script-tabs {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
 
             .button-group {
                 flex-direction: column;
-                gap: 10px;
-            }
-
-            .circle-nav {
-                width: 200px;
-                height: 200px;
-            }
-
-            .circle-point {
-                width: 15px;
-                height: 15px;
-                transform-origin: 50% 100px;
             }
         }
     &lt;/style&gt;
@@ -4036,16 +3918,15 @@
     &lt;div class=&quot;container&quot;&gt;
         &lt;div class=&quot;header&quot;&gt;
             &lt;h1&gt;🎬 Tạo Kịch Bản Livestream AI&lt;/h1&gt;
-            &lt;p&gt;Công cụ thông minh tích hợp Google Gemini AI để tạo kịch bản livestream chuyên nghiệp&lt;/p&gt;
+            &lt;p&gt;Công cụ thông minh tích hợp Google Gemini 2.5 Flash để tạo kịch bản livestream chuyên nghiệp&lt;/p&gt;
         &lt;/div&gt;
 
         &lt;div class=&quot;api-section&quot;&gt;
             &lt;h3&gt;🔑 Cấu hình API Google Gemini&lt;/h3&gt;
             &lt;input type=&quot;password&quot; id=&quot;apiKey&quot; class=&quot;api-input&quot; placeholder=&quot;Nhập API Key của bạn (AIza...)&quot;&gt;
-            &lt;div class=&quot;api-status&quot; id=&quot;apiStatus&quot; style=&quot;display: none;&quot;&gt;&lt;/div&gt;
             &lt;p style=&quot;font-size: 12px; color: #666; margin-top: 5px;&quot;&gt;
                 API Key sẽ chỉ lưu trong session này và không được gửi đến máy chủ nào khác.
-                &lt;a href=&quot;https://makersuite.google.com/app/apikey&quot; target=&quot;_blank&quot;&gt;Lấy API Key tại đây&lt;/a&gt;
+                &lt;a href=&quot;https://aistudio.google.com/apikey&quot; target=&quot;_blank&quot;&gt;Lấy API Key tại đây&lt;/a&gt;
             &lt;/p&gt;
         &lt;/div&gt;
 
@@ -4055,23 +3936,23 @@
                 &lt;form id=&quot;scriptForm&quot;&gt;
                     &lt;div class=&quot;form-group&quot;&gt;
                         &lt;label for=&quot;topic&quot;&gt;🎯 Chủ đề live:&lt;/label&gt;
-                        &lt;input type=&quot;text&quot; id=&quot;topic&quot; name=&quot;topic&quot; placeholder=&quot;Ví dụ: Giảm giá sốc Black Friday, Ra mắt sản phẩm mới...&quot;&gt;
+                        &lt;input type=&quot;text&quot; id=&quot;topic&quot; name=&quot;topic&quot; placeholder=&quot;Ví dụ: Giảm giá sốc Black Friday, Ra mắt sản phẩm mới...&quot; required&gt;
                     &lt;/div&gt;
 
                     &lt;div class=&quot;form-group&quot;&gt;
                         &lt;label&gt;🎭 Phong cách kịch bản:&lt;/label&gt;
                         &lt;div class=&quot;style-options&quot;&gt;
-                            &lt;div class=&quot;style-option&quot; data-style=&quot;friendly&quot;&gt;
+                            &lt;div class=&quot;style-option selected&quot; data-style=&quot;friendly&quot;&gt;
                                 &lt;h4&gt;🌟 Thân thiện&lt;/h4&gt;
-                                &lt;p&gt;Dễ thương, gần gũi với khán giả&lt;/p&gt;
+                                &lt;p&gt;Dễ thương, gần gũi&lt;/p&gt;
                             &lt;/div&gt;
                             &lt;div class=&quot;style-option&quot; data-style=&quot;professional&quot;&gt;
                                 &lt;h4&gt;💼 Chuyên nghiệp&lt;/h4&gt;
-                                &lt;p&gt;Lịch sự, tin cậy, thuyết phục&lt;/p&gt;
+                                &lt;p&gt;Lịch sự, tin cậy&lt;/p&gt;
                             &lt;/div&gt;
                             &lt;div class=&quot;style-option&quot; data-style=&quot;energetic&quot;&gt;
                                 &lt;h4&gt;⚡ Năng động&lt;/h4&gt;
-                                &lt;p&gt;Sôi động, tạo cảm giác khẩn cấp, thúc đẩy hành động&lt;/p&gt;
+                                &lt;p&gt;Sôi động, khẩn cấp&lt;/p&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
@@ -4081,88 +3962,61 @@
                         &lt;div class=&quot;product-grid&quot;&gt;
                             &lt;div class=&quot;product-item&quot;&gt;
                                 &lt;label&gt;Sản phẩm 1:&lt;/label&gt;
-                                &lt;textarea id=&quot;product1&quot; placeholder=&quot;Tên sản phẩm, giá, tính năng nổi bật...&quot;&gt;&lt;/textarea&gt;
+                                &lt;textarea id=&quot;product1&quot; placeholder=&quot;Tên, giá, tính năng...&quot; required&gt;&lt;/textarea&gt;
                             &lt;/div&gt;
                             &lt;div class=&quot;product-item&quot;&gt;
                                 &lt;label&gt;Sản phẩm 2:&lt;/label&gt;
-                                &lt;textarea id=&quot;product2&quot; placeholder=&quot;Tên sản phẩm, giá, tính năng nổi bật...&quot;&gt;&lt;/textarea&gt;
+                                &lt;textarea id=&quot;product2&quot; placeholder=&quot;Tên, giá, tính năng...&quot;&gt;&lt;/textarea&gt;
                             &lt;/div&gt;
                             &lt;div class=&quot;product-item&quot;&gt;
                                 &lt;label&gt;Sản phẩm 3:&lt;/label&gt;
-                                &lt;textarea id=&quot;product3&quot; placeholder=&quot;Tên sản phẩm, giá, tính năng nổi bật...&quot;&gt;&lt;/textarea&gt;
+                                &lt;textarea id=&quot;product3&quot; placeholder=&quot;Tên, giá, tính năng...&quot;&gt;&lt;/textarea&gt;
                             &lt;/div&gt;
                             &lt;div class=&quot;product-item&quot;&gt;
                                 &lt;label&gt;Sản phẩm 4:&lt;/label&gt;
-                                &lt;textarea id=&quot;product4&quot; placeholder=&quot;Tên sản phẩm, giá, tính năng nổi bật...&quot;&gt;&lt;/textarea&gt;
+                                &lt;textarea id=&quot;product4&quot; placeholder=&quot;Tên, giá, tính năng...&quot;&gt;&lt;/textarea&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
                         &lt;div class=&quot;product-item&quot;&gt;
                             &lt;label&gt;Sản phẩm 5:&lt;/label&gt;
-                            &lt;textarea id=&quot;product5&quot; placeholder=&quot;Tên sản phẩm, giá, tính năng nổi bật...&quot;&gt;&lt;/textarea&gt;
+                            &lt;textarea id=&quot;product5&quot; placeholder=&quot;Tên, giá, tính năng...&quot;&gt;&lt;/textarea&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
 
                     &lt;div class=&quot;form-group&quot;&gt;
                         &lt;label for=&quot;seasonality&quot;&gt;🌸 Seasonality:&lt;/label&gt;
-                        &lt;textarea id=&quot;seasonality&quot; name=&quot;seasonality&quot; placeholder=&quot;Sự kiện theo mùa hoặc dịp đặc biệt:
-- Dịp lễ (Tết, Giáng sinh, v.v.)
-- Chủ đề theo mùa (Hè, Đông, v.v.)
-- Sự kiện đặc biệt (Back to School, Black Friday, v.v.)&quot;&gt;&lt;/textarea&gt;
+                        &lt;textarea id=&quot;seasonality&quot; name=&quot;seasonality&quot; placeholder=&quot;Sự kiện theo mùa hoặc dịp đặc biệt&quot;&gt;&lt;/textarea&gt;
                     &lt;/div&gt;
 
                     &lt;div class=&quot;form-group&quot;&gt;
                         &lt;label for=&quot;gamification&quot;&gt;🎮 Gamification:&lt;/label&gt;
-                        &lt;textarea id=&quot;gamification&quot; name=&quot;gamification&quot; placeholder=&quot;Trò chơi hoặc hoạt động giải trí trong livestream:
-- Mini-game (bốc thăm may mắn, đoán giá, v.v.)
-- Câu đố tương tác
-- Thử thách cho khán giả
-- Phần thưởng (quà tặng, mã giảm giá, v.v.)&quot;&gt;&lt;/textarea&gt;
+                        &lt;textarea id=&quot;gamification&quot; name=&quot;gamification&quot; placeholder=&quot;Trò chơi hoặc hoạt động giải trí&quot;&gt;&lt;/textarea&gt;
                     &lt;/div&gt;
 
                     &lt;div class=&quot;form-group&quot;&gt;
                         &lt;label for=&quot;tipsHacks&quot;&gt;💡 TIP/HACK:&lt;/label&gt;
-                        &lt;textarea id=&quot;tipsHacks&quot; name=&quot;tipsHacks&quot; placeholder=&quot;Mẹo hoặc thủ thuật liên quan livestream:
-- Mẹo mua sắm
-- Cách sử dụng sản phẩm
-- Lời khuyên cho khán giả&quot;&gt;&lt;/textarea&gt;
+                        &lt;textarea id=&quot;tipsHacks&quot; name=&quot;tipsHacks&quot; placeholder=&quot;Mẹo hoặc thủ thuật hữu ích&quot;&gt;&lt;/textarea&gt;
                     &lt;/div&gt;
 
                     &lt;div class=&quot;brand-policy-grid&quot;&gt;
                         &lt;div class=&quot;form-group&quot;&gt;
                             &lt;label for=&quot;brandStory&quot;&gt;🏢 Brand Story:&lt;/label&gt;
-                            &lt;textarea id=&quot;brandStory&quot; name=&quot;brandStory&quot; placeholder=&quot;Câu chuyện thương hiệu:
-- Lịch sử hình thành
-- Sứ mệnh, tầm nhìn
-- Giá trị cốt lõi
-- Thành tựu đáng tự hào
-- Cam kết với khách hàng&quot;&gt;&lt;/textarea&gt;
+                            &lt;textarea id=&quot;brandStory&quot; name=&quot;brandStory&quot; placeholder=&quot;Câu chuyện thương hiệu&quot; required&gt;&lt;/textarea&gt;
                         &lt;/div&gt;
                         &lt;div class=&quot;form-group&quot;&gt;
                             &lt;label for=&quot;policy&quot;&gt;📋 Policy Product:&lt;/label&gt;
-                            &lt;textarea id=&quot;policy&quot; name=&quot;policy&quot; placeholder=&quot;Chính sách sản phẩm:
-- Chính sách bảo hành
-- Chính sách đổi trả
-- Chính sách giao hàng
-- Chính sách thanh toán
-- Hỗ trợ khách hàng&quot;&gt;&lt;/textarea&gt;
+                            &lt;textarea id=&quot;policy&quot; name=&quot;policy&quot; placeholder=&quot;Chính sách sản phẩm&quot; required&gt;&lt;/textarea&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
 
                     &lt;div class=&quot;cta-promotion-grid&quot;&gt;
                         &lt;div class=&quot;form-group&quot;&gt;
                             &lt;label for=&quot;cta&quot;&gt;🎯 CTA (Call to Action):&lt;/label&gt;
-                            &lt;textarea id=&quot;cta&quot; name=&quot;cta&quot; placeholder=&quot;Kêu gọi hành động:
-- Hướng dẫn đặt hàng
-- Kêu gọi tương tác (comment, share, v.v.)
-- Lời thúc đẩy mua hàng&quot;&gt;&lt;/textarea&gt;
+                            &lt;textarea id=&quot;cta&quot; name=&quot;cta&quot; placeholder=&quot;Kêu gọi hành động&quot; required&gt;&lt;/textarea&gt;
                         &lt;/div&gt;
                         &lt;div class=&quot;form-group&quot;&gt;
                             &lt;label for=&quot;promotion&quot;&gt;🎁 Promotion:&lt;/label&gt;
-                            &lt;textarea id=&quot;promotion&quot; name=&quot;promotion&quot; placeholder=&quot;Khuyến mãi đặc biệt:
-- Mã giảm giá
-- Quà tặng kèm
-- Ưu đãi đặc biệt
-- Thời gian có hạn&quot;&gt;&lt;/textarea&gt;
+                            &lt;textarea id=&quot;promotion&quot; name=&quot;promotion&quot; placeholder=&quot;Khuyến mãi đặc biệt&quot; required&gt;&lt;/textarea&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
 
@@ -4183,7 +4037,7 @@
                     &lt;button class=&quot;copy-btn&quot; onclick=&quot;copyScript()&quot; id=&quot;copyBtn&quot; disabled&gt;📋 Copy&lt;/button&gt;
                     &lt;button class=&quot;download-btn&quot; onclick=&quot;downloadScript()&quot; id=&quot;downloadBtn&quot; disabled&gt;📥 Tải DOCX&lt;/button&gt;
                 &lt;/div&gt;
-                
+
                 &lt;div class=&quot;script-tabs&quot; id=&quot;scriptTabs&quot; style=&quot;display: none;&quot;&gt;
                     &lt;button class=&quot;tab-btn active&quot; onclick=&quot;showScript(1)&quot;&gt;Kịch bản 1&lt;/button&gt;
                     &lt;button class=&quot;tab-btn&quot; onclick=&quot;showScript(2)&quot;&gt;Kịch bản 2&lt;/button&gt;
@@ -4195,9 +4049,7 @@
                     &lt;/div&gt;
                 &lt;/div&gt;
                 &lt;div class=&quot;script-output&quot; id=&quot;script2&quot;&gt;&lt;/div&gt;
-                &lt;div class=&quot;circle-nav&quot; id=&quot;circleNav1&quot;&gt;&lt;/div&gt;
-                &lt;div class=&quot;circle-nav&quot; id=&quot;circleNav2&quot;&gt;&lt;/div&gt;
-                &lt;div class=&quot;loading&quot; id=&quot;loading&quot;&gt;Gemini AI đang tạo kịch bản...&lt;/div&gt;
+                &lt;div class=&quot;loading&quot; id=&quot;loading&quot;&gt;Gemini 2.5 Flash đang tạo kịch bản&lt;/div&gt;
                 &lt;div class=&quot;error-message&quot; id=&quot;errorMessage&quot; style=&quot;display: none;&quot;&gt;&lt;/div&gt;
             &lt;/div&gt;
         &lt;/div&gt;
@@ -4207,9 +4059,13 @@
         let currentScript = 1;
         let selectedStyle = 'friendly';
         let scriptGenerationCount = 0;
-        let scriptContent = { 1: '', 2: '' }; // Store script content for circle navigation
+        let scriptData = {
+            script1: '',
+            script2: ''
+        };
 
-        // Xử lý chọn phong cách
+        // --- Các hàm xử lý sự kiện giao diện ---
+
         document.querySelectorAll('.style-option').forEach(option =&gt; {
             option.addEventListener('click', function() {
                 document.querySelectorAll('.style-option').forEach(opt =&gt; opt.classList.remove('selected'));
@@ -4218,26 +4074,39 @@
             });
         });
 
-        // Mặc định chọn phong cách thân thiện
-        document.querySelector('.style-option[data-style=&quot;friendly&quot;]').classList.add('selected');
-
         document.getElementById('scriptForm').addEventListener('submit', function(e) {
             e.preventDefault();
             generateScript();
         });
 
         document.getElementById('regenerateBtn').addEventListener('click', function() {
-            generateScript(true); // Pass true to indicate regeneration
+            generateScript(true);
         });
+
+        function showScript(scriptNumber) {
+            currentScript = scriptNumber;
+
+            document.getElementById('script1').classList.remove('active');
+            document.getElementById('script2').classList.remove('active');
+
+            document.getElementById('script' + scriptNumber).classList.add('active');
+
+            document.querySelectorAll('.tab-btn').forEach(btn =&gt; btn.classList.remove('active'));
+            document.querySelectorAll('.tab-btn')[scriptNumber - 1].classList.add('active');
+        }
+
+        // --- Các hàm xử lý logic và API ---
 
         async function generateScript(isRegenerate = false) {
             const apiKey = document.getElementById('apiKey').value;
             const topic = document.getElementById('topic').value;
-            const product1 = document.getElementById('product1').value;
-            const product2 = document.getElementById('product2').value;
-            const product3 = document.getElementById('product3').value;
-            const product4 = document.getElementById('product4').value;
-            const product5 = document.getElementById('product5').value;
+            const products = [
+                document.getElementById('product1').value,
+                document.getElementById('product2').value,
+                document.getElementById('product3').value,
+                document.getElementById('product4').value,
+                document.getElementById('product5').value
+            ].filter(p =&gt; p.trim());
             const seasonality = document.getElementById('seasonality').value;
             const gamification = document.getElementById('gamification').value;
             const tipsHacks = document.getElementById('tipsHacks').value;
@@ -4246,40 +4115,30 @@
             const cta = document.getElementById('cta').value;
             const promotion = document.getElementById('promotion').value;
 
-            // Kiểm tra API key
             if (!apiKey) {
                 showError('Vui lòng nhập API Key của Google Gemini!');
                 return;
             }
 
-            // Kiểm tra các trường bắt buộc
-            if (!topic || !product1 || !brandStory || !policy || !cta || !promotion) {
-                showError('Vui lòng điền đầy đủ thông tin: Chủ đề live, ít nhất 1 sản phẩm, Brand Story, Policy, CTA và Promotion!');
+            if (!topic || products.length === 0 || !brandStory || !policy || !cta || !promotion) {
+                showError('Vui lòng điền đầy đủ các trường bắt buộc: Chủ đề, ít nhất 1 sản phẩm, Brand Story, Policy, CTA và Promotion!');
                 return;
             }
 
-            const products = [product1, product2, product3, product4, product5].filter(p =&gt; p.trim());
-            
-            const script1Element = document.getElementById('script1');
-            const script2Element = document.getElementById('script2');
-            const circleNav1 = document.getElementById('circleNav1');
-            const circleNav2 = document.getElementById('circleNav2');
             const loading = document.getElementById('loading');
             const scriptTabs = document.getElementById('scriptTabs');
-            const errorMessage = document.getElementById('errorMessage');
             const generateBtn = document.getElementById('generateBtn');
             const regenerateBtn = document.getElementById('regenerateBtn');
             const copyBtn = document.getElementById('copyBtn');
             const downloadBtn = document.getElementById('downloadBtn');
-            
-            // Hiển thị loading
-            script1Element.style.display = 'none';
-            script2Element.style.display = 'none';
-            circleNav1.style.display = 'none';
-            circleNav2.style.display = 'none';
-            scriptTabs.style.display = 'none';
-            errorMessage.style.display = 'none';
+
+            // Hiển thị trạng thái tải và vô hiệu hóa nút
+            document.getElementById('script1').innerHTML = '';
+            document.getElementById('script2').innerHTML = '';
+            document.querySelector('.empty-state').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
             loading.style.display = 'block';
+            scriptTabs.style.display = 'none';
             generateBtn.disabled = true;
             regenerateBtn.disabled = true;
             copyBtn.disabled = true;
@@ -4287,138 +4146,107 @@
             generateBtn.textContent = isRegenerate ? 'Đang tạo lại...' : 'Đang tạo...';
 
             try {
-                // Tăng số lần tạo để thay đổi cách diễn đạt
                 scriptGenerationCount++;
-                
-                // Tạo 2 kịch bản khác nhau
-                const script1 = await generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, selectedStyle, 1, scriptGenerationCount);
-                const script2 = await generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, selectedStyle, 2, scriptGenerationCount);
-                
-                scriptContent[1] = script1;
-                scriptContent[2] = script2;
-                
-                script1Element.innerHTML = script1;
-                script2Element.innerHTML = script2;
-                createCircleNavigation(1, script1);
-                createCircleNavigation(2, script2);
-                
+
+                // Gọi API song song để tiết kiệm thời gian
+                const [script1, script2] = await Promise.all([
+                    generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, selectedStyle, 1),
+                    generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, selectedStyle, 2)
+                ]);
+
+                scriptData.script1 = script1;
+                scriptData.script2 = script2;
+
+                document.getElementById('script1').innerHTML = '&lt;pre&gt;' + escapeHtml(scriptData.script1) + '&lt;/pre&gt;';
+                document.getElementById('script2').innerHTML = '&lt;pre&gt;' + escapeHtml(scriptData.script2) + '&lt;/pre&gt;';
+
                 scriptTabs.style.display = 'flex';
                 showScript(1);
                 loading.style.display = 'none';
-                
-                // Bật nút Tạo lại, Copy và Tải xuống
+
                 regenerateBtn.disabled = false;
                 copyBtn.disabled = false;
                 downloadBtn.disabled = false;
-                
+
             } catch (error) {
                 console.error('Error:', error);
                 showError('Lỗi khi tạo kịch bản: ' + error.message);
                 loading.style.display = 'none';
+                document.querySelector('.empty-state').style.display = 'block';
             } finally {
                 generateBtn.disabled = false;
                 generateBtn.textContent = '🚀 Tạo Kịch Bản AI';
             }
         }
 
-        async function generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, style, version, generationCount) {
+        async function generateScriptWithGemini(apiKey, topic, products, seasonality, gamification, tipsHacks, brandStory, policy, cta, promotion, style, version) {
             const styleDescriptions = {
                 'friendly': 'thân thiện, dễ thương, gần gũi với khán giả',
                 'professional': 'chuyên nghiệp, lịch sự, tin cậy và thuyết phục',
                 'energetic': 'năng động, sôi nổi, tạo cảm giác khẩn cấp và thúc đẩy hành động'
             };
-
             const versionPrompts = {
-                1: 'Tạo kịch bản với cấu trúc rõ ràng, tập trung vào tương tác và xây dựng niềm tin',
-                2: 'Tạo kịch bản với cách tiếp cận khác, tập trung vào việc tạo urgency và call-to-action mạnh mẽ'
+                1: 'Phiên bản 1: Tập trung vào xây dựng niềm tin và tương tác với khán giả',
+                2: 'Phiên bản 2: Tập trung vào tạo urgency và thúc đẩy hành động mạnh mẽ'
             };
+            const productList = products.map((p, i) =&gt; `SP${i + 1}: ${p}`).join('\n');
 
-            const productList = products.map((product, index) =&gt; `Sản phẩm ${index + 1}: ${product}`).join('\n');
+            const prompt = `Tạo kịch bản livestream 60 PHÚT hoàn chỉnh với yêu cầu:
 
-            const prompt = `
-Tôi cần bạn tạo một kịch bản livestream hoàn chỉnh với các yêu cầu sau:
-
-THÔNG TIN CƠ BẢN:
-- Chủ đề: ${topic}
-- Phong cách: ${styleDescriptions[style]}
-- Yêu cầu đặc biệt: ${versionPrompts[version]}
-- Lần tạo: ${generationCount} (Đảm bảo cách diễn đạt và từ ngữ khác biệt so với các lần tạo trước, nhưng vẫn giữ cấu trúc và nội dung cốt lõi)
+CHỦ ĐỀ: ${topic}
+PHONG CÁCH: ${styleDescriptions[style]}
+${versionPrompts[version]}
 
 SẢN PHẨM:
 ${productList}
 
-THEO MÙA:
-${seasonality}
+SEASONALITY: ${seasonality || 'Không'}
+GAMIFICATION: ${gamification || 'Không'}
+TIP/HACK: ${tipsHacks || 'Không'}
+BRAND: ${brandStory}
+POLICY: ${policy}
+CTA: ${cta}
+PROMOTION: ${promotion}
 
-TRÒ CHƠI &amp; GIẢI TRÍ:
-${gamification}
+CẤU TRÚC KỊCH BẢN (60 phút):
+1. KHAI MẠC (0-5 phút): Chào mừng, giới thiệu chủ đề
+2. BRAND STORY (5-10 phút): Câu chuyện thương hiệu
+3. SẢN PHẨM (10-35 phút): Trình bày chi tiết từng sản phẩm
+4. SEASONALITY (35-40 phút): Nội dung theo mùa (nếu có)
+5. GAMIFICATION (40-45 phút): Trò chơi tương tác (nếu có)
+6. TIP/HACK (45-50 phút): Chia sẻ mẹo hữu ích (nếu có)
+7. POLICY (50-53 phút): Chính sách bảo hành, đổi trả
+8. PROMOTION &amp; CTA (53-58 phút): Khuyến mãi và kêu gọi đặt hàng
+9. KẾT THÚC (58-60 phút): Tổng kết, cảm ơn
 
-TIP/HACK:
-${tipsHacks}
+YÊU CẦU:
+- Viết GỌN, SÚNG TÍCH nhưng ĐẦY ĐỦ tất cả phần
+- Mỗi phần có timing rõ ràng
+- Dialogue tự nhiên, phù hợp phong cách
+- Tích hợp call-to-action xuyên suốt
+- PHẢI có đầy đủ 9 phần từ KHAI MẠC đến KẾT THÚC
+- Tổng thời lượng: 60 phút
 
-THÔNG TIN THƯƠNG HIỆU:
-${brandStory}
+Bắt đầu tạo kịch bản:`;
 
-CHÍNH SÁCH:
-${policy}
-
-KÊU GỌI HÀNH ĐỘNG:
-${cta}
-
-KHUYẾN MÃI:
-${promotion}
-
-YÊU CẦU KỊCH BẢN:
-1. Tạo kịch bản livestream hoàn chỉnh khoảng 60 phút
-2. Chia thành các phần rõ ràng: Khai mạc, Giới thiệu thương hiệu, Trình bày sản phẩm, Theo mùa, Trò chơi &amp; Giải trí, TIP/HACK, Chính sách, Khuyến mãi và CTA, Kết thúc
-3. Bao gồm timing cụ thể cho từng phần
-4. Có dialogue tự nhiên, phù hợp với phong cách ${styleDescriptions[style]}
-5. Tích hợp các câu tương tác với khán giả, đặc biệt trong phần Trò chơi &amp; Giải trí
-6. Bao gồm call-to-action hiệu quả
-7. Định dạng rõ ràng, dễ đọc
-8. Sử dụng tiếng Việt chuẩn Unicode để đảm bảo hiển thị đúng trên mọi nền tảng
-9. Thêm một phần mới liên kết nội dung kịch bản thành một vòng tròn, với mỗi phần (Khai mạc, Giới thiệu thương hiệu, v.v.) là một điểm trên vòng tròn, và khi hover vào điểm đó, hiển thị nội dung chi tiết của phần tương ứng
-
-Hãy tạo kịch bản chi tiết và chuyên nghiệp.
-`;
-
-            // Cập nhật API URL sử dụng Gemini 2.5 Flash
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: prompt
-                        }]
-                    }],
+                    contents: [{ parts: [{ text: prompt }] }],
                     generationConfig: {
-                        temperature: 0.9, // Tăng temperature để tăng tính đa dạng trong cách diễn đạt
-                        topK: 1,
-                        topP: 1,
-                        maxOutputTokens: 8192,
+                        temperature: 0.85,
+                        topK: 40,
+                        topP: 0.95,
+                        maxOutputTokens: 8192
                     },
                     safetySettings: [
-                        {
-                            category: &quot;HARM_CATEGORY_HARASSMENT&quot;,
-                            threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot;
-                        },
-                        {
-                            category: &quot;HARM_CATEGORY_HATE_SPEECH&quot;,
-                            threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot;
-                        },
-                        {
-                            category: &quot;HARM_CATEGORY_SEXUALLY_EXPLICIT&quot;,
-                            threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot;
-                        },
-                        {
-                            category: &quot;HARM_CATEGORY_DANGEROUS_CONTENT&quot;,
-                            threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot;
-                        }
+                        { category: &quot;HARM_CATEGORY_HARASSMENT&quot;, threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot; },
+                        { category: &quot;HARM_CATEGORY_HATE_SPEECH&quot;, threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot; },
+                        { category: &quot;HARM_CATEGORY_SEXUALLY_EXPLICIT&quot;, threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot; },
+                        { category: &quot;HARM_CATEGORY_DANGEROUS_CONTENT&quot;, threshold: &quot;BLOCK_MEDIUM_AND_ABOVE&quot; }
                     ]
                 })
             });
@@ -4429,53 +4257,70 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
             }
 
             const data = await response.json();
-            if (data.candidates &amp;&amp; data.candidates[0] &amp;&amp; data.candidates[0].content) {
-                return data.candidates[0].content.parts[0].text;
+
+            if (data.candidates &amp;&amp; data.candidates[0]) {
+                const candidate = data.candidates[0];
+                const finishReason = candidate.finishReason;
+
+                if (finishReason === 'MAX_TOKENS') {
+                    console.warn('⚠️ Cảnh báo: Response bị cắt do đạt giới hạn token');
+                }
+
+                if (candidate.content &amp;&amp; candidate.content.parts &amp;&amp; candidate.content.parts[0]) {
+                    return candidate.content.parts[0].text;
+                } else {
+                    throw new Error('Không nhận được nội dung từ Gemini AI');
+                }
             } else {
                 throw new Error('Không nhận được phản hồi từ Gemini AI');
             }
         }
 
-        function showScript(scriptNumber) {
-            currentScript = scriptNumber;
-            
-            // Ẩn tất cả script và circle navigation
-            document.getElementById('script1').style.display = 'none';
-            document.getElementById('script2').style.display = 'none';
-            document.getElementById('circleNav1').classList.remove('active');
-            document.getElementById('circleNav2').classList.remove('active');
-            
-            // Hiển thị script và circle navigation được chọn
-            document.getElementById('script' + scriptNumber).style.display = 'block';
-            document.getElementById('circleNav' + scriptNumber).classList.add('active');
-            
-            // Cập nhật tab active
-            document.querySelectorAll('.tab-btn').forEach(btn =&gt; btn.classList.remove('active'));
-            document.querySelectorAll('.tab-btn')[scriptNumber - 1].classList.add('active');
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '❌ ' + message;
+            errorMessage.style.display = 'block';
+
+            setTimeout(() =&gt; {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function copyScript() {
-            const currentScriptElement = document.getElementById('script' + currentScript);
-            const text = currentScriptElement.textContent;
-            
-            navigator.clipboard.writeText(text).then(() =&gt; {
+            const scriptToCopy = scriptData['script' + currentScript];
+            if (!scriptToCopy) {
+                showError('Không có kịch bản để sao chép.');
+                return;
+            }
+
+            navigator.clipboard.writeText(scriptToCopy).then(() =&gt; {
                 const copyBtn = document.getElementById('copyBtn');
                 const originalText = copyBtn.textContent;
                 copyBtn.textContent = '✅ Đã copy';
-                copyBtn.style.background = '#00cc88'; /* Darker Y2K neon green */
-                
+                copyBtn.style.background = '#00cc88';
+
                 setTimeout(() =&gt; {
                     copyBtn.textContent = originalText;
-                    copyBtn.style.background = '#00ff99'; /* Y2K neon green */
+                    copyBtn.style.background = '#00ff99';
                 }, 2000);
+            }).catch(err =&gt; {
+                showError('Không thể copy: ' + err.message);
             });
         }
 
         function downloadScript() {
-            const currentScriptElement = document.getElementById('script' + currentScript);
-            const scriptText = currentScriptElement.textContent;
+            const scriptText = scriptData['script' + currentScript];
+            if (!scriptText) {
+                showError('Không có kịch bản để tải xuống.');
+                return;
+            }
 
-            // Tạo tài liệu DOCX với font Arial và kích thước 12
             const doc = new docx.Document({
                 sections: [{
                     properties: {},
@@ -4483,108 +4328,56 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
                         new docx.Paragraph({
                             children: [
                                 new docx.TextRun({
-                                    text: &quot;Kịch Bản Livestream&quot;,
+                                    text: &quot;KỊCH BẢN LIVESTREAM 60 PHÚT&quot;,
                                     bold: true,
-                                    size: 24, // Title size 12pt in half-points (1pt = 2 half-points)
+                                    size: 32,
                                     font: &quot;Arial&quot;
                                 })
                             ],
-                            spacing: { after: 200 }
+                            spacing: { after: 400 },
+                            alignment: docx.AlignmentType.CENTER
+                        }),
+                        new docx.Paragraph({
+                            children: [
+                                new docx.TextRun({
+                                    text: `Ngày tạo: ${new Date().toLocaleDateString('vi-VN')}`,
+                                    size: 20,
+                                    font: &quot;Arial&quot;,
+                                    italics: true
+                                })
+                            ],
+                            spacing: { after: 400 },
+                            alignment: docx.AlignmentType.CENTER
                         }),
                         ...scriptText.split('\n').map(line =&gt; 
                             new docx.Paragraph({
                                 children: [
                                     new docx.TextRun({
                                         text: line,
-                                        size: 24, // Body text size 12pt in half-points
+                                        size: 24,
                                         font: &quot;Arial&quot;
                                     })
                                 ],
-                                spacing: { after: 100 }
+                                spacing: { after: 120 }
                             })
                         )
                     ]
                 }]
             });
 
-            // Tạo và tải file DOCX
             docx.Packer.toBlob(doc).then(blob =&gt; {
-                saveAs(blob, `KichBanLivestream_${currentScript}.docx`);
+                const timestamp = new Date().getTime();
+                saveAs(blob, `KichBan_Livestream_${currentScript}_${timestamp}.docx`);
             }).catch(error =&gt; {
                 console.error('Error generating DOCX:', error);
                 showError('Lỗi khi tạo file DOCX: ' + error.message);
             });
         }
-
-        function createCircleNavigation(scriptNumber, scriptText) {
-            const circleNav = document.getElementById(`circleNav${scriptNumber}`);
-            circleNav.innerHTML = ''; // Clear existing content
-
-            const sections = [
-                &quot;Khai mạc&quot;, &quot;Giới thiệu thương hiệu&quot;, &quot;Trình bày sản phẩm&quot;,
-                &quot;Theo mùa&quot;, &quot;Trò chơi &amp; Giải trí&quot;, &quot;TIP/HACK&quot;, &quot;Chính sách&quot;,
-                &quot;Khuyến mãi và CTA&quot;, &quot;Kết thúc&quot;
-            ];
-
-            const sectionContent = {};
-            let currentSection = null;
-            scriptText.split('\n').forEach(line =&gt; {
-                const trimmedLine = line.trim();
-                if (sections.includes(trimmedLine)) {
-                    currentSection = trimmedLine;
-                    sectionContent[currentSection] = [];
-                } else if (currentSection &amp;&amp; trimmedLine) {
-                    sectionContent[currentSection].push(trimmedLine);
-                }
-            });
-
-            const radius = 100; // Radius of the circle
-            const centerX = 150;
-            const centerY = 150;
-
-            sections.forEach((section, index) =&gt; {
-                const angle = (index / sections.length) * 2 * Math.PI - Math.PI / 2; // Start from top
-                const x = centerX + radius * Math.cos(angle);
-                const y = centerY + radius * Math.sin(angle);
-
-                const point = document.createElement('div');
-                point.className = 'circle-point';
-                point.style.left = `${x}px`;
-                point.style.top = `${y}px`;
-                point.dataset.section = section;
-
-                const tooltip = document.createElement('div');
-                tooltip.className = 'tooltip';
-                tooltip.textContent = sectionContent[section] ? sectionContent[section].join('\n') : 'Nội dung không có';
-                tooltip.style.left = `${x + 20}px`;
-                tooltip.style.top = `${y - 10}px`;
-
-                point.addEventListener('mouseover', () =&gt; {
-                    tooltip.style.display = 'block';
-                });
-
-                point.addEventListener('mouseout', () =&gt; {
-                    tooltip.style.display = 'none';
-                });
-
-                circleNav.appendChild(point);
-                circleNav.appendChild(tooltip);
-            });
-        }
-
-        function showError(message) {
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            
-            setTimeout(() =&gt; {
-                errorMessage.style.display = 'none';
-            }, 5000);
-        }
     &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"></iframe>
-<iframe id="iframe-dashboard" class="tool-iframe " title="Livestream Dashboard" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;/html&gt;
+" title="Kịch Bản Livestream"></iframe>
+<iframe class="tool-iframe" id="iframe-dashboard" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -5110,8 +4903,8 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
         });
     &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"></iframe>
-<iframe id="iframe-storytelling" class="tool-iframe " title="Storytelling Nội Y" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;/html&gt;" title="Livestream Dashboard"></iframe>
+<iframe class="tool-iframe" id="iframe-storytelling" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot; /&gt;
@@ -5908,8 +5701,8 @@ Hãy tạo kịch bản chi tiết và chuyên nghiệp.
         });
     &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"></iframe>
-<iframe id="iframe-descriptions" class="tool-iframe " title="Mô Tả Sản Phẩm" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;/html&gt;" title="Storytelling Nội Y"></iframe>
+<iframe class="tool-iframe" id="iframe-descriptions" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -7140,11 +6933,11 @@ QUAN TRỌNG:
     &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-                        "></iframe>
-      </div>
-      <footer>© Bộ Tool Ecommerce — Standalone version</footer>
-    </main>
-  </div>
+                        " title="Mô Tả Sản Phẩm"></iframe>
+</div>
+<footer>© Bộ Tool Ecommerce — Standalone version</footer>
+</main>
+</div>
 </div>
 <script>
   function showTool(key){
