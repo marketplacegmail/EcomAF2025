@@ -3734,6 +3734,21 @@ QUAN TRỌNG:
             outline: none;
         }
 
+        .control-item select {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            background: white;
+            cursor: pointer;
+        }
+
+        .control-item select:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
         .control-buttons {
             display: flex;
             gap: 10px;
@@ -4060,11 +4075,11 @@ QUAN TRỌNG:
             .upload-section {
                 grid-template-columns: 1fr;
             }
-            
+
             .control-group {
                 grid-template-columns: 1fr;
             }
-            
+
             .thumbnails-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
                 gap: 15px;
@@ -4075,7 +4090,7 @@ QUAN TRỌNG:
 &lt;body&gt;
     &lt;div class=&quot;container&quot;&gt;
         &lt;h1&gt;🎨 Thumbnail Maker Tool - Professional Enhanced&lt;/h1&gt;
-        
+
         &lt;!-- Upload Section --&gt;
         &lt;div class=&quot;upload-section&quot;&gt;
             &lt;div class=&quot;upload-box&quot;&gt;
@@ -4087,7 +4102,7 @@ QUAN TRỌNG:
                 &lt;/button&gt;
                 &lt;div id=&quot;backgroundStatus&quot; class=&quot;status&quot;&gt;&lt;/div&gt;
             &lt;/div&gt;
-            
+
             &lt;div class=&quot;upload-box&quot;&gt;
                 &lt;h3&gt;🛍️ Upload Sản Phẩm&lt;/h3&gt;
                 &lt;p&gt;Chọn nhiều file, tự động xóa phông nền thông minh&lt;/p&gt;
@@ -4108,13 +4123,13 @@ QUAN TRỌNG:
                     &lt;input type=&quot;range&quot; id=&quot;sensitivity&quot; min=&quot;10&quot; max=&quot;100&quot; step=&quot;5&quot; value=&quot;40&quot;&gt;
                     &lt;span id=&quot;sensitivityValue&quot;&gt;40&lt;/span&gt;
                 &lt;/div&gt;
-                
+
                 &lt;div class=&quot;control-item&quot;&gt;
                     &lt;label&gt;Blur Edge Mượt (0-10px)&lt;/label&gt;
                     &lt;input type=&quot;range&quot; id=&quot;edgeBlur&quot; min=&quot;0&quot; max=&quot;10&quot; step=&quot;1&quot; value=&quot;3&quot;&gt;
                     &lt;span id=&quot;edgeBlurValue&quot;&gt;3px&lt;/span&gt;
                 &lt;/div&gt;
-                
+
                 &lt;div class=&quot;control-item&quot;&gt;
                     &lt;label&gt;Preserve White Details&lt;/label&gt;
                     &lt;input type=&quot;checkbox&quot; id=&quot;preserveWhite&quot; checked&gt;
@@ -4125,39 +4140,39 @@ QUAN TRỌNG:
         &lt;!-- Controls Section --&gt;
         &lt;div class=&quot;controls-section&quot;&gt;
             &lt;h3&gt;⚙️ Chỉnh Sửa&lt;/h3&gt;
-            
+
             &lt;div class=&quot;current-editing&quot; id=&quot;currentEditing&quot; style=&quot;display: none;&quot;&gt;
                 &lt;strong&gt;Đang chỉnh sửa:&lt;/strong&gt; &lt;span id=&quot;currentProductName&quot;&gt;Không có&lt;/span&gt;
             &lt;/div&gt;
-            
+
             &lt;div class=&quot;selected-info&quot; id=&quot;selectedInfo&quot; style=&quot;display: none;&quot;&gt;
                 &lt;strong&gt;🎯 ĐÃ CHỌN HÀNG LOẠT:&lt;/strong&gt; &lt;span id=&quot;selectedCount&quot;&gt;0&lt;/span&gt; thumbnail(s) - Sẵn sàng chỉnh sửa!
             &lt;/div&gt;
-            
+
             &lt;div class=&quot;control-group&quot;&gt;
                 &lt;div class=&quot;control-item&quot;&gt;
                     &lt;label&gt;Scale (0.1x - 3x)&lt;/label&gt;
                     &lt;input type=&quot;range&quot; id=&quot;globalScale&quot; min=&quot;0.1&quot; max=&quot;3&quot; step=&quot;0.1&quot; value=&quot;0.6&quot;&gt;
                     &lt;span id=&quot;globalScaleValue&quot;&gt;0.6x&lt;/span&gt;
                 &lt;/div&gt;
-                
+
                 &lt;div class=&quot;control-item&quot;&gt;
                     &lt;label&gt;Vị Trí X&lt;/label&gt;
                     &lt;input type=&quot;number&quot; id=&quot;globalX&quot; min=&quot;-600&quot; max=&quot;600&quot; value=&quot;0&quot; placeholder=&quot;Vị trí X&quot;&gt;
                 &lt;/div&gt;
-                
+
                 &lt;div class=&quot;control-item&quot;&gt;
                     &lt;label&gt;Vị Trí Y&lt;/label&gt;
                     &lt;input type=&quot;number&quot; id=&quot;globalY&quot; min=&quot;-600&quot; max=&quot;600&quot; value=&quot;0&quot; placeholder=&quot;Vị trí Y&quot;&gt;
                 &lt;/div&gt;
-                
+
                 &lt;div class=&quot;control-item&quot;&gt;
                     &lt;label&gt;Góc Xoay (0-360°)&lt;/label&gt;
                     &lt;input type=&quot;range&quot; id=&quot;rotation&quot; min=&quot;0&quot; max=&quot;360&quot; step=&quot;1&quot; value=&quot;0&quot;&gt;
                     &lt;span id=&quot;rotationValue&quot;&gt;0°&lt;/span&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-            
+
             &lt;div class=&quot;control-buttons&quot;&gt;
                 &lt;button class=&quot;control-btn&quot; onclick=&quot;applyChanges()&quot;&gt;Áp Dụng&lt;/button&gt;
                 &lt;button class=&quot;control-btn&quot; onclick=&quot;centerProducts()&quot;&gt;Căn Giữa&lt;/button&gt;
@@ -4171,6 +4186,22 @@ QUAN TRỌNG:
         &lt;!-- Download Section --&gt;
         &lt;div class=&quot;download-section&quot;&gt;
             &lt;h3&gt;💾 Tải Xuống&lt;/h3&gt;
+
+            &lt;!-- Size Selection --&gt;
+            &lt;div class=&quot;control-group&quot; style=&quot;margin-bottom: 20px;&quot;&gt;
+                &lt;div class=&quot;control-item&quot;&gt;
+                    &lt;label&gt;📐 Chọn Kích Thước Thumbnail&lt;/label&gt;
+                    &lt;select id=&quot;thumbnailSize&quot;&gt;
+                        &lt;option value=&quot;1200x1200&quot;&gt;1200x1200 (Vuông - Mặc định)&lt;/option&gt;
+                        &lt;option value=&quot;788x1024&quot;&gt;788x1024 (Dọc 3:4)&lt;/option&gt;
+                        &lt;option value=&quot;1024x788&quot;&gt;1024x788 (Ngang 4:3)&lt;/option&gt;
+                        &lt;option value=&quot;1080x1080&quot;&gt;1080x1080 (Instagram vuông)&lt;/option&gt;
+                        &lt;option value=&quot;1080x1350&quot;&gt;1080x1350 (Instagram dọc 4:5)&lt;/option&gt;
+                        &lt;option value=&quot;1350x1080&quot;&gt;1350x1080 (Instagram ngang 5:4)&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
             &lt;div class=&quot;download-buttons&quot;&gt;
                 &lt;button class=&quot;download-btn&quot; id=&quot;downloadSelected&quot; onclick=&quot;downloadSelected()&quot; disabled&gt;
                     Tải Thumbnail Đã Chọn
@@ -4186,11 +4217,11 @@ QUAN TRỌNG:
 
         &lt;!-- Thumbnails Grid --&gt;
         &lt;div class=&quot;thumbnails-grid&quot; id=&quot;thumbnailsGrid&quot;&gt;&lt;/div&gt;
-        
+
         &lt;div class=&quot;workspace-info&quot; id=&quot;workspaceInfo&quot;&gt;
             Tải lên phông nền và sản phẩm để bắt đầu tạo thumbnail
         &lt;/div&gt;
-        
+
         &lt;!-- Copyright Section --&gt;
         &lt;div class=&quot;copyright-section&quot;&gt;
             &lt;div class=&quot;copyright-content&quot;&gt;
@@ -4220,11 +4251,11 @@ QUAN TRỌNG:
             const data = imageData.data;
             const width = canvas.width;
             const height = canvas.height;
-            
+
             // Sample multiple edge points for better background detection
             const samplePoints = [];
             const edge = 5; // Avoid exact corners
-            
+
             // Top edge
             for (let x = edge; x &lt; width - edge; x += Math.floor(width / 20)) {
                 samplePoints.push([x, edge]);
@@ -4241,7 +4272,7 @@ QUAN TRỌNG:
             for (let y = edge; y &lt; height - edge; y += Math.floor(height / 20)) {
                 samplePoints.push([width - edge, y]);
             }
-            
+
             // Collect background colors
             let bgColors = [];
             samplePoints.forEach(([x, y]) =&gt; {
@@ -4253,7 +4284,7 @@ QUAN TRỌNG:
                     brightness: (data[idx] + data[idx + 1] + data[idx + 2]) / 3
                 });
             });
-            
+
             // Find dominant background color
             let dominantBg = bgColors.reduce((prev, curr) =&gt; {
                 let prevCount = bgColors.filter(c =&gt; 
@@ -4268,10 +4299,10 @@ QUAN TRỌNG:
                 ).length;
                 return currCount &gt; prevCount ? curr : prev;
             });
-            
+
             // Create alpha map for smooth transitions
             let alphaMap = new Array(width * height).fill(255);
-            
+
             // First pass: Detect background pixels
             for (let y = 0; y &lt; height; y++) {
                 for (let x = 0; x &lt; width; x++) {
@@ -4279,24 +4310,24 @@ QUAN TRỌNG:
                     const r = data[idx];
                     const g = data[idx + 1];
                     const b = data[idx + 2];
-                    
+
                     // Calculate similarity to dominant background
                     const colorDiff = Math.abs(r - dominantBg.r) + 
                                     Math.abs(g - dominantBg.g) + 
                                     Math.abs(b - dominantBg.b);
-                    
+
                     const brightness = (r + g + b) / 3;
-                    
+
                     // Decide whether to make transparent
                     let makeTransparent = false;
                     let alpha = 255;
-                    
+
                     // If very similar to background color
                     if (colorDiff &lt; sensitivity) {
                         makeTransparent = true;
                         alpha = Math.max(0, 255 - ((sensitivity - colorDiff) / sensitivity) * 255);
                     }
-                    
+
                     // Special handling for white/light colors
                     if (brightness &gt; 240 &amp;&amp; !preserveWhite) {
                         makeTransparent = true;
@@ -4307,53 +4338,53 @@ QUAN TRỌNG:
                             alpha = Math.max(0, 255 - ((sensitivity * 0.7 - colorDiff) / (sensitivity * 0.7)) * 255);
                         }
                     }
-                    
+
                     if (makeTransparent) {
                         alphaMap[y * width + x] = alpha;
                     }
                 }
             }
-            
+
             // Second pass: Apply smooth edge blur
             if (edgeBlur &gt; 0) {
                 let smoothedAlphaMap = [...alphaMap];
-                
+
                 for (let y = edgeBlur; y &lt; height - edgeBlur; y++) {
                     for (let x = edgeBlur; x &lt; width - edgeBlur; x++) {
                         const centerIdx = y * width + x;
                         const centerAlpha = alphaMap[centerIdx];
-                        
+
                         // Skip if already fully opaque
                         if (centerAlpha === 255) continue;
-                        
+
                         // Check if this pixel is near an edge (transition zone)
                         let isNearEdge = false;
                         let minAlpha = centerAlpha;
                         let maxAlpha = centerAlpha;
-                        
+
                         // Check surrounding pixels within blur radius
                         for (let dy = -edgeBlur; dy &lt;= edgeBlur &amp;&amp; !isNearEdge; dy++) {
                             for (let dx = -edgeBlur; dx &lt;= edgeBlur &amp;&amp; !isNearEdge; dx++) {
                                 if (dx === 0 &amp;&amp; dy === 0) continue;
-                                
+
                                 const neighborIdx = (y + dy) * width + (x + dx);
                                 const neighborAlpha = alphaMap[neighborIdx];
-                                
+
                                 minAlpha = Math.min(minAlpha, neighborAlpha);
                                 maxAlpha = Math.max(maxAlpha, neighborAlpha);
-                                
+
                                 // If there&#x27;s a significant alpha difference nearby, this is an edge
                                 if (Math.abs(centerAlpha - neighborAlpha) &gt; 100) {
                                     isNearEdge = true;
                                 }
                             }
                         }
-                        
+
                         // Apply gaussian-like blur for smooth edges
                         if (isNearEdge &amp;&amp; centerAlpha &lt; 255) {
                             let totalAlpha = 0;
                             let totalWeight = 0;
-                            
+
                             for (let dy = -edgeBlur; dy &lt;= edgeBlur; dy++) {
                                 for (let dx = -edgeBlur; dx &lt;= edgeBlur; dx++) {
                                     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -4361,7 +4392,7 @@ QUAN TRỌNG:
                                         // Gaussian weight
                                         const weight = Math.exp(-(distance * distance) / (2 * (edgeBlur / 3) * (edgeBlur / 3)));
                                         const neighborIdx = (y + dy) * width + (x + dx);
-                                        
+
                                         if (neighborIdx &gt;= 0 &amp;&amp; neighborIdx &lt; alphaMap.length) {
                                             totalAlpha += alphaMap[neighborIdx] * weight;
                                             totalWeight += weight;
@@ -4369,17 +4400,17 @@ QUAN TRỌNG:
                                     }
                                 }
                             }
-                            
+
                             if (totalWeight &gt; 0) {
                                 smoothedAlphaMap[centerIdx] = Math.round(totalAlpha / totalWeight);
                             }
                         }
                     }
                 }
-                
+
                 alphaMap = smoothedAlphaMap;
             }
-            
+
             // Apply the final alpha values
             for (let y = 0; y &lt; height; y++) {
                 for (let x = 0; x &lt; width; x++) {
@@ -4388,7 +4419,7 @@ QUAN TRỌNG:
                     data[idx + 3] = alphaMap[mapIdx];
                 }
             }
-            
+
             ctx.putImageData(imageData, 0, 0);
             return canvas;
         }
@@ -4417,9 +4448,9 @@ QUAN TRỌNG:
         document.getElementById(&#x27;productInput&#x27;).addEventListener(&#x27;change&#x27;, function(e) {
             const files = Array.from(e.target.files);
             if (files.length === 0) return;
-            
+
             showStatus(&#x27;productStatus&#x27;, `Đang xử lý ${files.length} sản phẩm với thuật toán xóa nền thông minh...`, &#x27;success&#x27;);
-            
+
             let processed = 0;
             files.forEach((file, index) =&gt; {
                 const reader = new FileReader();
@@ -4431,17 +4462,17 @@ QUAN TRỌNG:
                         canvas.width = img.width;
                         canvas.height = img.height;
                         const ctx = canvas.getContext(&#x27;2d&#x27;);
-                        
+
                         ctx.drawImage(img, 0, 0);
                         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                        
+
                         // Apply advanced background removal
                         const sensitivity = parseInt(document.getElementById(&#x27;sensitivity&#x27;).value);
                         const preserveWhite = document.getElementById(&#x27;preserveWhite&#x27;).checked;
                         const edgeBlur = parseInt(document.getElementById(&#x27;edgeBlur&#x27;).value);
-                        
+
                         advancedBackgroundRemoval(imageData, canvas, sensitivity, preserveWhite, edgeBlur);
-                        
+
                         // Create product object
                         const product = {
                             id: Date.now() + index,
@@ -4454,10 +4485,10 @@ QUAN TRỌNG:
                             y: 0,
                             rotation: 0
                         };
-                        
+
                         products.push(product);
                         processed++;
-                        
+
                         if (processed === files.length) {
                             showStatus(&#x27;productStatus&#x27;, `Đã xử lý ${files.length} sản phẩm với công nghệ xóa nền thông minh!`, &#x27;success&#x27;);
                             generateThumbnails();
@@ -4474,26 +4505,26 @@ QUAN TRỌNG:
         // Reprocess backgrounds with new settings
         function reprocessBackgrounds() {
             if (products.length === 0) return;
-            
+
             showStatus(&#x27;productStatus&#x27;, &#x27;Đang xử lý lại nền với cài đặt mới...&#x27;, &#x27;success&#x27;);
-            
+
             const sensitivity = parseInt(document.getElementById(&#x27;sensitivity&#x27;).value);
             const preserveWhite = document.getElementById(&#x27;preserveWhite&#x27;).checked;
             const edgeBlur = parseInt(document.getElementById(&#x27;edgeBlur&#x27;).value);
-            
+
             products.forEach(product =&gt; {
                 const canvas = document.createElement(&#x27;canvas&#x27;);
                 canvas.width = product.originalImage.width;
                 canvas.height = product.originalImage.height;
                 const ctx = canvas.getContext(&#x27;2d&#x27;);
-                
+
                 ctx.drawImage(product.originalImage, 0, 0);
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                
+
                 advancedBackgroundRemoval(imageData, canvas, sensitivity, preserveWhite, edgeBlur);
                 product.canvas = canvas;
             });
-            
+
             generateThumbnails();
             showStatus(&#x27;productStatus&#x27;, &#x27;Đã xử lý lại nền thành công!&#x27;, &#x27;success&#x27;);
         }
@@ -4502,28 +4533,28 @@ QUAN TRỌNG:
         function generateThumbnails() {
             const grid = document.getElementById(&#x27;thumbnailsGrid&#x27;);
             grid.innerHTML = &#x27;&#x27;;
-            
+
             products.forEach(product =&gt; {
                 const thumbnailDiv = document.createElement(&#x27;div&#x27;);
                 thumbnailDiv.className = &#x27;thumbnail-item&#x27;;
                 thumbnailDiv.setAttribute(&#x27;data-id&#x27;, product.id);
-                
+
                 // Update selection state
                 if (selectedThumbnails.has(product.id)) {
                     thumbnailDiv.classList.add(&#x27;selected&#x27;);
                 }
-                
+
                 const canvas = document.createElement(&#x27;canvas&#x27;);
                 canvas.width = 200;
                 canvas.height = 200;
                 canvas.className = &#x27;thumbnail-canvas&#x27;;
-                
+
                 const ctx = canvas.getContext(&#x27;2d&#x27;);
-                
+
                 // Clear canvas with white background
                 ctx.fillStyle = &#x27;white&#x27;;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
+
                 // Draw background if available (fit to square)
                 if (backgroundImage) {
                     // Calculate scale to fit square while maintaining aspect ratio
@@ -4532,20 +4563,24 @@ QUAN TRỌNG:
                     const bgHeight = backgroundImage.height * bgScale;
                     const bgX = (canvas.width - bgWidth) / 2;
                     const bgY = (canvas.height - bgHeight) / 2;
-                    
+
                     ctx.drawImage(backgroundImage, bgX, bgY, bgWidth, bgHeight);
                 }
-                
+
                 // Draw product with rotation
                 const productCanvas = product.canvas;
                 const scale = product.scale;
-                const x = product.x * (canvas.width / 1200) + canvas.width / 2;
-                const y = product.y * (canvas.height / 1200) + canvas.height / 2;
+
+                // For Preview (always square 200x200), the ratio is uniform
+                const ratio = canvas.width / 1200; 
+
+                const x = product.x * ratio + canvas.width / 2;
+                const y = product.y * ratio + canvas.height / 2;
                 const rotation = (product.rotation || 0) * Math.PI / 180;
-                
-                const scaledWidth = productCanvas.width * scale * (canvas.width / 1200);
-                const scaledHeight = productCanvas.height * scale * (canvas.height / 1200);
-                
+
+                const scaledWidth = productCanvas.width * scale * ratio;
+                const scaledHeight = productCanvas.height * scale * ratio;
+
                 ctx.save();
                 ctx.translate(x, y);
                 ctx.rotate(rotation);
@@ -4557,7 +4592,7 @@ QUAN TRỌNG:
                     scaledHeight
                 );
                 ctx.restore();
-                
+
                 // Create thumbnail info
                 const info = document.createElement(&#x27;div&#x27;);
                 info.className = &#x27;thumbnail-info&#x27;;
@@ -4565,14 +4600,14 @@ QUAN TRỌNG:
                     &lt;span class=&quot;thumbnail-name&quot;&gt;${product.name}&lt;/span&gt;
                     &lt;button class=&quot;delete-btn&quot; onclick=&quot;deleteProduct(${product.id})&quot;&gt;Xóa&lt;/button&gt;
                 `;
-                
+
                 thumbnailDiv.appendChild(canvas);
                 thumbnailDiv.appendChild(info);
-                
+
                 // Add click event for selection/editing
                 thumbnailDiv.addEventListener(&#x27;click&#x27;, function(e) {
                     if (e.target.classList.contains(&#x27;delete-btn&#x27;)) return;
-                    
+
                     // If holding Ctrl/Cmd, toggle selection for batch editing
                     if (e.ctrlKey || e.metaKey) {
                         toggleThumbnailSelection(product.id);
@@ -4581,7 +4616,7 @@ QUAN TRỌNG:
                         setCurrentEditingProduct(product.id);
                     }
                 });
-                
+
                 grid.appendChild(thumbnailDiv);
             });
         }
@@ -4590,7 +4625,7 @@ QUAN TRỌNG:
         function setCurrentEditingProduct(productId) {
             currentEditingProduct = productId;
             const product = products.find(p =&gt; p.id === productId);
-            
+
             if (product) {
                 // Update control values to match current product
                 document.getElementById(&#x27;globalScale&#x27;).value = product.scale;
@@ -4599,16 +4634,16 @@ QUAN TRỌNG:
                 document.getElementById(&#x27;rotation&#x27;).value = product.rotation || 0;
                 document.getElementById(&#x27;globalScaleValue&#x27;).textContent = product.scale + &#x27;x&#x27;;
                 document.getElementById(&#x27;rotationValue&#x27;).textContent = (product.rotation || 0) + &#x27;°&#x27;;
-                
+
                 // Update current editing display
                 document.getElementById(&#x27;currentEditing&#x27;).style.display = &#x27;block&#x27;;
                 document.getElementById(&#x27;currentProductName&#x27;).textContent = product.name;
-                
+
                 // Clear batch selection when editing individual product
                 selectedThumbnails.clear();
                 updateSelectedInfo();
                 updateDownloadButtons();
-                
+
                 // Remove all selection highlights and add editing highlight
                 document.querySelectorAll(&#x27;.thumbnail-item&#x27;).forEach(item =&gt; {
                     item.classList.remove(&#x27;selected&#x27;);
@@ -4629,9 +4664,9 @@ QUAN TRỌNG:
             document.querySelectorAll(&#x27;.thumbnail-item&#x27;).forEach(item =&gt; {
                 item.style.border = &#x27;3px solid transparent&#x27;;
             });
-            
+
             const thumbnailDiv = document.querySelector(`[data-id=&quot;${productId}&quot;]`);
-            
+
             if (selectedThumbnails.has(productId)) {
                 selectedThumbnails.delete(productId);
                 thumbnailDiv.classList.remove(&#x27;selected&#x27;);
@@ -4639,7 +4674,7 @@ QUAN TRỌNG:
                 selectedThumbnails.add(productId);
                 thumbnailDiv.classList.add(&#x27;selected&#x27;);
             }
-            
+
             updateSelectedInfo();
             updateDownloadButtons();
         }
@@ -4651,7 +4686,7 @@ QUAN TRỌNG:
             document.querySelectorAll(&#x27;.thumbnail-item&#x27;).forEach(item =&gt; {
                 item.style.border = &#x27;3px solid transparent&#x27;;
             });
-            
+
             products.forEach(product =&gt; {
                 selectedThumbnails.add(product.id);
                 const thumbnailDiv = document.querySelector(`[data-id=&quot;${product.id}&quot;]`);
@@ -4665,7 +4700,7 @@ QUAN TRỌNG:
         function deselectAllThumbnails() {
             currentEditingProduct = null;
             document.getElementById(&#x27;currentEditing&#x27;).style.display = &#x27;none&#x27;;
-            
+
             selectedThumbnails.clear();
             document.querySelectorAll(&#x27;.thumbnail-item&#x27;).forEach(item =&gt; {
                 item.classList.remove(&#x27;selected&#x27;);
@@ -4679,7 +4714,7 @@ QUAN TRỌNG:
         function updateSelectedInfo() {
             const selectedInfo = document.getElementById(&#x27;selectedInfo&#x27;);
             const selectedCount = document.getElementById(&#x27;selectedCount&#x27;);
-            
+
             if (selectedThumbnails.size &gt; 0) {
                 selectedInfo.style.display = &#x27;block&#x27;;
                 selectedCount.textContent = selectedThumbnails.size;
@@ -4708,9 +4743,9 @@ QUAN TRỌNG:
             const x = parseInt(document.getElementById(&#x27;globalX&#x27;).value) || 0;
             const y = parseInt(document.getElementById(&#x27;globalY&#x27;).value) || 0;
             const rotation = parseInt(document.getElementById(&#x27;rotation&#x27;).value) || 0;
-            
+
             let targetProducts = [];
-            
+
             // If editing individual product
             if (currentEditingProduct) {
                 targetProducts = products.filter(p =&gt; p.id === currentEditingProduct);
@@ -4723,21 +4758,21 @@ QUAN TRỌNG:
             else {
                 targetProducts = products;
             }
-            
+
             targetProducts.forEach(product =&gt; {
                 product.scale = scale;
                 product.x = x;
                 product.y = y;
                 product.rotation = rotation;
             });
-            
+
             generateThumbnails();
         }
 
         // Center products
         function centerProducts() {
             let targetProducts = [];
-            
+
             // If editing individual product
             if (currentEditingProduct) {
                 targetProducts = products.filter(p =&gt; p.id === currentEditingProduct);
@@ -4750,22 +4785,22 @@ QUAN TRỌNG:
             else {
                 targetProducts = products;
             }
-            
+
             targetProducts.forEach(product =&gt; {
                 product.x = 0;
                 product.y = 0;
             });
-            
+
             document.getElementById(&#x27;globalX&#x27;).value = 0;
             document.getElementById(&#x27;globalY&#x27;).value = 0;
-            
+
             generateThumbnails();
         }
 
         // Reset positions
         function resetPositions() {
             let targetProducts = [];
-            
+
             // If editing individual product
             if (currentEditingProduct) {
                 targetProducts = products.filter(p =&gt; p.id === currentEditingProduct);
@@ -4778,21 +4813,21 @@ QUAN TRỌNG:
             else {
                 targetProducts = products;
             }
-            
+
             targetProducts.forEach(product =&gt; {
                 product.scale = 0.6;
                 product.x = 0;
                 product.y = 0;
                 product.rotation = 0;
             });
-            
+
             document.getElementById(&#x27;globalScale&#x27;).value = 0.6;
             document.getElementById(&#x27;globalX&#x27;).value = 0;
             document.getElementById(&#x27;globalY&#x27;).value = 0;
             document.getElementById(&#x27;rotation&#x27;).value = 0;
             document.getElementById(&#x27;globalScaleValue&#x27;).textContent = &#x27;0.6x&#x27;;
             document.getElementById(&#x27;rotationValue&#x27;).textContent = &#x27;0°&#x27;;
-            
+
             generateThumbnails();
         }
 
@@ -4816,9 +4851,9 @@ QUAN TRỌNG:
         // Download selected thumbnails
         function downloadSelected() {
             if (selectedThumbnails.size === 0) return;
-            
+
             const selectedProducts = products.filter(p =&gt; selectedThumbnails.has(p.id));
-            
+
             if (selectedProducts.length === 1) {
                 // Download single file
                 downloadSingleThumbnail(selectedProducts[0]);
@@ -4831,7 +4866,7 @@ QUAN TRỌNG:
         // Download all thumbnails
         function downloadAll() {
             if (products.length === 0) return;
-            
+
             if (products.length === 1) {
                 downloadSingleThumbnail(products[0]);
             } else {
@@ -4839,28 +4874,54 @@ QUAN TRỌNG:
             }
         }
 
+        // Get selected thumbnail size
+        function getSelectedThumbnailSize() {
+            const sizeSelect = document.getElementById(&#x27;thumbnailSize&#x27;);
+            const [width, height] = sizeSelect.value.split(&#x27;x&#x27;).map(Number);
+            return { width, height };
+        }
+
         // Download single thumbnail with rotation support
         function downloadSingleThumbnail(product) {
             const canvas = document.createElement(&#x27;canvas&#x27;);
-            canvas.width = 1200;
-            canvas.height = 1200;
+            const size = getSelectedThumbnailSize();
+            canvas.width = size.width;
+            canvas.height = size.height;
             const ctx = canvas.getContext(&#x27;2d&#x27;);
-            
+
             // Draw background
             if (backgroundImage) {
-                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+                // Scale background to fit canvas while maintaining aspect ratio
+                const bgScale = Math.min(canvas.width / backgroundImage.width, canvas.height / backgroundImage.height);
+                const bgWidth = backgroundImage.width * bgScale;
+                const bgHeight = backgroundImage.height * bgScale;
+                const bgX = (canvas.width - bgWidth) / 2;
+                const bgY = (canvas.height - bgHeight) / 2;
+
+                // Fill canvas with white first
+                ctx.fillStyle = &#x27;white&#x27;;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.drawImage(backgroundImage, bgX, bgY, bgWidth, bgHeight);
             }
-            
+
             // Draw product with rotation
             const productCanvas = product.canvas;
             const scale = product.scale;
-            const x = product.x + canvas.width / 2;
-            const y = product.y + canvas.height / 2;
+
+            // Use uniform ratio based on the smallest dimension to preserve aspect ratio
+            // This fixes the stretching issue on non-square canvases
+            const ratio = Math.min(canvas.width / 1200, canvas.height / 1200);
+
+            // Position still uses relative coordinates to place item correctly
+            const x = (product.x * (canvas.width / 1200)) + canvas.width / 2;
+            const y = (product.y * (canvas.height / 1200)) + canvas.height / 2;
             const rotation = (product.rotation || 0) * Math.PI / 180;
-            
-            const scaledWidth = productCanvas.width * scale;
-            const scaledHeight = productCanvas.height * scale;
-            
+
+            // Size uses uniform ratio
+            const scaledWidth = productCanvas.width * scale * ratio;
+            const scaledHeight = productCanvas.height * scale * ratio;
+
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(rotation);
@@ -4872,7 +4933,7 @@ QUAN TRỌNG:
                 scaledHeight
             );
             ctx.restore();
-            
+
             // Download
             canvas.toBlob(function(blob) {
                 const url = URL.createObjectURL(blob);
@@ -4888,34 +4949,51 @@ QUAN TRỌNG:
         function downloadMultipleThumbnails(targetProducts) {
             const progressBar = document.getElementById(&#x27;progressBar&#x27;);
             const progressFill = document.getElementById(&#x27;progressFill&#x27;);
-            
+
             progressBar.style.display = &#x27;block&#x27;;
             progressFill.style.width = &#x27;0%&#x27;;
-            
+
             let processed = 0;
-            
+            const size = getSelectedThumbnailSize();
+
             targetProducts.forEach((product, index) =&gt; {
                 setTimeout(() =&gt; {
                     const canvas = document.createElement(&#x27;canvas&#x27;);
-                    canvas.width = 1200;
-                    canvas.height = 1200;
+                    canvas.width = size.width;
+                    canvas.height = size.height;
                     const ctx = canvas.getContext(&#x27;2d&#x27;);
-                    
+
                     // Draw background
                     if (backgroundImage) {
-                        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+                        // Scale background to fit canvas while maintaining aspect ratio
+                        const bgScale = Math.min(canvas.width / backgroundImage.width, canvas.height / backgroundImage.height);
+                        const bgWidth = backgroundImage.width * bgScale;
+                        const bgHeight = backgroundImage.height * bgScale;
+                        const bgX = (canvas.width - bgWidth) / 2;
+                        const bgY = (canvas.height - bgHeight) / 2;
+
+                        // Fill canvas with white first
+                        ctx.fillStyle = &#x27;white&#x27;;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                        ctx.drawImage(backgroundImage, bgX, bgY, bgWidth, bgHeight);
                     }
-                    
+
                     // Draw product with rotation
                     const productCanvas = product.canvas;
                     const scale = product.scale;
-                    const x = product.x + canvas.width / 2;
-                    const y = product.y + canvas.height / 2;
+
+                    // Use uniform ratio for size to fix stretching
+                    const ratio = Math.min(canvas.width / 1200, canvas.height / 1200);
+
+                    const x = (product.x * (canvas.width / 1200)) + canvas.width / 2;
+                    const y = (product.y * (canvas.height / 1200)) + canvas.height / 2;
                     const rotation = (product.rotation || 0) * Math.PI / 180;
-                    
-                    const scaledWidth = productCanvas.width * scale;
-                    const scaledHeight = productCanvas.height * scale;
-                    
+
+                    // Size uses uniform ratio
+                    const scaledWidth = productCanvas.width * scale * ratio;
+                    const scaledHeight = productCanvas.height * scale * ratio;
+
                     ctx.save();
                     ctx.translate(x, y);
                     ctx.rotate(rotation);
@@ -4927,7 +5005,7 @@ QUAN TRỌNG:
                         scaledHeight
                     );
                     ctx.restore();
-                    
+
                     // Download
                     canvas.toBlob(function(blob) {
                         const url = URL.createObjectURL(blob);
@@ -4936,11 +5014,11 @@ QUAN TRỌNG:
                         a.download = `${product.name}_thumbnail.png`;
                         a.click();
                         URL.revokeObjectURL(url);
-                        
+
                         processed++;
                         const progress = (processed / targetProducts.length) * 100;
                         progressFill.style.width = progress + &#x27;%&#x27;;
-                        
+
                         if (processed === targetProducts.length) {
                             setTimeout(() =&gt; {
                                 progressBar.style.display = &#x27;none&#x27;;
@@ -4957,7 +5035,7 @@ QUAN TRỌNG:
             statusEl.textContent = message;
             statusEl.className = `status ${type}`;
             statusEl.style.display = &#x27;block&#x27;;
-            
+
             if (type === &#x27;success&#x27;) {
                 setTimeout(() =&gt; {
                     statusEl.style.display = &#x27;none&#x27;;
@@ -4969,7 +5047,7 @@ QUAN TRỌNG:
         function updateDownloadButtons() {
             const downloadSelected = document.getElementById(&#x27;downloadSelected&#x27;);
             const downloadAll = document.getElementById(&#x27;downloadAll&#x27;);
-            
+
             downloadSelected.disabled = selectedThumbnails.size === 0 || !backgroundImage;
             downloadAll.disabled = products.length === 0 || !backgroundImage;
         }
@@ -4989,7 +5067,8 @@ QUAN TRỌNG:
         updateWorkspaceInfo();
     &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;"></iframe>
+&lt;/html&gt;
+"></iframe>
 <iframe id="file6" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
