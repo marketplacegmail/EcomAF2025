@@ -558,7 +558,7 @@ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
     &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-    &lt;title&gt;Tạo Kịch Bản Livestream AI&lt;/title&gt;
+    &lt;title&gt;Tạo Kịch Bản Livestream AI (Updated)&lt;/title&gt;
     &lt;script src=&quot;https://unpkg.com/docx@7.8.2/build/index.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
@@ -994,7 +994,7 @@ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6
     &lt;div class=&quot;container&quot;&gt;
         &lt;div class=&quot;header&quot;&gt;
             &lt;h1&gt;🎬 Tạo Kịch Bản Livestream AI&lt;/h1&gt;
-            &lt;p&gt;Công cụ thông minh tích hợp Google Gemini 2.5 Flash để tạo kịch bản livestream chuyên nghiệp&lt;/p&gt;
+            &lt;p&gt;Công cụ thông minh tích hợp Google Gemini 2.5 Flash (New) để tạo kịch bản livestream siêu tốc&lt;/p&gt;
         &lt;/div&gt;
 
         &lt;div class=&quot;api-section&quot;&gt;
@@ -1125,7 +1125,7 @@ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6
                     &lt;/div&gt;
                 &lt;/div&gt;
                 &lt;div class=&quot;script-output&quot; id=&quot;script2&quot;&gt;&lt;/div&gt;
-                &lt;div class=&quot;loading&quot; id=&quot;loading&quot;&gt;Gemini 2.5 Flash đang tạo kịch bản&lt;/div&gt;
+                &lt;div class=&quot;loading&quot; id=&quot;loading&quot;&gt;Gemini 2.5 Flash đang suy nghĩ vèo vèo...&lt;/div&gt;
                 &lt;div class=&quot;error-message&quot; id=&quot;errorMessage&quot; style=&quot;display: none;&quot;&gt;&lt;/div&gt;
             &lt;/div&gt;
         &lt;/div&gt;
@@ -1302,7 +1302,8 @@ YÊU CẦU:
 
 Bắt đầu tạo kịch bản:`;
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            // Updated API URL to use gemini-2.5-flash-preview-09-2025
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
             const response = await fetch(apiUrl, {
                 method: &#x27;POST&#x27;,
