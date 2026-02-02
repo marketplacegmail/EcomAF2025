@@ -33,352 +33,1180 @@ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
     &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-    &lt;title&gt;Livestream Management Dashboard&lt;/title&gt;
+    &lt;title&gt;iBasic Livestream Dashboard&lt;/title&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
     &lt;style&gt;
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-            color: #333;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
-        }
-        h1 {
-            color: #ff9ed8;
-            text-align: center;
-            font-size: 2.5em;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
-        }
-        h2 {
-            color: #b19cd9;
-            font-size: 1.5em;
-            text-align: center;
-        }
-        h3 {
-            color: #7b68ee;
-            font-size: 1.2em;
-            margin: 15px 0 10px;
-        }
-        h4 {
-            color: #7b68ee;
-            font-size: 1em;
-            margin: 10px 0;
-        }
-        .form-section, .summary-section {
-            margin: 20px 0;
-            padding: 20px;
-            background: #e6e6fa;
-            border-radius: 10px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #7b68ee;
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ff9ed8;
-            border-radius: 8px;
-            background: #fff0f5;
-            color: #333;
+            padding: 0;
             box-sizing: border-box;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: #fff;
-            border-radius: 8px;
+
+        :root {
+            --primary: #ff6bb8;
+            --primary-dark: #ff4da6;
+            --primary-light: #ff9ed8;
+            --secondary: #ffc1f3;
+            --success: #a8dadc;
+            --danger: #ff6b9d;
+            --dark: #2d2d2d;
+            --dark-alt: #3d3d3d;
+            --gray: #7a7a7a;
+            --gray-light: #e5e5e5;
+            --white: #ffffff;
+            --bg: #fff5fb;
+        }
+
+        body {
+            font-family: &#x27;Outfit&#x27;, sans-serif;
+            background: linear-gradient(135deg, #ffc1f3 0%, #ff9ed8 25%, #b19cd9 75%, #a8dadc 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--dark);
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            position: relative;
             overflow: hidden;
         }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+
+        .header::before {
+            content: &#x27;&#x27;;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ff9ed8, #ffc1f3, #b19cd9, #ff9ed8);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
         }
-        th {
-            background: #b19cd9;
-            color: white;
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-        button {
-            padding: 12px 25px;
-            background: #ff9ed8;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-            margin: 5px;
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6bb8, #ff9ed8, #ffc1f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
         }
-        button:hover {
-            background: #ff6bb8;
-            transform: scale(1.05);
+
+        .header .subtitle {
+            color: var(--gray);
+            font-size: 0.95rem;
+            font-weight: 400;
         }
-        .error {
-            color: #ff6bb8;
-            font-size: 0.9em;
-            margin-top: 10px;
-            text-align: center;
+
+        .header .made-by {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-light);
+            font-size: 0.875rem;
+            color: var(--gray);
         }
-        .success {
-            color: #28a745;
-            font-size: 0.9em;
-            margin-top: 10px;
-            text-align: center;
+
+        .header .made-by strong {
+            color: var(--primary);
+            font-weight: 600;
         }
-        .checklist {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
+
+        .date-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
-        .checklist-item {
+
+        .date-input-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 1rem;
+            max-width: 500px;
         }
+
+        .date-input-wrapper label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .date-input-wrapper input[type=&quot;date&quot;] {
+            flex: 1;
+            padding: 0.875rem 1.25rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-family: &#x27;Space Mono&#x27;, monospace;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: var(--bg);
+        }
+
+        .date-input-wrapper input[type=&quot;date&quot;]:focus {
+            outline: none;
+            border-color: #ff6bb8;
+            box-shadow: 0 0 0 4px rgba(255, 107, 184, 0.15);
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.2s; }
+        .card:nth-child(4) { animation-delay: 0.3s; }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title::before {
+            content: &#x27;&#x27;;
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, #ff6bb8, #ffc1f3);
+            border-radius: 4px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--gray-light);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--white);
+        }
+
+        .data-table thead {
+            background: linear-gradient(135deg, #ff9ed8, #ffc1f3);
+            color: var(--white);
+        }
+
+        .data-table th {
+            padding: 1.25rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .data-table th:first-child {
+            border-top-left-radius: 16px;
+            padding-left: 1.5rem;
+        }
+
+        .data-table th:last-child {
+            border-top-right-radius: 16px;
+            padding-right: 1.5rem;
+        }
+
+        .data-table tbody tr {
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--bg);
+        }
+
+        .data-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .data-table td {
+            padding: 0.75rem 1rem;
+        }
+
+        .data-table td:first-child {
+            padding-left: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            width: 80px;
+        }
+
+        .data-table input {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            border: 1.5px solid var(--gray-light);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: var(--white);
+        }
+
+        .data-table input:focus {
+            outline: none;
+            border-color: #ff6bb8;
+            background: var(--bg);
+            box-shadow: 0 0 0 3px rgba(255, 107, 184, 0.15);
+        }
+
+        .data-table input[type=&quot;datetime-local&quot;] {
+            font-family: &#x27;Space Mono&#x27;, monospace;
+            font-size: 0.8rem;
+        }
+
+        .data-table input[type=&quot;number&quot;] {
+            text-align: right;
+            font-family: &#x27;Space Mono&#x27;, monospace;
+        }
+
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checklist-item {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .checklist-item:hover {
+            border-color: #ff9ed8;
+            background: var(--white);
+        }
+
+        .checklist-item-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
         .checklist-item input[type=&quot;checkbox&quot;] {
             width: 20px;
             height: 20px;
-            accent-color: #ff9ed8;
+            cursor: pointer;
+            accent-color: #ff6bb8;
+            flex-shrink: 0;
         }
-        .checklist-item input[type=&quot;text&quot;] {
-            flex: 1;
-            padding: 8px;
-            font-size: 0.9em;
-        }
+
         .checklist-item label {
-            margin: 0;
-            font-size: 0.9em;
-            width: 130px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--dark);
+            cursor: pointer;
+            flex: 1;
         }
-        .summary-section {
+
+        .checklist-item input[type=&quot;text&quot;] {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1.5px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .checklist-item input[type=&quot;text&quot;]:focus {
+            outline: none;
+            border-color: #ff6bb8;
+            box-shadow: 0 0 0 3px rgba(255, 107, 184, 0.15);
+        }
+
+        .section-header {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        .textarea-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .textarea-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .textarea-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.2s ease;
+            min-height: 100px;
+        }
+
+        .textarea-group textarea:focus {
+            outline: none;
+            border-color: #ff6bb8;
+            box-shadow: 0 0 0 4px rgba(255, 107, 184, 0.15);
+        }
+
+        .button-group {
             display: flex;
+            gap: 1rem;
             justify-content: center;
-            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 2rem;
         }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6bb8, #ff9ed8);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 184, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--dark);
+            border: 2px solid var(--gray-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg);
+            border-color: #ff6bb8;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .message {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+            text-align: center;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
+            body {
+                padding: 1rem 0.5rem;
             }
-            h1 {
-                font-size: 2em;
+
+            .header {
+                padding: 1.5rem;
+                border-radius: 16px;
             }
-            .checklist {
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+
+            .date-input-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .checklist-grid {
                 grid-template-columns: 1fr;
             }
-            button {
-                width: 100%;
-                margin: 5px 0;
+
+            .button-group {
+                flex-direction: column;
             }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .data-table input {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                width: 95%;
+                padding: 1.25rem;
+                height: 85vh;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .modal-column {
+                max-height: none;
+            }
+
+            .modal-header h2 {
+                font-size: 1.25rem;
+            }
+
+            .preview-section h3 {
+                font-size: 1rem;
+            }
+
+            .preview-table {
+                font-size: 0.75rem;
+            }
+
+            .preview-table th,
+            .preview-table td {
+                padding: 0.5rem 0.4rem;
+            }
+
+            .checklist-preview {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-item {
+                font-size: 0.8rem;
+                padding: 0.6rem 0.8rem;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 98%;
+            width: 1600px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .modal-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .modal-column::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-column::-webkit-scrollbar-track {
+            background: var(--gray-light);
+            border-radius: 10px;
+        }
+
+        .modal-column::-webkit-scrollbar-thumb {
+            background: #ff9ed8;
+            border-radius: 10px;
+        }
+
+        .modal-column::-webkit-scrollbar-thumb:hover {
+            background: #ff6bb8;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-light);
+            flex-shrink: 0;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6bb8, #ff9ed8, #ffc1f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--dark);
+            transform: rotate(90deg);
+        }
+
+        .preview-section {
+            margin-bottom: 0;
+        }
+
+        .preview-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .preview-section h3::before {
+            content: &#x27;&#x27;;
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, #ff6bb8, #ffc1f3);
+            border-radius: 4px;
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+            font-size: 0.85rem;
+        }
+
+        .preview-table th,
+        .preview-table td {
+            padding: 0.6rem 0.5rem;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .preview-table th {
+            background: linear-gradient(135deg, #ff9ed8, #ffc1f3);
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .preview-table tr:nth-child(even) {
+            background: var(--bg);
+        }
+
+        .preview-item {
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .preview-item strong {
+            color: #ff6bb8;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .checklist-preview {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .checklist-preview-item {
+            padding: 0.5rem 0.75rem;
+            background: var(--bg);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .checklist-preview-item.checked {
+            background: rgba(255, 107, 184, 0.1);
+            border: 1px solid #ff9ed8;
+        }
+
+        .checklist-preview-item .check-icon {
+            color: #ff6bb8;
+            margin-right: 0.5rem;
         }
     &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-    &lt;div class=&quot;container&quot;&gt;
-        &lt;h1&gt;🎥 Livestream Management Dashboard&lt;/h1&gt;
-        &lt;div style=&quot;text-align: center; margin-bottom: 20px; color: #b19cd9; font-size: 0.9em;&quot;&gt;
-            &lt;span style=&quot;font-size: 1.1em;&quot;&gt;💖 Made with love by &lt;/span&gt;
-            &lt;strong style=&quot;color: #ff9ed8;&quot;&gt;Tien Hoang&lt;/strong&gt;
-            &lt;span&gt; ✨🌟💫&lt;/span&gt;
+    &lt;div class=&quot;dashboard&quot;&gt;
+        &lt;div class=&quot;header&quot;&gt;
+            &lt;h1&gt;🎥 iBasic Livestream Dashboard&lt;/h1&gt;
+            &lt;div class=&quot;subtitle&quot;&gt;Quản lý và theo dõi phiên livestream&lt;/div&gt;
+            &lt;div class=&quot;made-by&quot;&gt;
+                Made with love by &lt;strong&gt;Tien Hoang&lt;/strong&gt; ✨
+            &lt;/div&gt;
         &lt;/div&gt;
 
-        &lt;div class=&quot;form-section&quot;&gt;
-            &lt;div class=&quot;input-group&quot;&gt;
-                &lt;label for=&quot;roomId&quot;&gt;ROOM ID:&lt;/label&gt;
-                &lt;input type=&quot;text&quot; id=&quot;roomId&quot; placeholder=&quot;Nhập Room ID&quot;&gt;
-            &lt;/div&gt;
-            &lt;div class=&quot;input-group&quot;&gt;
-                &lt;label for=&quot;liveDate&quot;&gt;NGÀY LIVESTREAM:&lt;/label&gt;
+        &lt;div class=&quot;date-section&quot;&gt;
+            &lt;div class=&quot;date-input-wrapper&quot;&gt;
+                &lt;label for=&quot;liveDate&quot;&gt;📅 Ngày Livestream:&lt;/label&gt;
                 &lt;input type=&quot;date&quot; id=&quot;liveDate&quot;&gt;
             &lt;/div&gt;
-            &lt;div class=&quot;input-group&quot;&gt;
-                &lt;h3&gt;Check List Phiên Live&lt;/h3&gt;
-                &lt;h4&gt;Trước Phiên Live - LIVE DIRECTOR&lt;/h4&gt;
-                &lt;div class=&quot;checklist&quot;&gt;
-                    &lt;div&gt;
-                        &lt;h4&gt;1. Kịch bản&lt;/h4&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;
-                            &lt;input type=&quot;checkbox&quot; id=&quot;scriptTheme&quot;&gt;
-                            &lt;label for=&quot;scriptTheme&quot;&gt;Chủ đề live&lt;/label&gt;
-                            &lt;input type=&quot;text&quot; id=&quot;scriptThemeText&quot; placeholder=&quot;Nhập chủ đề&quot;&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;aiScript&quot;&gt;&lt;label for=&quot;aiScript&quot;&gt;Tạo Kịch bản (AI)&lt;/label&gt;&lt;/div&gt;
-                    &lt;/div&gt;
-                    &lt;div&gt;
-                        &lt;h4&gt;2. Promotion&lt;/h4&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;
-                            &lt;input type=&quot;checkbox&quot; id=&quot;exclusiveDeal&quot;&gt;
-                            &lt;label for=&quot;exclusiveDeal&quot;&gt;Deal độc quyền&lt;/label&gt;
-                            &lt;input type=&quot;text&quot; id=&quot;exclusiveDealText&quot; placeholder=&quot;Nhập deal&quot;&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;
-                            &lt;input type=&quot;checkbox&quot; id=&quot;voucher&quot;&gt;
-                            &lt;label for=&quot;voucher&quot;&gt;Voucher&lt;/label&gt;
-                            &lt;input type=&quot;text&quot; id=&quot;voucherText&quot; placeholder=&quot;Nhập voucher&quot;&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                    &lt;div&gt;
-                        &lt;h4&gt;3. Host&lt;/h4&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;discussScript&quot;&gt;&lt;label for=&quot;discussScript&quot;&gt;Thảo luận Kịch bản&lt;/label&gt;&lt;/div&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;knowPromotion&quot;&gt;&lt;label for=&quot;knowPromotion&quot;&gt;Nắm Promotion&lt;/label&gt;&lt;/div&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;costume&quot;&gt;&lt;label for=&quot;costume&quot;&gt;Trang phục&lt;/label&gt;&lt;/div&gt;
-                    &lt;/div&gt;
-                    &lt;div&gt;
-                        &lt;h4&gt;4. Hình ảnh&lt;/h4&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;
-                            &lt;input type=&quot;checkbox&quot; id=&quot;background&quot;&gt;
-                            &lt;label for=&quot;background&quot;&gt;Background&lt;/label&gt;
-                            &lt;input type=&quot;text&quot; id=&quot;backgroundText&quot; placeholder=&quot;Nhập mô tả background&quot;&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;taglineScheme&quot;&gt;&lt;label for=&quot;taglineScheme&quot;&gt;Tagline &amp; Scheme&lt;/label&gt;&lt;/div&gt;
-                        &lt;div class=&quot;checklist-item&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;lighting&quot;&gt;&lt;label for=&quot;lighting&quot;&gt;Ánh sáng&lt;/label&gt;&lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;table&gt;
-                &lt;thead&gt;
-                    &lt;tr&gt;
-                        &lt;th&gt;Host name&lt;/th&gt;
-                        &lt;th&gt;LIVE DIRECTOR name&lt;/th&gt;
-                        &lt;th&gt;Thời gian bắt đầu phiên live&lt;/th&gt;
-                    &lt;/tr&gt;
-                &lt;/thead&gt;
-                &lt;tbody id=&quot;liveTable&quot;&gt;
-                    &lt;tr&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 1&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 1&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 2&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 2&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 3&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 3&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 4&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 4&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 5&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 5&quot;&gt;&lt;/td&gt;
-                        &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                    &lt;/tr&gt;
-                &lt;/tbody&gt;
-            &lt;/table&gt;
+        &lt;/div&gt;
 
-            &lt;div class=&quot;input-group&quot;&gt;
-                &lt;h3&gt;Ưu và Nhược Phiên Livestream&lt;/h3&gt;
-                &lt;div class=&quot;input-group&quot;&gt;
-                    &lt;label for=&quot;script&quot;&gt;Kịch bản và hình thức livestream:&lt;/label&gt;
-                    &lt;textarea id=&quot;script&quot; rows=&quot;4&quot; placeholder=&quot;Mô tả kịch bản và hình thức livestream&quot;&gt;&lt;/textarea&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;input-group&quot;&gt;
-                    &lt;label for=&quot;interaction&quot;&gt;Nhu cầu &amp; tương tác của khách hàng:&lt;/label&gt;
-                    &lt;textarea id=&quot;interaction&quot; rows=&quot;4&quot; placeholder=&quot;Mô tả nhu cầu và tương tác&quot;&gt;&lt;/textarea&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;input-group&quot;&gt;
-                    &lt;label for=&quot;quality&quot;&gt;Chất lượng hình ảnh và âm thanh:&lt;/label&gt;
-                    &lt;textarea id=&quot;quality&quot; rows=&quot;4&quot; placeholder=&quot;Đánh giá chất lượng hình ảnh và âm thanh&quot;&gt;&lt;/textarea&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;input-group&quot;&gt;
-                    &lt;label for=&quot;improvement&quot;&gt;Rút kinh nghiệm và cải thiện:&lt;/label&gt;
-                    &lt;textarea id=&quot;improvement&quot; rows=&quot;4&quot; placeholder=&quot;Những điểm cần cải thiện cho livestream tiếp theo&quot;&gt;&lt;/textarea&gt;
-                &lt;/div&gt;
+        &lt;div class=&quot;card&quot;&gt;
+            &lt;h2 class=&quot;card-title&quot;&gt;Thông Tin Các Phiên&lt;/h2&gt;
+            &lt;div class=&quot;table-wrapper&quot;&gt;
+                &lt;table class=&quot;data-table&quot;&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Session&lt;/th&gt;
+                            &lt;th&gt;Room ID&lt;/th&gt;
+                            &lt;th&gt;Time&lt;/th&gt;
+                            &lt;th&gt;Host Name&lt;/th&gt;
+                            &lt;th&gt;LD Name&lt;/th&gt;
+                            &lt;th&gt;Follower&lt;/th&gt;
+                            &lt;th&gt;Order&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;1&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;roomId1&quot; placeholder=&quot;Nhập Room ID&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;datetime-local&quot; id=&quot;time1&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;hostName1&quot; placeholder=&quot;Tên host&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ldName1&quot; placeholder=&quot;Tên LD&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;follower1&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;order1&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;2&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;roomId2&quot; placeholder=&quot;Nhập Room ID&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;datetime-local&quot; id=&quot;time2&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;hostName2&quot; placeholder=&quot;Tên host&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ldName2&quot; placeholder=&quot;Tên LD&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;follower2&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;order2&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;3&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;roomId3&quot; placeholder=&quot;Nhập Room ID&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;datetime-local&quot; id=&quot;time3&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;hostName3&quot; placeholder=&quot;Tên host&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ldName3&quot; placeholder=&quot;Tên LD&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;follower3&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;order3&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;4&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;roomId4&quot; placeholder=&quot;Nhập Room ID&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;datetime-local&quot; id=&quot;time4&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;hostName4&quot; placeholder=&quot;Tên host&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ldName4&quot; placeholder=&quot;Tên LD&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;follower4&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;order4&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;5&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;roomId5&quot; placeholder=&quot;Nhập Room ID&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;datetime-local&quot; id=&quot;time5&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;hostName5&quot; placeholder=&quot;Tên host&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ldName5&quot; placeholder=&quot;Tên LD&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;follower5&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;order5&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;6&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;roomId6&quot; placeholder=&quot;Nhập Room ID&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;datetime-local&quot; id=&quot;time6&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;hostName6&quot; placeholder=&quot;Tên host&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ldName6&quot; placeholder=&quot;Tên LD&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;follower6&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;order6&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;7&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;roomId7&quot; placeholder=&quot;Nhập Room ID&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;datetime-local&quot; id=&quot;time7&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;hostName7&quot; placeholder=&quot;Tên host&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ldName7&quot; placeholder=&quot;Tên LD&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;follower7&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;order7&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;8&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;roomId8&quot; placeholder=&quot;Nhập Room ID&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;datetime-local&quot; id=&quot;time8&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;hostName8&quot; placeholder=&quot;Tên host&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;ldName8&quot; placeholder=&quot;Tên LD&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;follower8&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;input type=&quot;number&quot; id=&quot;order8&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
             &lt;/div&gt;
         &lt;/div&gt;
 
-        &lt;div class=&quot;summary-section&quot;&gt;
-            &lt;button onclick=&quot;exportToExcel()&quot;&gt;📊 Xuất Excel với dữ liệu&lt;/button&gt;
-            &lt;button onclick=&quot;resetForm()&quot;&gt;🔄 Reset Form&lt;/button&gt;
-            &lt;div id=&quot;messageArea&quot; class=&quot;error&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;card&quot;&gt;
+            &lt;h2 class=&quot;card-title&quot;&gt;Checklist Phiên Live&lt;/h2&gt;
+            
+            &lt;div class=&quot;section-header&quot;&gt;Trước Phiên Live - LIVE DIRECTOR&lt;/div&gt;
+            &lt;div class=&quot;checklist-grid&quot;&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;scriptTheme&quot;&gt;
+                        &lt;label for=&quot;scriptTheme&quot;&gt;Chủ đề live&lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;input type=&quot;text&quot; id=&quot;scriptThemeText&quot; placeholder=&quot;Nhập chi tiết...&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;aiScript&quot;&gt;
+                        &lt;label for=&quot;aiScript&quot;&gt;Tạo Kịch bản (AI)&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;exclusiveDeal&quot;&gt;
+                        &lt;label for=&quot;exclusiveDeal&quot;&gt;Deal độc quyền&lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;input type=&quot;text&quot; id=&quot;exclusiveDealText&quot; placeholder=&quot;Nhập chi tiết...&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;voucher&quot;&gt;
+                        &lt;label for=&quot;voucher&quot;&gt;Voucher&lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;input type=&quot;text&quot; id=&quot;voucherText&quot; placeholder=&quot;Nhập chi tiết...&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;discussScript&quot;&gt;
+                        &lt;label for=&quot;discussScript&quot;&gt;Thảo luận Kịch bản&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;knowPromotion&quot;&gt;
+                        &lt;label for=&quot;knowPromotion&quot;&gt;Nắm Promotion&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;costume&quot;&gt;
+                        &lt;label for=&quot;costume&quot;&gt;Trang phục&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;background&quot;&gt;
+                        &lt;label for=&quot;background&quot;&gt;Background&lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;input type=&quot;text&quot; id=&quot;backgroundText&quot; placeholder=&quot;Nhập chi tiết...&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;taglineScheme&quot;&gt;
+                        &lt;label for=&quot;taglineScheme&quot;&gt;Tagline &amp; Scheme&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;checklist-item&quot;&gt;
+                    &lt;div class=&quot;checklist-item-header&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;lighting&quot;&gt;
+                        &lt;label for=&quot;lighting&quot;&gt;Ánh sáng&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;section-header&quot;&gt;Sau Phiên Live - Đánh Giá&lt;/div&gt;
+            &lt;div class=&quot;textarea-group&quot;&gt;
+                &lt;label for=&quot;script&quot;&gt;1. Kịch bản và hình thức:&lt;/label&gt;
+                &lt;textarea id=&quot;script&quot; placeholder=&quot;Đánh giá kịch bản và hình thức livestream...&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&quot;textarea-group&quot;&gt;
+                &lt;label for=&quot;interaction&quot;&gt;2. Nhu cầu &amp; tương tác:&lt;/label&gt;
+                &lt;textarea id=&quot;interaction&quot; placeholder=&quot;Đánh giá nhu cầu và tương tác với khán giả...&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&quot;textarea-group&quot;&gt;
+                &lt;label for=&quot;quality&quot;&gt;3. Chất lượng hình ảnh và âm thanh:&lt;/label&gt;
+                &lt;textarea id=&quot;quality&quot; placeholder=&quot;Đánh giá chất lượng kỹ thuật...&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&quot;textarea-group&quot;&gt;
+                &lt;label for=&quot;improvement&quot;&gt;4. Rút kinh nghiệm và cải thiện:&lt;/label&gt;
+                &lt;textarea id=&quot;improvement&quot; placeholder=&quot;Những điểm cần cải thiện cho lần sau...&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;button-group&quot;&gt;
+            &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;exportToExcel()&quot;&gt;
+                &lt;span&gt;📊&lt;/span&gt; Xuất Excel
+            &lt;/button&gt;
+            &lt;button class=&quot;btn btn-secondary&quot; onclick=&quot;previewData()&quot;&gt;
+                &lt;span&gt;👁️&lt;/span&gt; Xem trước dữ liệu
+            &lt;/button&gt;
+            &lt;button class=&quot;btn btn-secondary&quot; onclick=&quot;resetForm()&quot;&gt;
+                &lt;span&gt;🔄&lt;/span&gt; Reset Form
+            &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div id=&quot;messageArea&quot;&gt;&lt;/div&gt;
+
+        &lt;!-- Preview Modal --&gt;
+        &lt;div id=&quot;previewModal&quot; class=&quot;modal&quot;&gt;
+            &lt;div class=&quot;modal-content&quot;&gt;
+                &lt;div class=&quot;modal-header&quot;&gt;
+                    &lt;h2&gt;👁️ Xem Trước Dữ Liệu&lt;/h2&gt;
+                    &lt;button class=&quot;close-btn&quot; onclick=&quot;closePreview()&quot;&gt;&amp;times;&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;modal-body&quot;&gt;
+                    &lt;div class=&quot;modal-column&quot; id=&quot;previewColumnLeft&quot;&gt;&lt;/div&gt;
+                    &lt;div class=&quot;modal-column&quot; id=&quot;previewColumnRight&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
         &lt;/div&gt;
     &lt;/div&gt;
 
-    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js&quot;&gt;&lt;/script&gt;
     &lt;script&gt;
         function showMessage(message, isError = true) {
             const messageArea = document.getElementById(&#x27;messageArea&#x27;);
             messageArea.textContent = message;
-            messageArea.className = isError ? &#x27;error&#x27; : &#x27;success&#x27;;
+            messageArea.className = &#x27;message &#x27; + (isError ? &#x27;error&#x27; : &#x27;success&#x27;);
+            
+            setTimeout(() =&gt; {
+                messageArea.textContent = &#x27;&#x27;;
+                messageArea.className = &#x27;&#x27;;
+            }, 5000);
+        }
+
+        function previewData() {
+            const liveDate = document.getElementById(&#x27;liveDate&#x27;).value;
+            
+            if (!liveDate) {
+                showMessage(&#x27;❌ Vui lòng nhập ngày livestream!&#x27;);
+                return;
+            }
+
+            // Thu thập dữ liệu sessions
+            const sessions = [];
+            for (let i = 1; i &lt;= 8; i++) {
+                const roomId = document.getElementById(`roomId${i}`).value;
+                const time = document.getElementById(`time${i}`).value;
+                const hostName = document.getElementById(`hostName${i}`).value;
+                const ldName = document.getElementById(`ldName${i}`).value;
+                const follower = document.getElementById(`follower${i}`).value;
+                const order = document.getElementById(`order${i}`).value;
+                
+                if (roomId || time || hostName || ldName || follower || order) {
+                    sessions.push({
+                        session: i,
+                        roomId: roomId || &#x27;-&#x27;,
+                        time: time ? new Date(time).toLocaleString(&#x27;vi-VN&#x27;) : &#x27;-&#x27;,
+                        hostName: hostName || &#x27;-&#x27;,
+                        ldName: ldName || &#x27;-&#x27;,
+                        follower: follower || &#x27;0&#x27;,
+                        order: order || &#x27;0&#x27;
+                    });
+                }
+            }
+
+            // Thu thập checklist
+            const checklistItems = [
+                { id: &#x27;scriptTheme&#x27;, text: &#x27;scriptThemeText&#x27;, name: &#x27;Chủ đề live&#x27; },
+                { id: &#x27;aiScript&#x27;, text: null, name: &#x27;Tạo Kịch bản (AI)&#x27; },
+                { id: &#x27;exclusiveDeal&#x27;, text: &#x27;exclusiveDealText&#x27;, name: &#x27;Deal độc quyền&#x27; },
+                { id: &#x27;voucher&#x27;, text: &#x27;voucherText&#x27;, name: &#x27;Voucher&#x27; },
+                { id: &#x27;discussScript&#x27;, text: null, name: &#x27;Thảo luận Kịch bản&#x27; },
+                { id: &#x27;knowPromotion&#x27;, text: null, name: &#x27;Nắm Promotion&#x27; },
+                { id: &#x27;costume&#x27;, text: null, name: &#x27;Trang phục&#x27; },
+                { id: &#x27;background&#x27;, text: &#x27;backgroundText&#x27;, name: &#x27;Background&#x27; },
+                { id: &#x27;taglineScheme&#x27;, text: null, name: &#x27;Tagline &amp; Scheme&#x27; },
+                { id: &#x27;lighting&#x27;, text: null, name: &#x27;Ánh sáng&#x27; }
+            ];
+
+            // Cột trái: Thông tin chung + Bảng sessions
+            const leftHTML = `
+                &lt;div class=&quot;preview-section&quot;&gt;
+                    &lt;h3&gt;📅 Thông Tin Chung&lt;/h3&gt;
+                    &lt;div class=&quot;preview-item&quot;&gt;&lt;strong&gt;Ngày Livestream:&lt;/strong&gt; ${new Date(liveDate).toLocaleDateString(&#x27;vi-VN&#x27;)}&lt;/div&gt;
+                    &lt;div class=&quot;preview-item&quot;&gt;&lt;strong&gt;Chủ đề Live:&lt;/strong&gt; ${document.getElementById(&#x27;scriptThemeText&#x27;).value || &#x27;-&#x27;}&lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class=&quot;preview-section&quot;&gt;
+                    &lt;h3&gt;📋 Thông Tin Các Phiên&lt;/h3&gt;
+                    ${sessions.length &gt; 0 ? `
+                        &lt;table class=&quot;preview-table&quot;&gt;
+                            &lt;thead&gt;
+                                &lt;tr&gt;
+                                    &lt;th&gt;S&lt;/th&gt;
+                                    &lt;th&gt;Room ID&lt;/th&gt;
+                                    &lt;th&gt;Time&lt;/th&gt;
+                                    &lt;th&gt;Host&lt;/th&gt;
+                                    &lt;th&gt;LD&lt;/th&gt;
+                                    &lt;th&gt;Follow&lt;/th&gt;
+                                    &lt;th&gt;Order&lt;/th&gt;
+                                &lt;/tr&gt;
+                            &lt;/thead&gt;
+                            &lt;tbody&gt;
+                                ${sessions.map(s =&gt; `
+                                    &lt;tr&gt;
+                                        &lt;td&gt;${s.session}&lt;/td&gt;
+                                        &lt;td&gt;${s.roomId}&lt;/td&gt;
+                                        &lt;td&gt;${s.time}&lt;/td&gt;
+                                        &lt;td&gt;${s.hostName}&lt;/td&gt;
+                                        &lt;td&gt;${s.ldName}&lt;/td&gt;
+                                        &lt;td&gt;${s.follower}&lt;/td&gt;
+                                        &lt;td&gt;${s.order}&lt;/td&gt;
+                                    &lt;/tr&gt;
+                                `).join(&#x27;&#x27;)}
+                            &lt;/tbody&gt;
+                        &lt;/table&gt;
+                    ` : &#x27;&lt;div class=&quot;preview-item&quot;&gt;Chưa có dữ liệu phiên nào được nhập&lt;/div&gt;&#x27;}
+                &lt;/div&gt;
+
+                &lt;div class=&quot;preview-section&quot;&gt;
+                    &lt;h3&gt;✅ Checklist (${checklistItems.filter(item =&gt; document.getElementById(item.id).checked).length}/${checklistItems.length})&lt;/h3&gt;
+                    &lt;div class=&quot;checklist-preview&quot;&gt;
+                        ${checklistItems.map(item =&gt; {
+                            const checked = document.getElementById(item.id).checked;
+                            const detail = item.text ? document.getElementById(item.text).value : &#x27;&#x27;;
+                            return `
+                                &lt;div class=&quot;checklist-preview-item ${checked ? &#x27;checked&#x27; : &#x27;&#x27;}&quot;&gt;
+                                    &lt;span class=&quot;check-icon&quot;&gt;${checked ? &#x27;✓&#x27; : &#x27;○&#x27;}&lt;/span&gt;
+                                    ${item.name}
+                                    ${detail ? `&lt;br&gt;&lt;small style=&quot;color: var(--gray);&quot;&gt;${detail}&lt;/small&gt;` : &#x27;&#x27;}
+                                &lt;/div&gt;
+                            `;
+                        }).join(&#x27;&#x27;)}
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `;
+
+            // Cột phải: Đánh giá sau phiên live
+            const rightHTML = `
+                &lt;div class=&quot;preview-section&quot;&gt;
+                    &lt;h3&gt;📝 Đánh Giá Sau Phiên Live&lt;/h3&gt;
+                    &lt;div class=&quot;preview-item&quot;&gt;
+                        &lt;strong&gt;1. Kịch bản và hình thức:&lt;/strong&gt;&lt;br&gt;
+                        ${document.getElementById(&#x27;script&#x27;).value || &#x27;&lt;em style=&quot;color: var(--gray);&quot;&gt;Chưa có đánh giá&lt;/em&gt;&#x27;}
+                    &lt;/div&gt;
+                    &lt;div class=&quot;preview-item&quot;&gt;
+                        &lt;strong&gt;2. Nhu cầu &amp; tương tác:&lt;/strong&gt;&lt;br&gt;
+                        ${document.getElementById(&#x27;interaction&#x27;).value || &#x27;&lt;em style=&quot;color: var(--gray);&quot;&gt;Chưa có đánh giá&lt;/em&gt;&#x27;}
+                    &lt;/div&gt;
+                    &lt;div class=&quot;preview-item&quot;&gt;
+                        &lt;strong&gt;3. Chất lượng hình ảnh và âm thanh:&lt;/strong&gt;&lt;br&gt;
+                        ${document.getElementById(&#x27;quality&#x27;).value || &#x27;&lt;em style=&quot;color: var(--gray);&quot;&gt;Chưa có đánh giá&lt;/em&gt;&#x27;}
+                    &lt;/div&gt;
+                    &lt;div class=&quot;preview-item&quot;&gt;
+                        &lt;strong&gt;4. Rút kinh nghiệm và cải thiện:&lt;/strong&gt;&lt;br&gt;
+                        ${document.getElementById(&#x27;improvement&#x27;).value || &#x27;&lt;em style=&quot;color: var(--gray);&quot;&gt;Chưa có đánh giá&lt;/em&gt;&#x27;}
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `;
+
+            document.getElementById(&#x27;previewColumnLeft&#x27;).innerHTML = leftHTML;
+            document.getElementById(&#x27;previewColumnRight&#x27;).innerHTML = rightHTML;
+            document.getElementById(&#x27;previewModal&#x27;).classList.add(&#x27;active&#x27;);
+        }
+
+        function closePreview() {
+            document.getElementById(&#x27;previewModal&#x27;).classList.remove(&#x27;active&#x27;);
+        }
+
+        // Close modal khi click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById(&#x27;previewModal&#x27;);
+            if (event.target === modal) {
+                closePreview();
+            }
         }
 
         function sanitizeString(str) {
-            return str ? str.replace(/[\x00-\x1F\x7F-\x9F]/g, &#x27;&#x27;).trim() : &#x27;&#x27;;
+            if (!str) return &#x27;&#x27;;
+            return str.replace(/[\x00-\x1F\x7F-\x9F]/g, &#x27;&#x27;)
+                      .replace(/[\r\n]+/g, &#x27; &#x27;)
+                      .trim();
         }
 
         function exportToExcel() {
-            // Kiểm tra thư viện XLSX
-            if (typeof XLSX === &#x27;undefined&#x27;) {
-                showMessage(&#x27;Lỗi: Thư viện XLSX không được tải! Vui lòng kiểm tra kết nối mạng.&#x27;);
-                return;
-            }
-
-            // Lấy dữ liệu cơ bản
-            const roomId = sanitizeString(document.getElementById(&#x27;roomId&#x27;).value);
-            const liveDate = sanitizeString(document.getElementById(&#x27;liveDate&#x27;).value);
-            const scriptThemeText = sanitizeString(document.getElementById(&#x27;scriptThemeText&#x27;).value);
+            const liveDate = document.getElementById(&#x27;liveDate&#x27;).value;
             
-            // Kiểm tra dữ liệu bắt buộc
-            if (!roomId) {
-                showMessage(&#x27;Vui lòng nhập Room ID!&#x27;);
-                return;
-            }
             if (!liveDate) {
-                showMessage(&#x27;Vui lòng chọn ngày livestream!&#x27;);
-                return;
-            }
-            if (!scriptThemeText) {
-                showMessage(&#x27;Vui lòng nhập chủ đề live!&#x27;);
+                showMessage(&#x27;❌ Vui lòng nhập ngày livestream!&#x27;);
                 return;
             }
 
-            // Lấy dữ liệu đánh giá
+            const updateData = [];
+            for (let i = 1; i &lt;= 8; i++) {
+                const roomId = document.getElementById(`roomId${i}`).value;
+                const time = document.getElementById(`time${i}`).value;
+                const hostName = document.getElementById(`hostName${i}`).value;
+                const ldName = document.getElementById(`ldName${i}`).value;
+                const follower = document.getElementById(`follower${i}`).value;
+                const order = document.getElementById(`order${i}`).value;
+                
+                if (roomId || time || hostName || ldName || follower || order) {
+                    updateData.push({
+                        &#x27;Session&#x27;: i,
+                        &#x27;Room ID&#x27;: sanitizeString(roomId),
+                        &#x27;Time&#x27;: time,
+                        &#x27;Host name&#x27;: sanitizeString(hostName),
+                        &#x27;LD name&#x27;: sanitizeString(ldName),
+                        &#x27;Follower&#x27;: follower || &#x27;&#x27;,
+                        &#x27;Order&#x27;: order || &#x27;&#x27;
+                    });
+                }
+            }
+
             const script = sanitizeString(document.getElementById(&#x27;script&#x27;).value);
             const interaction = sanitizeString(document.getElementById(&#x27;interaction&#x27;).value);
             const quality = sanitizeString(document.getElementById(&#x27;quality&#x27;).value);
             const improvement = sanitizeString(document.getElementById(&#x27;improvement&#x27;).value);
+            const scriptThemeText = sanitizeString(document.getElementById(&#x27;scriptThemeText&#x27;).value);
 
-            // Lấy dữ liệu bảng host/director
-            const tableRows = document.querySelectorAll(&#x27;#liveTable tr&#x27;);
-            const liveData = [];
-            
-            tableRows.forEach((row, index) =&gt; {
-                const inputs = row.querySelectorAll(&#x27;input&#x27;);
-                const host = sanitizeString(inputs[0].value);
-                const director = sanitizeString(inputs[1].value);
-                const time = sanitizeString(inputs[2].value);
-
-                if (host || director || time) {
-                    liveData.push({
-                        &#x27;STT&#x27;: index + 1,
-                        &#x27;Host&#x27;: host || &#x27;&#x27;,
-                        &#x27;Director&#x27;: director || &#x27;&#x27;,
-                        &#x27;Thời gian&#x27;: time || &#x27;&#x27;
-                    });
-                }
-            });
-
-            // Lấy dữ liệu checklist
             const checklistItems = [
                 { id: &#x27;scriptTheme&#x27;, text: &#x27;scriptThemeText&#x27;, name: &#x27;Chủ đề live&#x27; },
                 { id: &#x27;aiScript&#x27;, text: null, name: &#x27;Tạo Kịch bản (AI)&#x27; },
@@ -394,24 +1222,23 @@ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6
 
             try {
                 const wb = XLSX.utils.book_new();
-
-                // Tạo sheet chính với cấu trúc tối ưu cho Pivot
                 const mainData = [];
-
-                // Nếu không có dữ liệu host/director, tạo 1 dòng dữ liệu cơ bản
-                if (liveData.length === 0) {
+                
+                if (updateData.length === 0) {
                     mainData.push({
-                        &#x27;Room ID&#x27;: roomId,
                         &#x27;Ngày Livestream&#x27;: liveDate,
+                        &#x27;Session&#x27;: &#x27;&#x27;,
+                        &#x27;Room ID&#x27;: &#x27;&#x27;,
+                        &#x27;Time&#x27;: &#x27;&#x27;,
+                        &#x27;Host name&#x27;: &#x27;&#x27;,
+                        &#x27;LD name&#x27;: &#x27;&#x27;,
+                        &#x27;Follower&#x27;: &#x27;&#x27;,
+                        &#x27;Order&#x27;: &#x27;&#x27;,
                         &#x27;Chủ đề Live&#x27;: scriptThemeText,
-                        &#x27;Host Name&#x27;: &#x27;&#x27;,
-                        &#x27;Live Director Name&#x27;: &#x27;&#x27;,
-                        &#x27;Thời gian bắt đầu&#x27;: &#x27;&#x27;,
                         &#x27;Kịch bản và hình thức&#x27;: script,
                         &#x27;Nhu cầu &amp; tương tác&#x27;: interaction,
                         &#x27;Chất lượng hình ảnh và âm thanh&#x27;: quality,
                         &#x27;Rút kinh nghiệm và cải thiện&#x27;: improvement,
-                        // Thêm tất cả checklist items vào cùng dòng
                         &#x27;Chủ đề live - Hoàn thành&#x27;: document.getElementById(&#x27;scriptTheme&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
                         &#x27;Chủ đề live - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;scriptThemeText&#x27;).value),
                         &#x27;Tạo Kịch bản AI - Hoàn thành&#x27;: document.getElementById(&#x27;aiScript&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
@@ -428,73 +1255,76 @@ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6
                         &#x27;Ánh sáng - Hoàn thành&#x27;: document.getElementById(&#x27;lighting&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;
                     });
                 } else {
-                    // Tạo một dòng cho mỗi host/director với thông tin đầy đủ
-                    liveData.forEach(live =&gt; {
-                        if (live.Host || live.Director || live[&#x27;Thời gian&#x27;]) {
-                            mainData.push({
-                                &#x27;Room ID&#x27;: roomId,
-                                &#x27;Ngày Livestream&#x27;: liveDate,
-                                &#x27;Chủ đề Live&#x27;: scriptThemeText,
-                                &#x27;Host Name&#x27;: live.Host,
-                                &#x27;Live Director Name&#x27;: live.Director,
-                                &#x27;Thời gian bắt đầu&#x27;: live[&#x27;Thời gian&#x27;],
-                                &#x27;Kịch bản và hình thức&#x27;: script,
-                                &#x27;Nhu cầu &amp; tương tác&#x27;: interaction,
-                                &#x27;Chất lượng hình ảnh và âm thanh&#x27;: quality,
-                                &#x27;Rút kinh nghiệm và cải thiện&#x27;: improvement,
-                                // Thêm tất cả checklist items vào cùng dòng
-                                &#x27;Chủ đề live - Hoàn thành&#x27;: document.getElementById(&#x27;scriptTheme&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Chủ đề live - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;scriptThemeText&#x27;).value),
-                                &#x27;Tạo Kịch bản AI - Hoàn thành&#x27;: document.getElementById(&#x27;aiScript&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Deal độc quyền - Hoàn thành&#x27;: document.getElementById(&#x27;exclusiveDeal&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Deal độc quyền - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;exclusiveDealText&#x27;).value),
-                                &#x27;Voucher - Hoàn thành&#x27;: document.getElementById(&#x27;voucher&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Voucher - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;voucherText&#x27;).value),
-                                &#x27;Thảo luận Kịch bản - Hoàn thành&#x27;: document.getElementById(&#x27;discussScript&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Nắm Promotion - Hoàn thành&#x27;: document.getElementById(&#x27;knowPromotion&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Trang phục - Hoàn thành&#x27;: document.getElementById(&#x27;costume&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Background - Hoàn thành&#x27;: document.getElementById(&#x27;background&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Background - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;backgroundText&#x27;).value),
-                                &#x27;Tagline &amp; Scheme - Hoàn thành&#x27;: document.getElementById(&#x27;taglineScheme&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
-                                &#x27;Ánh sáng - Hoàn thành&#x27;: document.getElementById(&#x27;lighting&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;
-                            });
-                        }
+                    updateData.forEach(update =&gt; {
+                        mainData.push({
+                            &#x27;Ngày Livestream&#x27;: liveDate,
+                            &#x27;Session&#x27;: update.Session,
+                            &#x27;Room ID&#x27;: update[&#x27;Room ID&#x27;],
+                            &#x27;Time&#x27;: update.Time,
+                            &#x27;Host name&#x27;: update[&#x27;Host name&#x27;],
+                            &#x27;LD name&#x27;: update[&#x27;LD name&#x27;],
+                            &#x27;Follower&#x27;: update.Follower,
+                            &#x27;Order&#x27;: update.Order,
+                            &#x27;Chủ đề Live&#x27;: scriptThemeText,
+                            &#x27;Kịch bản và hình thức&#x27;: script,
+                            &#x27;Nhu cầu &amp; tương tác&#x27;: interaction,
+                            &#x27;Chất lượng hình ảnh và âm thanh&#x27;: quality,
+                            &#x27;Rút kinh nghiệm và cải thiện&#x27;: improvement,
+                            &#x27;Chủ đề live - Hoàn thành&#x27;: document.getElementById(&#x27;scriptTheme&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Chủ đề live - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;scriptThemeText&#x27;).value),
+                            &#x27;Tạo Kịch bản AI - Hoàn thành&#x27;: document.getElementById(&#x27;aiScript&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Deal độc quyền - Hoàn thành&#x27;: document.getElementById(&#x27;exclusiveDeal&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Deal độc quyền - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;exclusiveDealText&#x27;).value),
+                            &#x27;Voucher - Hoàn thành&#x27;: document.getElementById(&#x27;voucher&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Voucher - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;voucherText&#x27;).value),
+                            &#x27;Thảo luận Kịch bản - Hoàn thành&#x27;: document.getElementById(&#x27;discussScript&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Nắm Promotion - Hoàn thành&#x27;: document.getElementById(&#x27;knowPromotion&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Trang phục - Hoàn thành&#x27;: document.getElementById(&#x27;costume&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Background - Hoàn thành&#x27;: document.getElementById(&#x27;background&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Background - Chi tiết&#x27;: sanitizeString(document.getElementById(&#x27;backgroundText&#x27;).value),
+                            &#x27;Tagline &amp; Scheme - Hoàn thành&#x27;: document.getElementById(&#x27;taglineScheme&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;,
+                            &#x27;Ánh sáng - Hoàn thành&#x27;: document.getElementById(&#x27;lighting&#x27;).checked ? &#x27;Có&#x27; : &#x27;Không&#x27;
+                        });
                     });
                 }
 
-                // Tạo worksheet chính
                 const ws1 = XLSX.utils.json_to_sheet(mainData);
                 XLSX.utils.book_append_sheet(wb, ws1, &#x27;Dữ liệu tổng hợp&#x27;);
 
-                // Tạo sheet tóm tắt
                 const summaryData = [
-                    { &#x27;Thông tin&#x27;: &#x27;Room ID&#x27;, &#x27;Giá trị&#x27;: roomId },
                     { &#x27;Thông tin&#x27;: &#x27;Ngày Livestream&#x27;, &#x27;Giá trị&#x27;: liveDate },
                     { &#x27;Thông tin&#x27;: &#x27;Chủ đề Live&#x27;, &#x27;Giá trị&#x27;: scriptThemeText },
                     { &#x27;Thông tin&#x27;: &#x27;Tổng checklist hoàn thành&#x27;, &#x27;Giá trị&#x27;: checklistItems.filter(item =&gt; document.getElementById(item.id).checked).length + &#x27;/&#x27; + checklistItems.length },
-                    { &#x27;Thông tin&#x27;: &#x27;Số lượng host/director&#x27;, &#x27;Giá trị&#x27;: liveData.length },
+                    { &#x27;Thông tin&#x27;: &#x27;Số session đã nhập&#x27;, &#x27;Giá trị&#x27;: updateData.length },
                     { &#x27;Thông tin&#x27;: &#x27;Ngày xuất báo cáo&#x27;, &#x27;Giá trị&#x27;: new Date().toLocaleDateString(&#x27;vi-VN&#x27;) }
                 ];
 
                 const ws2 = XLSX.utils.json_to_sheet(summaryData);
                 XLSX.utils.book_append_sheet(wb, ws2, &#x27;Tóm tắt&#x27;);
 
-                // Xuất file
-                const fileName = `Livestream_${roomId}_${scriptThemeText.replace(/[^a-zA-Z0-9]/g, &#x27;_&#x27;)}_${new Date().getTime()}.xlsx`;
+                const fileName = `Livestream_${liveDate}_${new Date().getTime()}.xlsx`;
                 XLSX.writeFile(wb, fileName);
                 
-                showMessage(&#x27;Xuất Excel thành công!&#x27;, false);
+                showMessage(&#x27;✅ Xuất Excel thành công!&#x27;, false);
                 
             } catch (error) {
                 console.error(&#x27;Export Error:&#x27;, error);
-                showMessage(&#x27;Lỗi khi xuất file Excel: &#x27; + error.message);
+                showMessage(&#x27;❌ Lỗi khi xuất file Excel: &#x27; + error.message);
             }
         }
 
         function resetForm() {
-            // Reset tất cả input text và textarea
-            document.getElementById(&#x27;roomId&#x27;).value = &#x27;&#x27;;
             document.getElementById(&#x27;liveDate&#x27;).value = &#x27;&#x27;;
+            
+            for (let i = 1; i &lt;= 8; i++) {
+                document.getElementById(`roomId${i}`).value = &#x27;&#x27;;
+                document.getElementById(`time${i}`).value = &#x27;&#x27;;
+                document.getElementById(`hostName${i}`).value = &#x27;&#x27;;
+                document.getElementById(`ldName${i}`).value = &#x27;&#x27;;
+                document.getElementById(`follower${i}`).value = &#x27;&#x27;;
+                document.getElementById(`order${i}`).value = &#x27;&#x27;;
+            }
+            
             document.getElementById(&#x27;script&#x27;).value = &#x27;&#x27;;
             document.getElementById(&#x27;interaction&#x27;).value = &#x27;&#x27;;
             document.getElementById(&#x27;quality&#x27;).value = &#x27;&#x27;;
@@ -504,51 +1334,18 @@ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6
             document.getElementById(&#x27;voucherText&#x27;).value = &#x27;&#x27;;
             document.getElementById(&#x27;backgroundText&#x27;).value = &#x27;&#x27;;
             
-            // Reset tất cả checkbox
             const checkboxes = document.querySelectorAll(&#x27;input[type=&quot;checkbox&quot;]&#x27;);
             checkboxes.forEach(checkbox =&gt; checkbox.checked = false);
 
-            // Reset bảng
-            const tableBody = document.getElementById(&#x27;liveTable&#x27;);
-            tableBody.innerHTML = `
-                &lt;tr&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 1&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 1&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 2&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 2&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 3&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 3&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 4&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 4&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên host 5&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;text&quot; placeholder=&quot;Nhập tên director 5&quot;&gt;&lt;/td&gt;
-                    &lt;td&gt;&lt;input type=&quot;datetime-local&quot; placeholder=&quot;Chọn thời gian&quot;&gt;&lt;/td&gt;
-                &lt;/tr&gt;
-            `;
-
-            // Reset thông báo
             document.getElementById(&#x27;messageArea&#x27;).textContent = &#x27;&#x27;;
             
-            showMessage(&#x27;Form đã được reset thành công!&#x27;, false);
+            showMessage(&#x27;✅ Form đã được reset thành công!&#x27;, false);
         }
 
-        // Kiểm tra thư viện XLSX khi trang load
         window.addEventListener(&#x27;load&#x27;, function() {
             setTimeout(() =&gt; {
                 if (typeof XLSX === &#x27;undefined&#x27;) {
-                    showMessage(&#x27;Cảnh báo: Thư viện XLSX chưa được tải. Vui lòng kiểm tra kết nối mạng.&#x27;);
+                    showMessage(&#x27;⚠️ Thư viện XLSX chưa được tải. Vui lòng kiểm tra kết nối mạng.&#x27;);
                 }
             }, 2000);
         });
