@@ -1,34 +1,83 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>All Combined HTMLs</title>
-<style>
-body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6;}
-.header {padding: 16px; text-align: center; background: linear-gradient(90deg, #7ef9ff, #ff6ec7, #a78bfa); color: #061124;}
-.toolbar {display: flex; gap: 8px; flex-wrap: wrap; padding: 12px; background: #fff; align-items: center; justify-content: center;}
-.tab-btn {padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd; background: #fff; cursor: pointer;}
-.tab-btn.active {background: linear-gradient(90deg, #7ef9ff, #ff6ec7, #a78bfa); color: #061124; border-color: #111;}
-.container {padding: 12px;}
-.file-frame {width: 100%; height: 80vh; border: 1px solid #ccc; border-radius: 8px; display: none;}
-.file-frame.active {display: block;}
-</style>
-</head>
-<body>
-<div class="header"><h1>Bộ tool Ecommerce iBasic</h1></div>
-<div class="toolbar">
-<button class="tab-btn" data-target="file1">Livestream Dashboard</button>
-<button class="tab-btn" data-target="file2">Livestream Script Gen Fixed</button>
-<button class="tab-btn" data-target="file3">Underwear Storytelling System</button>
-<button class="tab-btn" data-target="file4">Lingerie Desriptions</button>
-<button class="tab-btn" data-target="file5">Smooth Thumbnail Maker</button>
-<button class="tab-btn" data-target="file6">Enhanced Dashboard Fixed</button>
 
-<button class="tab-btn" data-target="file7">Ecommerce Operation</button>
-</div>
-<div class="container">
-<iframe id="file1" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All Combined HTMLs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f3f4f6;
+        }
+
+        .header {
+            padding: 16px;
+            text-align: center;
+            background: linear-gradient(90deg, #7ef9ff, #ff6ec7, #a78bfa);
+            color: #061124;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 12px;
+            background: #fff;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(90deg, #7ef9ff, #ff6ec7, #a78bfa);
+            color: #061124;
+            border-color: #111;
+        }
+
+        .container {
+            padding: 12px;
+        }
+
+        .file-frame {
+            width: 100%;
+            height: 80vh;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .file-frame.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Bộ tool Ecommerce iBasic</h1>
+    </div>
+    <div class="toolbar">
+        <button class="tab-btn" data-target="file1">Livestream Dashboard</button>
+        <button class="tab-btn" data-target="file2">Livestream Script Gen Fixed</button>
+        <button class="tab-btn" data-target="file3">Underwear Storytelling System</button>
+        <button class="tab-btn" data-target="file4">Lingerie Desriptions</button>
+        <button class="tab-btn" data-target="file5">Smooth Thumbnail Maker</button>
+        <button class="tab-btn" data-target="file6">Enhanced Dashboard Fixed</button>
+
+        <button class="tab-btn" data-target="file7">Ecommerce Operation</button>
+    </div>
+    <div class="container">
+        <iframe id="file1" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -1359,7 +1408,7 @@ body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6
     &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;"></iframe>
-<iframe id="file2" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
+        <iframe id="file2" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -2108,8 +2157,8 @@ YÊU CẦU:
 
 Bắt đầu tạo kịch bản:`;
 
-            // Updated API URL to use gemini-2.5-flash-preview-09-2025
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            // Updated API URL to use gemini-2.5-flash
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
             const response = await fetch(apiUrl, {
                 method: &#x27;POST&#x27;,
@@ -2256,7 +2305,7 @@ Bắt đầu tạo kịch bản:`;
     &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;"></iframe>
-<iframe id="file3" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
+        <iframe id="file3" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot; /&gt;
@@ -2649,7 +2698,7 @@ Bắt đầu tạo kịch bản:`;
     &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js&quot;&gt;&lt;/script&gt;
     &lt;script&gt;
         // --- Cấu hình API và logic Thử lại (Fix lỗi API) ---
-        const GEMINI_MODEL = &quot;gemini-2.5-flash-preview-09-2025&quot;; // Cập nhật model ổn định hơn
+        const GEMINI_MODEL = &quot;gemini-2.5-flash&quot;; // Cập nhật model ổn định hơn
         const API_BASE_URL = &quot;https://generativelanguage.googleapis.com/v1beta/models/&quot;;
 
         // Hàm fetch có Tự động Thử lại (Exponential Backoff) để tăng độ ổn định
@@ -2801,7 +2850,8 @@ Bắt đầu tạo kịch bản:`;
                 2. Hấp dẫn, gây tò mò
                 3. Phù hợp với framework Hook-Problem-Solution-Benefit-CTA
                 4. Trả về dạng danh sách đánh số từ 1-10
-                5. Mỗi chủ đề trên một dòng riêng`;
+                5. Mỗi chủ đề trên một dòng riêng
+                6. CHỈ trả về danh sách, KHÔNG viết mở đầu hay kết luận`;
 
                 const apiUrl = `${API_BASE_URL}${GEMINI_MODEL}:generateContent?key=${apiKey}`;
 
@@ -2832,9 +2882,16 @@ Bắt đầu tạo kịch bản:`;
 
                 const topicsText = data.candidates[0].content.parts[0].text;
                 const topics = topicsText.split(&#x27;\n&#x27;)
-                    .filter(t =&gt; t.trim())
-                    .map(t =&gt; t.replace(/^\d+\.\s*/, &#x27;&#x27;).trim())
-                    .filter(t =&gt; t.length &gt; 10)
+                    .map(t =&gt; t.trim())
+                    .filter(t =&gt; t.length &gt; 0)
+                    // Chỉ giữ dòng bắt đầu bằng số, dấu -, *, hoặc bullet (loại bỏ dòng giới thiệu/kết luận)
+                    .filter(t =&gt; /^[\d\*\-•]/.test(t))
+                    // Loại bỏ markdown bold/italic và ký tự đánh số
+                    .map(t =&gt; t.replace(/\*\*/g, &#x27;&#x27;)
+                               .replace(/^\d+[\.\)\-]\s*/, &#x27;&#x27;)
+                               .replace(/^[\-\*•]\s*/, &#x27;&#x27;)
+                               .trim())
+                    .filter(t =&gt; t.length &gt; 5)
                     .slice(0, 10);
 
                 topicSelect.innerHTML = &#x27;&lt;option value=&quot;&quot;&gt;Chọn một chủ đề...&lt;/option&gt;&#x27;;
@@ -3103,7 +3160,7 @@ Bắt đầu tạo kịch bản:`;
 &lt;/body&gt;
 &lt;/html&gt;
 "></iframe>
-<iframe id="file4" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
+        <iframe id="file4" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -3609,7 +3666,7 @@ Bắt đầu tạo kịch bản:`;
                     }
                 }`;
 
-                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
                     method: &#x27;POST&#x27;,
                     headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
                     body: JSON.stringify({
@@ -3773,7 +3830,7 @@ Bắt đầu tạo kịch bản:`;
     &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;"></iframe>
-<iframe id="file5" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
+        <iframe id="file5" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -5314,7 +5371,7 @@ Bắt đầu tạo kịch bản:`;
 &lt;/body&gt;
 &lt;/html&gt;
 "></iframe>
-<iframe id="file6" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
+        <iframe id="file6" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -6874,7 +6931,7 @@ Bắt đầu tạo kịch bản:`;
 
                 // --- UPDATED API ENDPOINT AND MODEL ---
                 const apiKey = geminiApiKey; // Use the provided API key
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
                 const payload = {
                     contents: [{ parts: [{ text: prompt }] }],
@@ -6971,7 +7028,7 @@ Bắt đầu tạo kịch bản:`;
                 } else if (error.message.includes(&#x27;Failed to fetch&#x27;)) {
                     errorMessage = &#x27;Không thể kết nối đến API. Kiểm tra kết nối internet.&#x27;;
                 } else if (error.message.includes(&#x27;NOT_FOUND&#x27;)) {
-                    errorMessage = &#x27;Model không tìm thấy. Đã sử dụng gemini-2.5-flash-preview-09-2025.&#x27;;
+                    errorMessage = &#x27;Model không tìm thấy. Đã sử dụng gemini-2.5-flash.&#x27;;
                 } else {
                     errorMessage = error.message;
                 }
@@ -7360,7 +7417,7 @@ Bắt đầu tạo kịch bản:`;
 &lt;/body&gt;
 &lt;/html&gt;"></iframe>
 
-<iframe id="file7" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
+        <iframe id="file7" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -8614,20 +8671,21 @@ Bắt đầu tạo kịch bản:`;
     &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;"></iframe>
-</div>
-<script>
-const buttons=document.querySelectorAll('.tab-btn');
-const frames=document.querySelectorAll('.file-frame');
-buttons.forEach((btn)=>{
-  btn.addEventListener('click',()=>{
-    buttons.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    frames.forEach(f=>f.classList.remove('active'));
-    document.getElementById(btn.dataset.target).classList.add('active');
-  });
-});
-buttons[0].classList.add('active');
-frames[0].classList.add('active');
-</script>
+    </div>
+    <script>
+        const buttons = document.querySelectorAll('.tab-btn');
+        const frames = document.querySelectorAll('.file-frame');
+        buttons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                frames.forEach(f => f.classList.remove('active'));
+                document.getElementById(btn.dataset.target).classList.add('active');
+            });
+        });
+        buttons[0].classList.add('active');
+        frames[0].classList.add('active');
+    </script>
 </body>
+
 </html>
