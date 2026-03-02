@@ -2840,18 +2840,25 @@ Bắt đầu tạo kịch bản:`;
             };
 
             try {
-                const prompt = `Tạo danh sách 10 chủ đề storytelling hấp dẫn về nội y:
-                - Từ khóa: &quot;${keyword}&quot;
-                - Danh mục: &quot;${categoryNames[category]}&quot;
-                - Đối tượng: &quot;${audienceNames[audience]}&quot;
+                const prompt = `Hãy tạo CHÍNH XÁC 10 chủ đề storytelling hấp dẫn về nội y.
 
-                Yêu cầu:
-                1. Mỗi chủ đề ngắn gọn (1-2 câu)
-                2. Hấp dẫn, gây tò mò
-                3. Phù hợp với framework Hook-Problem-Solution-Benefit-CTA
-                4. Trả về dạng danh sách đánh số từ 1-10
-                5. Mỗi chủ đề trên một dòng riêng
-                6. CHỈ trả về danh sách, KHÔNG viết mở đầu hay kết luận`;
+Thông tin:
+- Từ khóa: &quot;${keyword}&quot;
+- Danh mục: &quot;${categoryNames[category]}&quot;
+- Đối tượng: &quot;${audienceNames[audience]}&quot;
+
+Yêu cầu BẮT BUỘC:
+1. Tạo ĐÚNG 10 chủ đề, không hơn không kém
+2. Mỗi chủ đề là MỘT CỤM TỪ NGẮN GỌN (tối đa 15 từ), hấp dẫn, gây tò mò
+3. Phù hợp với framework Hook-Problem-Solution-Benefit-CTA
+4. FORMAT BẮT BUỘC: Mỗi chủ đề trên một dòng, đánh số từ 1 đến 10 theo format &quot;số. nội dung&quot;
+5. KHÔNG viết mở đầu, kết luận, giải thích hay bất kỳ text nào khác ngoài 10 dòng chủ đề
+
+Ví dụ format đúng:
+1. Chủ đề đầu tiên ở đây
+2. Chủ đề thứ hai ở đây
+...
+10. Chủ đề thứ mười ở đây`;
 
                 const apiUrl = `${API_BASE_URL}${GEMINI_MODEL}:generateContent?key=${apiKey}`;
 
@@ -2868,7 +2875,7 @@ Bắt đầu tạo kịch bản:`;
                         }],
                         generationConfig: {
                             temperature: 0.8,
-                            maxOutputTokens: 1500,
+                            maxOutputTokens: 2000,
                             topP: 0.9
                         }
                     })
@@ -2881,18 +2888,34 @@ Bắt đầu tạo kịch bản:`;
                 }
 
                 const topicsText = data.candidates[0].content.parts[0].text;
-                const topics = topicsText.split(&#x27;\n&#x27;)
-                    .map(t =&gt; t.trim())
-                    .filter(t =&gt; t.length &gt; 0)
-                    // Chỉ giữ dòng bắt đầu bằng số, dấu -, *, hoặc bullet (loại bỏ dòng giới thiệu/kết luận)
-                    .filter(t =&gt; /^[\d\*\-•]/.test(t))
-                    // Loại bỏ markdown bold/italic và ký tự đánh số
-                    .map(t =&gt; t.replace(/\*\*/g, &#x27;&#x27;)
-                               .replace(/^\d+[\.\)\-]\s*/, &#x27;&#x27;)
-                               .replace(/^[\-\*•]\s*/, &#x27;&#x27;)
-                               .trim())
-                    .filter(t =&gt; t.length &gt; 5)
-                    .slice(0, 10);
+                console.log(&#x27;Raw topics response:&#x27;, topicsText);
+
+                // Parse topics bằng regex match numbered items (hỗ trợ multi-line topics)
+                let topics = [];
+                const matches = topicsText.match(/(?:^|\n)\s*\*{0,2}\s*\d+[\.)\-:\s]+[\s\S]*?(?=\n\s*\*{0,2}\s*\d+[\.)\-:\s]|$)/g);
+                if (matches) {
+                    topics = matches
+                        .map(t =&gt; t.replace(/\*\*/g, &#x27;&#x27;)
+                                   .replace(/^\s*\d+[\.)\-:\s]+/, &#x27;&#x27;)
+                                   .replace(/\n/g, &#x27; &#x27;)
+                                   .trim())
+                        .filter(t =&gt; t.length &gt; 5)
+                        .slice(0, 10);
+                }
+
+                // Fallback: nếu regex match không được, thử split theo dòng
+                if (topics.length &lt; 3) {
+                    console.log(&#x27;Regex match got only&#x27;, topics.length, &#x27;topics, trying line split fallback...&#x27;);
+                    topics = topicsText.split(&#x27;\n&#x27;)
+                        .map(t =&gt; t.trim())
+                        .filter(t =&gt; t.length &gt; 5)
+                        .map(t =&gt; t.replace(/\*\*/g, &#x27;&#x27;)
+                                   .replace(/^\d+[\.)\-:\s]+/, &#x27;&#x27;)
+                                   .replace(/^[\-\*•\#]+\s*/, &#x27;&#x27;)
+                                   .trim())
+                        .filter(t =&gt; t.length &gt; 5)
+                        .slice(0, 10);
+                }
 
                 topicSelect.innerHTML = &#x27;&lt;option value=&quot;&quot;&gt;Chọn một chủ đề...&lt;/option&gt;&#x27;;
 
@@ -2911,24 +2934,25 @@ Bắt đầu tạo kịch bản:`;
             } catch (error) {
                 console.error(&#x27;Error generating topics:&#x27;, error);
                 // Cập nhật thông báo lỗi rõ ràng hơn
-                showError(&#x27;storyOutput&#x27;, `Lỗi khi tạo chủ đề: ${error.message}. Vui lòng kiểm tra API key và thử lại.`); 
+                showError(&#x27;storyOutput&#x27;, `Lỗi khi tạo chủ đề: ${error.message}. Vui lòng kiểm tra API key và thử lại.`);
                 topicSelect.innerHTML = &#x27;&lt;option value=&quot;&quot;&gt;Lỗi khi tạo chủ đề. Vui lòng kiểm tra API key và thử lại.&lt;/option&gt;&#x27;;
             }
         }
 
-        // Story Generation
-        async function generateStory() {
-            const keyword = document.getElementById(&#x27;keywordInput&#x27;).value.trim();
-            const audience = document.getElementById(&#x27;audienceSelect&#x27;).value;
-            const category = document.getElementById(&#x27;categorySelect&#x27;).value;
-            const topic = document.getElementById(&#x27;topicSelect&#x27;).value;
-            const apiKey = decryptApiKey();
 
-            if (!validateInputs(keyword, apiKey, true, topic)) return;
+                // Story Generation
+                async function generateStory() {
+                const keyword = document.getElementById(&#x27;keywordInput&#x27;).value.trim();
+                const audience = document.getElementById(&#x27;audienceSelect&#x27;).value;
+                const category = document.getElementById(&#x27;categorySelect&#x27;).value;
+                const topic = document.getElementById(&#x27;topicSelect&#x27;).value;
+                const apiKey = decryptApiKey();
 
-            showLoading(&#x27;storyOutput&#x27;, &#x27;Gemini AI đang tạo storytelling...&#x27;);
+                if (!validateInputs(keyword, apiKey, true, topic)) return;
 
-            const categoryNames = {
+                showLoading(&#x27;storyOutput&#x27;, &#x27;Gemini AI đang tạo storytelling...&#x27;);
+
+                const categoryNames = {
                 &#x27;tips&#x27;: &#x27;Tips - Mẹo sử dụng&#x27;,
                 &#x27;hack&#x27;: &#x27;Hack - Thủ thuật&#x27;,
                 &#x27;material&#x27;: &#x27;Chất liệu&#x27;,
@@ -2936,17 +2960,17 @@ Bắt đầu tạo kịch bản:`;
                 &#x27;seasonal&#x27;: &#x27;Mùa lễ hội&#x27;,
                 &#x27;mixmatch&#x27;: &#x27;Mix &amp; Match&#x27;,
                 &#x27;color&#x27;: &#x27;Màu sắc&#x27;
-            };
+                };
 
-            const audienceNames = {
+                const audienceNames = {
                 &#x27;women&#x27;: &#x27;Phụ nữ&#x27;,
                 &#x27;men&#x27;: &#x27;Nam giới&#x27;,
                 &#x27;children&#x27;: &#x27;Trẻ em&#x27;,
                 &#x27;students&#x27;: &#x27;Học sinh&#x27;,
                 &#x27;homewear&#x27;: &#x27;Homewear&#x27;
-            };
+                };
 
-            try {
+                try {
                 const prompt = `Tạo storytelling chuyên nghiệp cho sản phẩm nội y:
 
                 THÔNG TIN:
@@ -2975,44 +2999,44 @@ Bắt đầu tạo kịch bản:`;
                 const apiUrl = `${API_BASE_URL}${GEMINI_MODEL}:generateContent?key=${apiKey}`;
 
                 const response = await fetchWithRetry(apiUrl, {
-                    method: &#x27;POST&#x27;,
-                    headers: {
-                        &#x27;Content-Type&#x27;: &#x27;application/json&#x27;
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: prompt
-                            }]
-                        }],
-                        generationConfig: {
-                            temperature: 0.7,
-                            maxOutputTokens: 2048,
-                            topP: 0.8
-                        }
-                    })
+                method: &#x27;POST&#x27;,
+                headers: {
+                &#x27;Content-Type&#x27;: &#x27;application/json&#x27;
+                },
+                body: JSON.stringify({
+                contents: [{
+                parts: [{
+                text: prompt
+                }]
+                }],
+                generationConfig: {
+                temperature: 0.7,
+                maxOutputTokens: 8192,
+                topP: 0.8
+                }
+                })
                 });
 
                 const data = await response.json();
 
                 if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-                    throw new Error(&#x27;Định dạng phản hồi từ Gemini API không hợp lệ. Có thể API Key không chính xác.&#x27;);
+                throw new Error(&#x27;Định dạng phản hồi từ Gemini API không hợp lệ. Có thể API Key không chính xác.&#x27;);
                 }
 
                 const story = data.candidates[0].content.parts[0].text;
                 generatedStoryContent = story;
                 displayGeneratedStory(story, keyword, category, topic);
 
-            } catch (error) {
+                } catch (error) {
                 console.error(&#x27;API Error:&#x27;, error);
                 // Cập nhật thông báo lỗi rõ ràng hơn
                 showError(&#x27;storyOutput&#x27;, `Lỗi khi tạo storytelling: ${error.message}. Vui lòng kiểm tra API key và thử lại.`);
-            }
-        }
+                }
+                }
 
-        // Display generated story
-        function displayGeneratedStory(story, keyword, category, topic) {
-            const categoryNames = {
+                // Display generated story
+                function displayGeneratedStory(story, keyword, category, topic) {
+                const categoryNames = {
                 &#x27;tips&#x27;: &#x27;TIPS&#x27;,
                 &#x27;hack&#x27;: &#x27;HACK&#x27;,
                 &#x27;material&#x27;: &#x27;CHẤT LIỆU&#x27;,
@@ -3020,67 +3044,69 @@ Bắt đầu tạo kịch bản:`;
                 &#x27;seasonal&#x27;: &#x27;MÙA LỄ HỘI&#x27;,
                 &#x27;mixmatch&#x27;: &#x27;MIX &amp; MATCH&#x27;,
                 &#x27;color&#x27;: &#x27;MÀU SẮC&#x27;
-            };
+                };
 
-            // Format story content with proper paragraphs
-            const formattedStory = story
+                // Format story content with proper paragraphs
+                const formattedStory = story
                 .split(&#x27;\n&#x27;)
                 .filter(line =&gt; line.trim())
                 .map(line =&gt; `&lt;p class=&quot;mb-4&quot;&gt;${line.trim()}&lt;/p&gt;`)
                 .join(&#x27;&#x27;);
 
-            document.getElementById(&#x27;storyOutput&#x27;).innerHTML = `
+                document.getElementById(&#x27;storyOutput&#x27;).innerHTML = `
                 &lt;div class=&quot;border-b border-gray-200 pb-4 mb-6&quot;&gt;
-                    &lt;div class=&quot;flex items-center justify-between mb-3&quot;&gt;
-                        &lt;div class=&quot;flex items-center space-x-3&quot;&gt;
-                            &lt;span class=&quot;bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-semibold px-3 py-1 rounded-full&quot;&gt;
-                                ${categoryNames[category]}
-                            &lt;/span&gt;
-                            &lt;span class=&quot;text-sm text-gray-500&quot;&gt;
-                                &lt;i class=&quot;fas fa-key mr-1&quot;&gt;&lt;/i&gt;
-                                ${keyword}
-                            &lt;/span&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;flex items-center space-x-2 text-xs text-gray-500&quot;&gt;
-                            &lt;i class=&quot;fas fa-robot&quot;&gt;&lt;/i&gt;
-                            &lt;span&gt;Generated by Gemini AI&lt;/span&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                    &lt;h3 class=&quot;text-xl font-bold text-gray-800&quot;&gt;${topic}&lt;/h3&gt;
+                &lt;div class=&quot;flex items-center justify-between mb-3&quot;&gt;
+                &lt;div class=&quot;flex items-center space-x-3&quot;&gt;
+                &lt;span class=&quot;bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-semibold px-3
+                py-1 rounded-full&quot;&gt;
+                ${categoryNames[category]}
+                &lt;/span&gt;
+                &lt;span class=&quot;text-sm text-gray-500&quot;&gt;
+                &lt;i class=&quot;fas fa-key mr-1&quot;&gt;&lt;/i&gt;
+                ${keyword}
+                &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;flex items-center space-x-2 text-xs text-gray-500&quot;&gt;
+                &lt;i class=&quot;fas fa-robot&quot;&gt;&lt;/i&gt;
+                &lt;span&gt;Generated by Gemini AI&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;h3 class=&quot;text-xl font-bold text-gray-800&quot;&gt;${topic}&lt;/h3&gt;
                 &lt;/div&gt;
 
                 &lt;div class=&quot;prose max-w-none text-gray-700 leading-relaxed&quot;&gt;
-                    ${formattedStory}
+                ${formattedStory}
                 &lt;/div&gt;
 
                 &lt;div class=&quot;mt-8 p-4 bg-green-50 border border-green-200 rounded-lg&quot;&gt;
-                    &lt;div class=&quot;flex items-start space-x-3&quot;&gt;
-                        &lt;i class=&quot;fas fa-check-circle text-green-600 text-xl&quot;&gt;&lt;/i&gt;
-                        &lt;div&gt;
-                            &lt;h4 class=&quot;font-semibold text-green-800 mb-1&quot;&gt;Storytelling hoàn thành!&lt;/h4&gt;
-                            &lt;p class=&quot;text-sm text-green-700&quot;&gt;
-                                Nội dung đã được tối ưu cho engagement và conversion theo framework chuyên nghiệp. 
-                                Bạn có thể copy và sử dụng ngay cho chiến dịch marketing.
-                            &lt;/p&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
+                &lt;div class=&quot;flex items-start space-x-3&quot;&gt;
+                &lt;i class=&quot;fas fa-check-circle text-green-600 text-xl&quot;&gt;&lt;/i&gt;
+                &lt;div&gt;
+                &lt;h4 class=&quot;font-semibold text-green-800 mb-1&quot;&gt;Storytelling hoàn thành!&lt;/h4&gt;
+                &lt;p class=&quot;text-sm text-green-700&quot;&gt;
+                Nội dung đã được tối ưu cho engagement và conversion theo framework chuyên nghiệp.
+                Bạn có thể copy và sử dụng ngay cho chiến dịch marketing.
+                &lt;/p&gt;
                 &lt;/div&gt;
-            `;
+                &lt;/div&gt;
+                &lt;/div&gt;
+                `;
 
-            // Show copy button
-            document.getElementById(&#x27;copyButton&#x27;).classList.remove(&#x27;hidden&#x27;);
-        }
+                // Show copy button
+                document.getElementById(&#x27;copyButton&#x27;).classList.remove(&#x27;hidden&#x27;);
+                }
 
-        // Copy to clipboard function
-        async function copyToClipboard() {
-            if (!generatedStoryContent) {
+                // Copy to clipboard function
+                async function copyToClipboard() {
+                if (!generatedStoryContent) {
                 // Sử dụng showError thay vì alert
                 showError(&#x27;storyOutput&#x27;, &#x27;Không có nội dung để copy. Vui lòng tạo storytelling trước.&#x27;);
                 return;
-            }
+                }
 
-            try {
-                // Thay thế navigator.clipboard.writeText bằng document.execCommand(&#x27;copy&#x27;) cho môi trường iframe
+                try {
+                // Thay thế navigator.clipboard.writeText bằng document.execCommand(&#x27;copy&#x27;) cho môi trường
+                iframe
                 const textarea = document.createElement(&#x27;textarea&#x27;);
                 textarea.value = generatedStoryContent;
                 document.body.appendChild(textarea);
@@ -3096,70 +3122,70 @@ Bắt đầu tạo kịch bản:`;
                 button.classList.add(&#x27;bg-green-600&#x27;, &#x27;hover:bg-green-700&#x27;);
 
                 setTimeout(() =&gt; {
-                    button.innerHTML = originalContent;
-                    button.classList.remove(&#x27;bg-green-600&#x27;, &#x27;hover:bg-green-700&#x27;);
-                    button.classList.add(&#x27;bg-gray-600&#x27;, &#x27;hover:bg-gray-700&#x27;);
+                button.innerHTML = originalContent;
+                button.classList.remove(&#x27;bg-green-600&#x27;, &#x27;hover:bg-green-700&#x27;);
+                button.classList.add(&#x27;bg-gray-600&#x27;, &#x27;hover:bg-gray-700&#x27;);
                 }, 2000);
 
-            } catch (error) {
+                } catch (error) {
                 console.error(&#x27;Copy failed:&#x27;, error);
                 // Sử dụng showError thay vì alert
                 showError(&#x27;storyOutput&#x27;, &#x27;Không thể copy tự động. Vui lòng bôi đen và copy thủ công.&#x27;);
-            }
-        }
+                }
+                }
 
-        // Initialize page
-        document.addEventListener(&#x27;DOMContentLoaded&#x27;, function() {
-            // Add intersection observer for animations
-            const cards = document.querySelectorAll(&#x27;.story-card&#x27;);
-            const observer = new IntersectionObserver((entries) =&gt; {
+                // Initialize page
+                document.addEventListener(&#x27;DOMContentLoaded&#x27;, function() {
+                // Add intersection observer for animations
+                const cards = document.querySelectorAll(&#x27;.story-card&#x27;);
+                const observer = new IntersectionObserver((entries) =&gt; {
                 entries.forEach(entry =&gt; {
-                    if (entry.isIntersecting) {
-                        entry.target.style.transform = &#x27;translateY(0)&#x27;;
-                        entry.target.style.opacity = &#x27;1&#x27;;
-                    }
+                if (entry.isIntersecting) {
+                entry.target.style.transform = &#x27;translateY(0)&#x27;;
+                entry.target.style.opacity = &#x27;1&#x27;;
+                }
                 });
-            }, {
+                }, {
                 threshold: 0.1,
                 rootMargin: &#x27;0px 0px -50px 0px&#x27;
-            });
+                });
 
-            cards.forEach((card, index) =&gt; {
+                cards.forEach((card, index) =&gt; {
                 card.style.transform = &#x27;translateY(20px)&#x27;;
                 card.style.opacity = &#x27;0&#x27;;
                 card.style.transition = `all 0.6s ease ${index * 0.1}s`;
                 observer.observe(card);
-            });
+                });
 
-            // Add smooth scrolling for better UX
-            document.documentElement.style.scrollBehavior = &#x27;smooth&#x27;;
+                // Add smooth scrolling for better UX
+                document.documentElement.style.scrollBehavior = &#x27;smooth&#x27;;
 
-            // Add keyboard shortcuts
-            document.addEventListener(&#x27;keydown&#x27;, function(e) {
+                // Add keyboard shortcuts
+                document.addEventListener(&#x27;keydown&#x27;, function(e) {
                 if (e.ctrlKey || e.metaKey) {
-                    switch(e.key) {
-                        case &#x27;Enter&#x27;:
-                            e.preventDefault();
-                            if (document.getElementById(&#x27;topicSelect&#x27;).value) {
-                                generateStory();
-                            } else {
-                                generateTopics();
-                            }
-                            break;
-                        case &#x27;c&#x27;:
-                            if (generatedStoryContent) {
-                                e.preventDefault();
-                                copyToClipboard();
-                            }
-                            break;
-                    }
+                switch(e.key) {
+                case &#x27;Enter&#x27;:
+                e.preventDefault();
+                if (document.getElementById(&#x27;topicSelect&#x27;).value) {
+                generateStory();
+                } else {
+                generateTopics();
                 }
-            });
-        });
-    &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-"></iframe>
+                break;
+                case &#x27;c&#x27;:
+                if (generatedStoryContent) {
+                e.preventDefault();
+                copyToClipboard();
+                }
+                break;
+                }
+                }
+                });
+                });
+                &lt;/script&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+                "></iframe>
         <iframe id="file4" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
