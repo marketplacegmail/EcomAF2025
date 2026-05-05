@@ -72,6 +72,7 @@
         <button class="tab-btn" data-target="file3">Underwear Storytelling System</button>
         <button class="tab-btn" data-target="file4">Lingerie Desriptions</button>
         <button class="tab-btn" data-target="file5">Smooth Thumbnail Maker</button>
+        <button class="tab-btn" data-target="file5a">Thumbnail Setting</button>
         <button class="tab-btn" data-target="file5b">InfoiBasic V5</button>
         <button class="tab-btn" data-target="file6">Enhanced Dashboard Fixed</button>
 
@@ -5398,6 +5399,525 @@ Ví dụ format đúng:
 &lt;/body&gt;
 &lt;/html&gt;
 "></iframe>
+        <iframe id="file5a" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Tạo Thumbnail - Bệ đỡ 3D Luxury&lt;/title&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+    
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;style&gt;
+        :root {
+            --bg-body: #f3f4f6;
+            --panel-bg: #ffffff;
+            --primary: #1f2937;
+            --border: #e5e7eb;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            
+            --label-bg: rgba(255, 255, 255, 0.95);
+            --label-text: #000000;
+            --bg-canvas: #ffffff;
+            
+            --canvas-h: 1080px; 
+            --scaler-h: 540px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            padding: 32px;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        /* --- BẢNG ĐIỀU KHIỂN (LEFT PANEL) --- */
+        .controls {
+            width: 420px;
+            background: var(--panel-bg);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            height: fit-content;
+            max-height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .controls::-webkit-scrollbar { width: 6px; }
+        .controls::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .header p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        input[type=&quot;text&quot;] {
+            width: 100%; padding: 12px;
+            background: #f9fafb; border: 1px solid var(--border);
+            border-radius: 8px; font-size: 14px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        input:focus { outline: none; border-color: var(--primary); background: #fff; }
+
+        .upload-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 12px; background: #f9fafb;
+            border: 2px dashed #d1d5db; border-radius: 8px;
+            color: var(--text-muted); font-weight: 600; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .upload-btn:hover { border-color: var(--primary); color: var(--primary); }
+        input[type=&quot;file&quot;] { display: none; }
+
+        /* Toggles &amp; Pickers */
+        .btn-group { display: flex; gap: 10px; margin-top: 8px; }
+        .toggle-btn {
+            flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 8px;
+            font-size: 12px; font-weight: 600; cursor: pointer; background: #fff;
+            transition: all 0.2s; text-align: center;
+        }
+        .toggle-btn.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+
+        /* Action Buttons */
+        .actions-wrapper {
+            display: flex; gap: 10px; margin-top: 24px;
+            padding-top: 24px; border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .export-btn {
+            flex: 1; padding: 14px 8px; background: #000; color: #fff;
+            border: none; border-radius: 8px; font-size: 12px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer;
+            transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px;
+            min-width: 110px;
+        }
+        .export-btn span { font-size: 9px; font-weight: 400; opacity: 0.8; letter-spacing: 0; }
+        .export-btn:hover { background: #333; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .export-btn.outline { background: #fff; color: #000; border: 2px solid #000; }
+        .export-btn.outline:hover { background: #f9fafb; }
+        .export-btn.accent { background: #374151; }
+        .export-btn.accent:hover { background: #4b5563; }
+
+        /* --- KHU VỰC PREVIEW (RIGHT PANEL) --- */
+        .preview-area {
+            display: flex; flex-direction: column; align-items: center; gap: 16px;
+        }
+        .preview-hint { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+        /* Canvas Container */
+        .canvas-scaler {
+            width: 540px; 
+            height: var(--scaler-h);
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: height 0.3s ease;
+        }
+
+        /* BẢN CHẤT CỦA THUMBNAIL SẼ XUẤT RA (1080px) */
+        .thumbnail-canvas {
+            width: 1080px;
+            height: var(--canvas-h);
+            background-color: var(--bg-canvas);
+            position: absolute;
+            top: 0; left: 0;
+            transform-origin: top left;
+            transform: scale(0.5);
+            overflow: hidden;
+            font-family: &#x27;Barlow&#x27;, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- TOP BAR --- */
+        .thumb-header {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            background-color: var(--label-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 100px 48px 32px 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px; 
+            border-bottom: 1px solid rgba(128,128,128,0.15);
+            flex-shrink: 0;
+        }
+
+        .header-logo-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding-top: 3px; /* Dịch xuống 3px */
+        }
+        
+        .header-logo-row img {
+            max-height: 139px; /* Giảm 5px: 144 → 139 */
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .default-logo-text {
+            font-size: 91px; /* Giảm 5px: 96 → 91 */
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--label-text);
+        }
+
+        .header-usp-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .label-usp {
+            font-size: 70px; /* Nhỏ lại 1 cỡ: 76 → 70 */
+            font-weight: 500;
+            color: var(--label-text);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .header-stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .header-left, .header-right {
+            flex: 1;
+            font-size: 36px; /* To lên 1/2 cỡ: 32 → 36 */
+            font-weight: 600;
+            color: var(--label-text);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .header-left { text-align: left; }
+        .header-right { text-align: right; }
+
+        /* --- IMAGE AREA &amp; BỆ ĐỠ 3D --- */
+        .thumb-image-area {
+            flex: 1; 
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; 
+        }
+
+        .podium-3d {
+            width: 65%;
+            height: 45px;
+            background: linear-gradient(90deg, #d1d5db 0%, #f9fafb 40%, #f9fafb 60%, #e5e7eb 100%);
+            border-bottom-left-radius: 50% 30px;
+            border-bottom-right-radius: 50% 30px;
+            box-shadow: 0 25px 35px rgba(0,0,0,0.08);
+            position: absolute;
+            bottom: 137px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1; 
+        }
+
+        .podium-3d::before {
+            content: &#x27;&#x27;;
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: inset 0 -5px 15px rgba(0,0,0,0.02);
+            box-sizing: border-box;
+        }
+
+        /* =========================================================
+           TỐI ƯU HÓA KHÔNG GIAN RIÊNG CHO TỶ LỆ VUÔNG (1:1)
+           ========================================================= */
+        .thumbnail-canvas.is-square .thumb-header {
+            padding: 100px 40px 20px 40px;
+            gap: 12px;
+        }
+        .thumbnail-canvas.is-square .header-left, 
+        .thumbnail-canvas.is-square .header-right {
+            font-size: 30px; /* To lên 1/2 cỡ: 26 → 30 */
+        }
+        .thumbnail-canvas.is-square .default-logo-text {
+            font-size: 79px; /* Giảm 5px: 84 → 79 */
+        }
+        .thumbnail-canvas.is-square .header-logo-row img {
+            max-height: 109px; /* Giảm 5px: 114 → 109 */
+        }
+        .thumbnail-canvas.is-square .label-usp {
+            font-size: 54px; /* Nhỏ lại 1 cỡ: 60 → 54 */
+        }
+        .thumbnail-canvas.is-square .podium-3d {
+            height: 35px; 
+            bottom: 137px;
+            border-bottom-left-radius: 50% 25px;
+            border-bottom-right-radius: 50% 25px;
+        }
+        .thumbnail-canvas.is-square .podium-3d::before {
+            top: -25px;
+            height: 50px;
+        }
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;!-- BẢNG ĐIỀU KHIỂN --&gt;
+    &lt;div class=&quot;controls&quot;&gt;
+        &lt;div class=&quot;header&quot;&gt;
+            &lt;h1&gt;Tạo Thumbnail&lt;/h1&gt;
+            &lt;p&gt;Xuất Phông nền tĩnh - Bệ đỡ 3D Luxury&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;label&gt;1. Tỉ lệ khung hình (Preview &amp; Export)&lt;/label&gt;
+            &lt;div class=&quot;btn-group ratio-picker&quot;&gt;
+                &lt;button class=&quot;toggle-btn active&quot; data-ratio=&quot;1:1&quot;&gt;Vuông (1:1)&lt;/button&gt;
+                &lt;button class=&quot;toggle-btn&quot; data-ratio=&quot;3:4&quot;&gt;Dọc (3:4)&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;label&gt;2. Upload Logo&lt;/label&gt;
+            &lt;label class=&quot;upload-btn&quot;&gt;
+                Tải Logo thương hiệu (.PNG)
+                &lt;input type=&quot;file&quot; id=&quot;inpLogo&quot; accept=&quot;image/*&quot;&gt;
+            &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;label&gt;3. Bệ đỡ 3D&lt;/label&gt;
+            &lt;div class=&quot;btn-group podium-toggle&quot;&gt;
+                &lt;button class=&quot;toggle-btn active&quot; data-show=&quot;block&quot;&gt;Bật Bệ Đỡ 3D&lt;/button&gt;
+                &lt;button class=&quot;toggle-btn&quot; data-show=&quot;none&quot;&gt;Tắt&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div style=&quot;display: flex; gap: 16px;&quot;&gt;
+            &lt;div class=&quot;input-group&quot; style=&quot;flex: 1;&quot;&gt;
+                &lt;label&gt;Text Trái&lt;/label&gt;
+                &lt;input type=&quot;text&quot; id=&quot;inpLeft&quot; value=&quot;NEW ARRIVAL&quot; oninput=&quot;updateUI()&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;input-group&quot; style=&quot;flex: 1;&quot;&gt;
+                &lt;label&gt;Text Phải&lt;/label&gt;
+                &lt;input type=&quot;text&quot; id=&quot;inpRight&quot; value=&quot;12.5k ĐÃ BÁN&quot; oninput=&quot;updateUI()&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;label&gt;USP Chính&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;inpUSP&quot; value=&quot;SỢI TRE TỰ NHIÊN&quot; oninput=&quot;updateUI()&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;actions-wrapper&quot;&gt;
+            &lt;button class=&quot;export-btn outline&quot; onclick=&quot;exportImage(&#x27;1:1&#x27;)&quot;&gt;
+                TẢI 1:1
+                &lt;span&gt;(1080x1080)&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;button class=&quot;export-btn accent&quot; onclick=&quot;exportImage(&#x27;3:4in1:1&#x27;)&quot;&gt;
+                TẢI 3:4 TRONG 1:1
+                &lt;span&gt;(1080x1080)&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;button class=&quot;export-btn&quot; onclick=&quot;exportImage(&#x27;3:4&#x27;)&quot;&gt;
+                TẢI 3:4
+                &lt;span&gt;(1080x1440)&lt;/span&gt;
+            &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div style=&quot;margin-top: 20px; text-align: center; font-size: 11px; color: #9ca3af; letter-spacing: 0.02em;&quot;&gt;
+            Copyright by Tien Hoang luv +th
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;preview-area&quot;&gt;
+        &lt;div class=&quot;preview-hint&quot; id=&quot;ratioHint&quot;&gt;Đang hiển thị bản nháp tỷ lệ 1:1&lt;/div&gt;
+        
+        &lt;div class=&quot;canvas-scaler&quot; id=&quot;canvasScaler&quot;&gt;
+            &lt;div class=&quot;thumbnail-canvas is-square&quot; id=&quot;captureTarget&quot;&gt;
+                
+                &lt;!-- TOP BAR: Logo - USP - Stats --&gt;
+                &lt;div class=&quot;thumb-header&quot;&gt;
+                    &lt;div class=&quot;header-logo-row&quot;&gt;
+                        &lt;img id=&quot;outLogo&quot; src=&quot;&quot; alt=&quot;Logo&quot; style=&quot;display: none;&quot;&gt;
+                        &lt;div class=&quot;default-logo-text&quot; id=&quot;outLogoText&quot;&gt;iBasic&lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;header-usp-row&quot;&gt;
+                        &lt;div class=&quot;label-usp&quot; id=&quot;outUSP&quot;&gt;SỢI TRE TỰ NHIÊN&lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;header-stats-row&quot;&gt;
+                        &lt;div class=&quot;header-left&quot; id=&quot;outLeft&quot;&gt;NEW ARRIVAL&lt;/div&gt;
+                        &lt;div class=&quot;header-right&quot; id=&quot;outRight&quot;&gt;12.5k ĐÃ BÁN&lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;!-- IMAGE AREA TRÀN VIỀN --&gt;
+                &lt;div class=&quot;thumb-image-area&quot;&gt;
+                    &lt;div class=&quot;podium-3d&quot; id=&quot;outPodium&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        function updateUI() {
+            document.getElementById(&#x27;outLeft&#x27;).innerText = document.getElementById(&#x27;inpLeft&#x27;).value;
+            document.getElementById(&#x27;outRight&#x27;).innerText = document.getElementById(&#x27;inpRight&#x27;).value;
+            document.getElementById(&#x27;outUSP&#x27;).innerText = document.getElementById(&#x27;inpUSP&#x27;).value;
+        }
+
+        document.getElementById(&#x27;inpLogo&#x27;).addEventListener(&#x27;change&#x27;, function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imgLogo = document.getElementById(&#x27;outLogo&#x27;);
+                    imgLogo.src = event.target.result;
+                    imgLogo.style.display = &#x27;block&#x27;;
+                    document.getElementById(&#x27;outLogoText&#x27;).style.display = &#x27;none&#x27;;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        const podiumBtns = document.querySelectorAll(&#x27;.podium-toggle .toggle-btn&#x27;);
+        podiumBtns.forEach(btn =&gt; {
+            btn.addEventListener(&#x27;click&#x27;, function() {
+                podiumBtns.forEach(b =&gt; b.classList.remove(&#x27;active&#x27;));
+                this.classList.add(&#x27;active&#x27;);
+                document.getElementById(&#x27;outPodium&#x27;).style.display = this.getAttribute(&#x27;data-show&#x27;);
+            });
+        });
+
+        const ratioBtns = document.querySelectorAll(&#x27;.ratio-picker .toggle-btn&#x27;);
+        ratioBtns.forEach(btn =&gt; {
+            btn.addEventListener(&#x27;click&#x27;, function() {
+                ratioBtns.forEach(b =&gt; b.classList.remove(&#x27;active&#x27;));
+                this.classList.add(&#x27;active&#x27;);
+                
+                const ratio = this.getAttribute(&#x27;data-ratio&#x27;);
+                const root = document.documentElement;
+                const target = document.getElementById(&#x27;captureTarget&#x27;);
+                
+                if(ratio === &#x27;1:1&#x27;) {
+                    root.style.setProperty(&#x27;--canvas-h&#x27;, &#x27;1080px&#x27;);
+                    root.style.setProperty(&#x27;--scaler-h&#x27;, &#x27;540px&#x27;);
+                    document.getElementById(&#x27;ratioHint&#x27;).innerText = &quot;Đang hiển thị bản nháp tỷ lệ 1:1&quot;;
+                    target.classList.add(&#x27;is-square&#x27;);
+                } else {
+                    root.style.setProperty(&#x27;--canvas-h&#x27;, &#x27;1440px&#x27;);
+                    root.style.setProperty(&#x27;--scaler-h&#x27;, &#x27;720px&#x27;);
+                    document.getElementById(&#x27;ratioHint&#x27;).innerText = &quot;Đang hiển thị bản nháp tỷ lệ 3:4&quot;;
+                    target.classList.remove(&#x27;is-square&#x27;);
+                }
+            });
+        });
+
+        // Hàm xuất ảnh CHẤT LƯỢNG CAO (scale 2x)
+        async function exportImage(ratio) {
+            const target = document.getElementById(&#x27;captureTarget&#x27;);
+            const root = document.documentElement;
+            
+            // Lưu lại thông số đang preview
+            const currentCanvasH = getComputedStyle(root).getPropertyValue(&#x27;--canvas-h&#x27;);
+            const currentScalerH = getComputedStyle(root).getPropertyValue(&#x27;--scaler-h&#x27;);
+            const activeRatioBtn = document.querySelector(&#x27;.ratio-picker .toggle-btn.active&#x27;);
+            const currentRatio = activeRatioBtn ? activeRatioBtn.getAttribute(&#x27;data-ratio&#x27;) : &#x27;1:1&#x27;;
+
+            // Xử lý chế độ &quot;3:4 nằm trong 1:1&quot;
+            const is34in11 = (ratio === &#x27;3:4in1:1&#x27;);
+            const actualRenderRatio = is34in11 ? &#x27;3:4&#x27; : ratio;
+
+            // Cài đặt chiều cao chuẩn và class CSS để xuất
+            if(actualRenderRatio === &#x27;1:1&#x27;) {
+                root.style.setProperty(&#x27;--canvas-h&#x27;, &#x27;1080px&#x27;);
+                root.style.setProperty(&#x27;--scaler-h&#x27;, &#x27;540px&#x27;);
+                target.classList.add(&#x27;is-square&#x27;);
+            } else {
+                root.style.setProperty(&#x27;--canvas-h&#x27;, &#x27;1440px&#x27;);
+                root.style.setProperty(&#x27;--scaler-h&#x27;, &#x27;720px&#x27;);
+                target.classList.remove(&#x27;is-square&#x27;);
+            }
+
+            await new Promise(r =&gt; setTimeout(r, 150));
+
+            // Xuất chất lượng cao: scale 2x
+            const renderCanvas = await html2canvas(target, {
+                scale: 2, 
+                useCORS: true,
+                backgroundColor: getComputedStyle(root).getPropertyValue(&#x27;--bg-canvas&#x27;)
+            });
+
+            let finalCanvas;
+            let fileName;
+
+            if (is34in11) {
+                // Tạo canvas 1:1 (2160x2160 ở scale 2x) chứa ảnh 3:4 ở giữa
+                const size = 1080 * 2; // 2160px ở scale 2x
+                finalCanvas = document.createElement(&#x27;canvas&#x27;);
+                finalCanvas.width = size;
+                finalCanvas.height = size;
+                const ctx = finalCanvas.getContext(&#x27;2d&#x27;);
+
+                // Nền trắng
+                ctx.fillStyle = getComputedStyle(root).getPropertyValue(&#x27;--bg-canvas&#x27;).trim() || &#x27;#ffffff&#x27;;
+                ctx.fillRect(0, 0, size, size);
+
+                // Tính toán scale để 3:4 (2160x2880) vừa trong 2160x2160
+                // Chiều cao 2880 &gt; 2160, nên scale theo height
+                const srcW = renderCanvas.width;   // 2160
+                const srcH = renderCanvas.height;  // 2880
+                const fitScale = size / srcH;       // 2160/2880 = 0.75
+                const drawW = srcW * fitScale;      // 2160 * 0.75 = 1620
+                const drawH = size;                 // 2160
+                const offsetX = (size - drawW) / 2; // (2160-1620)/2 = 270
+
+                ctx.drawImage(renderCanvas, offsetX, 0, drawW, drawH);
+                fileName = `iBasic_Frame_3x4_in_1x1_HQ_${Date.now()}.png`;
+            } else {
+                finalCanvas = renderCanvas;
+                fileName = `iBasic_Frame_${ratio.replace(&#x27;:&#x27;,&#x27;x&#x27;)}_HQ_${Date.now()}.png`;
+            }
+
+            const link = document.createElement(&#x27;a&#x27;);
+            link.download = fileName;
+            link.href = finalCanvas.toDataURL(&#x27;image/png&#x27;);
+            link.click();
+            
+            // Trả lại trạng thái preview cũ
+            root.style.setProperty(&#x27;--canvas-h&#x27;, currentCanvasH);
+            root.style.setProperty(&#x27;--scaler-h&#x27;, currentScalerH);
+            if(currentRatio === &#x27;1:1&#x27;) {
+                target.classList.add(&#x27;is-square&#x27;);
+            } else {
+                target.classList.remove(&#x27;is-square&#x27;);
+            }
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
         <iframe id="file5b" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
@@ -10090,6 +10610,7 @@ document.querySelector(&#x27;[onclick=&quot;switchMode(\&#x27;mota\&#x27;)&quot;
         buttons[0].classList.add('active');
         frames[0].classList.add('active');
     </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9f6f7feefe2804db","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.9.1","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 </body>
 
 </html>
