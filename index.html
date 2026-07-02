@@ -465,7 +465,7 @@
 
         .top-dashboard-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1.85fr) minmax(300px, 1fr);
+            grid-template-columns: 1fr;
             gap: 1.25rem;
             align-items: start;
             margin-bottom: 1.5rem;
@@ -544,7 +544,7 @@
 
         .quick-report-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1rem;
         }
 
@@ -672,28 +672,58 @@
             padding-right: 0.4rem;
         }
 
+        .data-table th.col-room,
+        .data-table td.col-room {
+            min-width: 110px;
+        }
+
+        .data-table td.col-room input {
+            min-width: 90px;
+        }
+
         .data-table th.col-time,
         .data-table td.col-time {
-            min-width: 175px;
+            min-width: 155px;
+        }
+
+        .data-table th.col-channel,
+        .data-table td.col-channel {
+            min-width: 125px;
+        }
+
+        .data-table td.col-channel select {
+            width: 100%;
+            padding: 0.55rem 0.6rem;
+            border: 1.5px solid var(--gray-light);
+            border-radius: 8px;
+            background: var(--white);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .data-table td.col-channel select:focus {
+            outline: none;
+            border-color: #ff6bb8;
+            box-shadow: 0 0 0 3px rgba(255, 107, 184, 0.15);
         }
 
         .data-table th.col-host,
         .data-table td.col-host,
         .data-table th.col-ld,
         .data-table td.col-ld {
-            min-width: 150px;
+            min-width: 135px;
         }
 
         .data-table th.col-host input,
         .data-table td.col-host input,
         .data-table th.col-ld input,
         .data-table td.col-ld input {
-            min-width: 130px;
+            min-width: 115px;
         }
 
         .data-table th.col-num,
         .data-table td.col-num {
-            min-width: 95px;
+            min-width: 90px;
         }
 
         .data-table th.col-dual,
@@ -821,7 +851,8 @@
                 min-width: 90px;
             }
 
-            .data-table td input {
+            .data-table td input,
+            .data-table td select {
                 flex: 1;
                 min-width: 0 !important;
                 padding: 0.55rem 0.7rem;
@@ -976,12 +1007,12 @@
         }
 
         .data-table th {
-            padding: 1.25rem 1rem;
+            padding: 1rem 0.65rem;
             text-align: left;
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: 0.82rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             white-space: nowrap;
         }
 
@@ -1009,7 +1040,8 @@
         }
 
         .data-table td {
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 0.55rem;
+            vertical-align: middle;
         }
 
         .data-table td:first-child {
@@ -1021,13 +1053,14 @@
 
         .data-table input {
             width: 100%;
-            padding: 0.625rem 0.75rem;
+            padding: 0.55rem 0.65rem;
             border: 1.5px solid var(--gray-light);
             border-radius: 8px;
             font-family: inherit;
             font-size: 0.875rem;
             transition: all 0.2s ease;
             background: var(--white);
+            box-sizing: border-box;
         }
 
         .data-table input:focus {
@@ -1698,11 +1731,13 @@ input, select, textarea, button {
                             &lt;thead&gt;
                                 &lt;tr&gt;
                                     &lt;th class=&quot;col-session&quot;&gt;Session&lt;/th&gt;
+                                    &lt;th class=&quot;col-room&quot;&gt;Room ID&lt;/th&gt;
+                                    &lt;th class=&quot;col-channel&quot;&gt;Kênh&lt;/th&gt;
                                     &lt;th class=&quot;col-time&quot;&gt;Time&lt;/th&gt;
                                     &lt;th class=&quot;col-host&quot;&gt;Host&lt;/th&gt;
                                     &lt;th class=&quot;col-ld&quot;&gt;Live Director&lt;/th&gt;
                                     &lt;th class=&quot;col-num&quot;&gt;Follower&lt;/th&gt;
-                                    &lt;th class=&quot;col-num&quot;&gt;Order&lt;/th&gt;
+                                    &lt;th class=&quot;col-num&quot;&gt;GMV&lt;/th&gt;
                                 &lt;/tr&gt;
                             &lt;/thead&gt;
                             &lt;tbody id=&quot;tiktokSessionBody&quot;&gt;&lt;/tbody&gt;
@@ -1723,6 +1758,7 @@ input, select, textarea, button {
                             &lt;thead&gt;
                                 &lt;tr&gt;
                                     &lt;th class=&quot;col-session&quot;&gt;Session&lt;/th&gt;
+                                    &lt;th class=&quot;col-room&quot;&gt;Room ID&lt;/th&gt;
                                     &lt;th class=&quot;col-time&quot;&gt;Time&lt;/th&gt;
                                     &lt;th class=&quot;col-host&quot;&gt;Host&lt;/th&gt;
                                     &lt;th class=&quot;col-ld&quot;&gt;Live Director&lt;/th&gt;
@@ -1963,11 +1999,13 @@ input, select, textarea, button {
                 return `
                     &lt;tr class=&quot;session-row&quot; data-platform=&quot;tiktok&quot;&gt;
                         &lt;td class=&quot;session-number col-session&quot;&gt;${index}&lt;/td&gt;
+                        &lt;td class=&quot;col-room&quot; data-label=&quot;Room ID&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;session-room&quot; placeholder=&quot;Room ID&quot; maxlength=&quot;40&quot;&gt;&lt;/td&gt;
+                        &lt;td class=&quot;col-channel&quot; data-label=&quot;Kênh&quot;&gt;&lt;select class=&quot;session-channel&quot;&gt;&lt;option value=&quot;&quot;&gt;-- Chọn kênh --&lt;/option&gt;&lt;option value=&quot;Tiktok VN&quot;&gt;Tiktok VN&lt;/option&gt;&lt;option value=&quot;Tiktok HCM&quot;&gt;Tiktok HCM&lt;/option&gt;&lt;option value=&quot;Tiktok HN&quot;&gt;Tiktok HN&lt;/option&gt;&lt;/select&gt;&lt;/td&gt;
                         &lt;td class=&quot;col-time&quot; data-label=&quot;Time&quot;&gt;&lt;input type=&quot;datetime-local&quot; class=&quot;session-time&quot;&gt;&lt;/td&gt;
                         &lt;td class=&quot;col-host&quot; data-label=&quot;Host&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;session-host&quot; placeholder=&quot;Tên host&quot; maxlength=&quot;40&quot;&gt;&lt;/td&gt;
                         &lt;td class=&quot;col-ld&quot; data-label=&quot;Live Director&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;session-ld&quot; placeholder=&quot;Tên live director&quot; maxlength=&quot;40&quot;&gt;&lt;/td&gt;
                         &lt;td class=&quot;col-num&quot; data-label=&quot;Follower&quot;&gt;&lt;input type=&quot;number&quot; class=&quot;session-follower&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
-                        &lt;td class=&quot;col-num&quot; data-label=&quot;Order&quot;&gt;&lt;input type=&quot;number&quot; class=&quot;session-order&quot; placeholder=&quot;0&quot;&gt;&lt;/td&gt;
+                        &lt;td class=&quot;col-num&quot; data-label=&quot;GMV&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;session-gmv&quot; placeholder=&quot;GMV&quot;&gt;&lt;/td&gt;
                     &lt;/tr&gt;
                 `;
             }
@@ -1975,6 +2013,7 @@ input, select, textarea, button {
             return `
                 &lt;tr class=&quot;session-row&quot; data-platform=&quot;shopee&quot;&gt;
                     &lt;td class=&quot;session-number col-session&quot;&gt;${index}&lt;/td&gt;
+                    &lt;td class=&quot;col-room&quot; data-label=&quot;Room ID&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;session-room&quot; placeholder=&quot;Room ID&quot; maxlength=&quot;40&quot;&gt;&lt;/td&gt;
                     &lt;td class=&quot;col-time&quot; data-label=&quot;Time&quot;&gt;&lt;input type=&quot;datetime-local&quot; class=&quot;session-time&quot;&gt;&lt;/td&gt;
                     &lt;td class=&quot;col-host&quot; data-label=&quot;Host&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;session-host&quot; placeholder=&quot;Tên host&quot; maxlength=&quot;40&quot;&gt;&lt;/td&gt;
                     &lt;td class=&quot;col-ld&quot; data-label=&quot;Live Director&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;session-ld&quot; placeholder=&quot;Tên live director&quot; maxlength=&quot;40&quot;&gt;&lt;/td&gt;
@@ -2021,6 +2060,7 @@ input, select, textarea, button {
                 const baseData = {
                     platform,
                     session: idx + 1,
+                    roomId: row.querySelector(&#x27;.session-room&#x27;)?.value.trim() || &#x27;-&#x27;,
                     timeRaw: row.querySelector(&#x27;.session-time&#x27;)?.value || &#x27;&#x27;,
                     time: row.querySelector(&#x27;.session-time&#x27;)?.value ? new Date(row.querySelector(&#x27;.session-time&#x27;).value).toLocaleString(&#x27;vi-VN&#x27;) : &#x27;-&#x27;,
                     hostName: row.querySelector(&#x27;.session-host&#x27;)?.value.trim() || &#x27;-&#x27;,
@@ -2030,8 +2070,9 @@ input, select, textarea, button {
                 if (platform === &#x27;tiktok&#x27;) {
                     return {
                         ...baseData,
+                        channel: row.querySelector(&#x27;.session-channel&#x27;)?.value || &#x27;&#x27;,
                         follower: row.querySelector(&#x27;.session-follower&#x27;)?.value || &#x27;0&#x27;,
-                        order: row.querySelector(&#x27;.session-order&#x27;)?.value || &#x27;0&#x27;
+                        gmv: row.querySelector(&#x27;.session-gmv&#x27;)?.value.trim() || &#x27;-&#x27;
                     };
                 }
 
@@ -2043,9 +2084,9 @@ input, select, textarea, button {
                 };
             }).filter(item =&gt; {
                 if (platform === &#x27;tiktok&#x27;) {
-                    return item.timeRaw || item.hostName !== &#x27;-&#x27; || item.ldName !== &#x27;-&#x27; || item.follower !== &#x27;0&#x27; || item.order !== &#x27;0&#x27;;
+                    return item.timeRaw || item.hostName !== &#x27;-&#x27; || item.ldName !== &#x27;-&#x27; || item.roomId !== &#x27;-&#x27; || (item.channel &amp;&amp; item.channel !== &#x27;&#x27;) || item.follower !== &#x27;0&#x27; || item.gmv !== &#x27;-&#x27;;
                 }
-                return item.timeRaw || item.hostName !== &#x27;-&#x27; || item.ldName !== &#x27;-&#x27; || item.auctionRound !== &#x27;-&#x27; || item.coinsDropped !== &#x27;-&#x27; || item.dualLive === &#x27;Có&#x27;;
+                return item.timeRaw || item.hostName !== &#x27;-&#x27; || item.ldName !== &#x27;-&#x27; || item.roomId !== &#x27;-&#x27; || item.auctionRound !== &#x27;-&#x27; || item.coinsDropped !== &#x27;-&#x27; || item.dualLive === &#x27;Có&#x27;;
             });
         }
 
@@ -2115,23 +2156,26 @@ input, select, textarea, button {
                 }
 
                 const header = platform === &#x27;tiktok&#x27;
-                    ? `&lt;tr&gt;&lt;th&gt;S&lt;/th&gt;&lt;th&gt;Time&lt;/th&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Live Director&lt;/th&gt;&lt;th&gt;Follower&lt;/th&gt;&lt;th&gt;Order&lt;/th&gt;&lt;/tr&gt;`
-                    : `&lt;tr&gt;&lt;th&gt;S&lt;/th&gt;&lt;th&gt;Time&lt;/th&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Live Director&lt;/th&gt;&lt;th&gt;Vòng đấu giá&lt;/th&gt;&lt;th&gt;Xu đã tung&lt;/th&gt;&lt;th&gt;Dual live&lt;/th&gt;&lt;/tr&gt;`;
+                    ? `&lt;tr&gt;&lt;th&gt;S&lt;/th&gt;&lt;th&gt;Room ID&lt;/th&gt;&lt;th&gt;Kênh&lt;/th&gt;&lt;th&gt;Time&lt;/th&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Live Director&lt;/th&gt;&lt;th&gt;Follower&lt;/th&gt;&lt;th&gt;GMV&lt;/th&gt;&lt;/tr&gt;`
+                    : `&lt;tr&gt;&lt;th&gt;S&lt;/th&gt;&lt;th&gt;Room ID&lt;/th&gt;&lt;th&gt;Time&lt;/th&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Live Director&lt;/th&gt;&lt;th&gt;Vòng đấu giá&lt;/th&gt;&lt;th&gt;Xu đã tung&lt;/th&gt;&lt;th&gt;Dual live&lt;/th&gt;&lt;/tr&gt;`;
 
                 const body = rows.map(s =&gt; platform === &#x27;tiktok&#x27;
                     ? `
                         &lt;tr&gt;
                             &lt;td&gt;${s.session}&lt;/td&gt;
+                            &lt;td&gt;${s.roomId}&lt;/td&gt;
+                            &lt;td&gt;${s.channel || &#x27;-&#x27;}&lt;/td&gt;
                             &lt;td&gt;${s.time}&lt;/td&gt;
                             &lt;td&gt;${s.hostName}&lt;/td&gt;
                             &lt;td&gt;${s.ldName}&lt;/td&gt;
                             &lt;td&gt;${s.follower}&lt;/td&gt;
-                            &lt;td&gt;${s.order}&lt;/td&gt;
+                            &lt;td&gt;${s.gmv}&lt;/td&gt;
                         &lt;/tr&gt;
                     `
                     : `
                         &lt;tr&gt;
                             &lt;td&gt;${s.session}&lt;/td&gt;
+                            &lt;td&gt;${s.roomId}&lt;/td&gt;
                             &lt;td&gt;${s.time}&lt;/td&gt;
                             &lt;td&gt;${s.hostName}&lt;/td&gt;
                             &lt;td&gt;${s.ldName}&lt;/td&gt;
@@ -2300,11 +2344,13 @@ input, select, textarea, button {
                         &#x27;Ghi chú action&#x27;: quickActionNotes,
                         &#x27;Platform&#x27;: &#x27;&#x27;,
                         &#x27;Session&#x27;: &#x27;&#x27;,
+                        &#x27;Room ID&#x27;: &#x27;&#x27;,
+                        &#x27;Kênh&#x27;: &#x27;&#x27;,
                         &#x27;Time&#x27;: &#x27;&#x27;,
                         &#x27;Host name&#x27;: &#x27;&#x27;,
                         &#x27;LD name&#x27;: &#x27;&#x27;,
                         &#x27;Follower&#x27;: &#x27;&#x27;,
-                        &#x27;Order&#x27;: &#x27;&#x27;,
+                        &#x27;GMV&#x27;: &#x27;&#x27;,
                         &#x27;Vòng đấu giá&#x27;: &#x27;&#x27;,
                         &#x27;Xu đã tung&#x27;: &#x27;&#x27;,
                         &#x27;Dual live&#x27;: &#x27;&#x27;,
@@ -2341,11 +2387,13 @@ input, select, textarea, button {
                             &#x27;Ghi chú action&#x27;: quickActionNotes,
                             &#x27;Platform&#x27;: update.platform === &#x27;tiktok&#x27; ? &#x27;Tiktok&#x27; : &#x27;Shopee&#x27;,
                             &#x27;Session&#x27;: update.session,
+                            &#x27;Room ID&#x27;: sanitizeString(update.roomId === &#x27;-&#x27; ? &#x27;&#x27; : update.roomId),
+                            &#x27;Kênh&#x27;: sanitizeString(update.channel || &#x27;&#x27;),
                             &#x27;Time&#x27;: update.timeRaw,
                             &#x27;Host name&#x27;: sanitizeString(update.hostName === &#x27;-&#x27; ? &#x27;&#x27; : update.hostName),
                             &#x27;LD name&#x27;: sanitizeString(update.ldName === &#x27;-&#x27; ? &#x27;&#x27; : update.ldName),
                             &#x27;Follower&#x27;: update.follower || &#x27;&#x27;,
-                            &#x27;Order&#x27;: update.order || &#x27;&#x27;,
+                            &#x27;GMV&#x27;: sanitizeString(update.gmv === &#x27;-&#x27; ? &#x27;&#x27; : (update.gmv || &#x27;&#x27;)),
                             &#x27;Vòng đấu giá&#x27;: sanitizeString(update.auctionRound || &#x27;&#x27;),
                             &#x27;Xu đã tung&#x27;: sanitizeString(update.coinsDropped || &#x27;&#x27;),
                             &#x27;Dual live&#x27;: update.dualLive || &#x27;&#x27;,
@@ -14406,6 +14454,7 @@ input, select, textarea, button {
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 
 </html>
