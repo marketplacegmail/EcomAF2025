@@ -3406,8 +3406,8 @@ YÊU CẦU:
 
 Bắt đầu tạo kịch bản:`;
 
-            // Updated API URL to use gemini-2.5-flash
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+            // Updated API URL to use gemini-3.6-flash
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
 
             const response = await fetch(apiUrl, {
                 method: &#x27;POST&#x27;,
@@ -4097,7 +4097,7 @@ input, select, textarea, button {
     &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js&quot;&gt;&lt;/script&gt;
     &lt;script&gt;
         // --- Cấu hình API và logic Thử lại (Fix lỗi API) ---
-        const GEMINI_MODEL = &quot;gemini-2.5-flash&quot;; // Cập nhật model ổn định hơn
+        const GEMINI_MODEL = &quot;gemini-3.6-flash&quot;; // Cập nhật model ổn định hơn
         const API_BASE_URL = &quot;https://generativelanguage.googleapis.com/v1beta/models/&quot;;
 
         // Hàm fetch có Tự động Thử lại (Exponential Backoff) để tăng độ ổn định
@@ -5279,7 +5279,7 @@ input, select, textarea, button {
                     }
                 }`;
 
-                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`, {
                     method: &#x27;POST&#x27;,
                     headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
                     body: JSON.stringify({
@@ -9078,7 +9078,7 @@ function switchMode(mode) {
 let imgs = [];
 let currentBgStyle = &#x27;white&#x27;;
 const mktCards = {}; // {cardId: {imgObj, ai, customIcons:{idx:Image}}}
-const GEMINI_MODEL = &#x27;gemini-2.0-flash&#x27;;
+const GEMINI_MODEL = &#x27;gemini-3.6-flash&#x27;;
 const API_TIMEOUT_MS = 45000;
 const MAX_RETRIES_429 = 5;
 const BETWEEN_IMAGES_DELAY_MS = 1200;
@@ -11799,7 +11799,7 @@ input, select, textarea, button {
 
                 // --- UPDATED API ENDPOINT AND MODEL ---
                 const apiKey = geminiApiKey; // Use the provided API key
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
 
                 const payload = {
                     contents: [{ parts: [{ text: prompt }] }],
@@ -11896,7 +11896,7 @@ input, select, textarea, button {
                 } else if (error.message.includes(&#x27;Failed to fetch&#x27;)) {
                     errorMessage = &#x27;Không thể kết nối đến API. Kiểm tra kết nối internet.&#x27;;
                 } else if (error.message.includes(&#x27;NOT_FOUND&#x27;)) {
-                    errorMessage = &#x27;Model không tìm thấy. Đã sử dụng gemini-2.5-flash.&#x27;;
+                    errorMessage = &#x27;Model không tìm thấy. Đã sử dụng gemini-3.6-flash.&#x27;;
                 } else {
                     errorMessage = error.message;
                 }
@@ -14455,6 +14455,7 @@ input, select, textarea, button {
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 </body>
 
 </html>
