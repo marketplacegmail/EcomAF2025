@@ -7807,7 +7807,7 @@ input, select, textarea, button {
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
     &lt;title&gt;iBasic AI STUDIO - INFOGRAPHIC MASTER PRO v5.0&lt;/title&gt;
     &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
     &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
@@ -7891,8 +7891,57 @@ input, select, textarea, button {
         .result-head { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; }
         .canvas-box { padding: 20px; background: #e5e7eb; display: flex; justify-content: center; }
         canvas { max-width: 100%; height: auto !important; background: white; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,.1); }
-        .btn-dl { background: var(--secondary); color: white; padding: 10px 25px; border-radius: 10px; font-weight: 800; border: none; cursor: pointer; transition: all .3s; }
+        .btn-dl { background: var(--secondary); color: white; padding: 10px 25px; border-radius: 10px; font-weight: 800; border: none; cursor: pointer; transition: all .3s; white-space: nowrap; }
         .btn-dl:hover { background: #000000; transform: translateY(-2px); }
+
+        /* ═══════════════════════════════════════════════
+           MARKETING RESULT — SIDE-BY-SIDE EDITOR (v8)
+           Canvas trái (sticky) · Panel chỉnh sửa phải
+        ═══════════════════════════════════════════════ */
+        .result-card.mkt-card { display: flex; flex-direction: column; }
+        .mkt-head { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; gap: 14px; background: #f9f9f9; border-bottom: 1px solid var(--gray-200); flex-wrap: wrap; }
+        .mkt-head-title { font-weight: 900; color: var(--primary); font-size: 1.15rem; line-height: 1.3; min-width: 0; }
+        .mkt-layout { display: flex; align-items: stretch; }
+
+        /* LEFT — canvas preview, sticky khi cuộn panel */
+        .mkt-canvas-side { flex: 1 1 auto; min-width: 0; padding: 26px; background: #e5e7eb; display: flex; justify-content: center; align-items: flex-start; }
+        .mkt-canvas-side canvas { position: sticky; top: 20px; }
+
+        /* RIGHT — edit panel, cuộn độc lập */
+        .mkt-edit-side { flex: 0 0 390px; width: 390px; background: #fff; border-left: 1px solid var(--gray-200); display: flex; flex-direction: column; position: sticky; top: 0; max-height: 100vh; }
+        .mkt-edit-head { padding: 14px 18px; border-bottom: 1px solid var(--gray-200); background: #fafafa; flex-shrink: 0; }
+        .mkt-edit-head .ttl { font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: #111; }
+        .mkt-edit-head .sub { font-size: 10.5px; color: #9ca3af; margin-top: 3px; font-weight: 500; }
+        .mkt-edit-body { overflow-y: auto; padding: 12px 14px 20px; flex: 1; scrollbar-width: thin; }
+        .mkt-edit-body::-webkit-scrollbar { width: 4px; }
+        .mkt-edit-body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+        /* Cue card */
+        .mkt-cue { border: 1.5px solid var(--gray-200); border-radius: 14px; padding: 12px 12px 14px; margin-bottom: 12px; background: #fff; transition: border-color .2s, box-shadow .2s; }
+        .mkt-cue:hover { border-color: #9ca3af; }
+        .mkt-cue:focus-within { border-color: #1a1a1a; box-shadow: 0 0 0 3px rgba(0,0,0,.06); }
+        .mkt-cue-top { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+        .mkt-cue-num { width: 24px; height: 24px; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .mkt-cue-icprev { width: 36px; height: 36px; border-radius: 8px; background: #f3f4f6; border: 1px solid var(--gray-200); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #aaa; flex-shrink: 0; }
+        .mkt-cue-icprev img { width: 100%; height: 100%; object-fit: contain; }
+        .mkt-cue-upbtn { margin-left: auto; cursor: pointer; background: #fff; border: 1.5px dashed #1a1a1a; border-radius: 8px; padding: 5px 10px; font-size: 10px; font-weight: 800; color: #1a1a1a; white-space: nowrap; transition: all .2s; }
+        .mkt-cue-upbtn:hover { background: #1a1a1a; color: #fff; }
+        .mkt-cue-lbl { width: 100%; padding: 7px 9px; border-radius: 8px; border: 1.5px solid #e5e7eb; font-size: 11px; font-family: inherit; color: #1f2937; resize: vertical; line-height: 1.5; min-height: 46px; margin-bottom: 10px; box-sizing: border-box; transition: border-color .2s; }
+        .mkt-cue-lbl:focus { outline: none; border-color: #1a1a1a; }
+        .mkt-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+        .mkt-sl { display: flex; flex-direction: column; gap: 2px; }
+        .mkt-sl.wide { grid-column: 1 / -1; }
+        .mkt-sl-hd { display: flex; justify-content: space-between; align-items: baseline; }
+        .mkt-sl-name { font-size: 10px; font-weight: 700; color: #6b7280; }
+        .mkt-sl-val { font-size: 10px; font-weight: 900; color: #1a1a1a; background: #f3f4f6; border-radius: 5px; padding: 1px 6px; font-variant-numeric: tabular-nums; }
+        .mkt-sl input[type=&quot;range&quot;] { width: 100%; accent-color: #1a1a1a; cursor: pointer; margin: 2px 0 0; }
+
+        /* Responsive: xếp dọc trên màn hẹp — panel chỉnh sửa nằm DƯỚI canvas */
+        @media(max-width:1100px){
+            .mkt-layout { flex-direction: column; }
+            .mkt-edit-side { flex: none; width: 100%; max-height: none; position: static; border-left: none; border-top: 1px solid var(--gray-200); }
+            .mkt-canvas-side canvas { position: static; }
+        }
 
         .bg-style-selector { display: flex; gap: 10px; margin-top: 10px; }
         .bg-option { flex: 1; padding: 15px; border-radius: 10px; border: 2px solid var(--gray-200); cursor: pointer; text-align: center; font-weight: 700; font-size: .85rem; transition: all .3s; }
@@ -8463,156 +8512,6 @@ input, select, textarea, button {
         .mc-b5-image .ph span { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; }
 
     &lt;/style&gt;
-
-&lt;style data-injected=&quot;ibasic-mobile-ux&quot;&gt;
-/* === iBasic Ecommerce — Global Mobile UX Layer === */
-:root { --ibx-tap: 44px; }
-
-* { box-sizing: border-box; }
-html, body { max-width: 100%; overflow-x: hidden; }
-img, video, canvas, svg { max-width: 100%; height: auto; }
-
-/* Prevent iOS auto-zoom on focus */
-input, select, textarea, button {
-    font-size: 16px;
-}
-
-@media (max-width: 820px) {
-    /* Reduce big margins/padding on common wrappers */
-    body { padding: 12px 8px !important; margin: 0 !important; }
-    .container, .wrapper, .main, .content, .page,
-    .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl,
-    .max-w-2xl, .max-w-xl, .max-w-lg, .max-w-md {
-        max-width: 100% !important;
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
-
-    /* Make wide cards/sections flow */
-    .card, .panel, .section, .box, .bg-white,
-    .rounded-xl, .rounded-2xl, .rounded-3xl {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
-
-    /* Larger tap targets for buttons */
-    button, .btn, [role=&quot;button&quot;], input[type=&quot;button&quot;], input[type=&quot;submit&quot;], input[type=&quot;reset&quot;] {
-        min-height: var(--ibx-tap);
-        padding-top: 0.6rem;
-        padding-bottom: 0.6rem;
-    }
-
-    /* Make grids stack */
-    .grid, .columns, [class*=&quot;grid-cols-&quot;] {
-        grid-template-columns: 1fr !important;
-        gap: 0.75rem !important;
-    }
-    .grid-cols-2-keep { grid-template-columns: 1fr 1fr !important; }
-
-    /* Flex rows that should wrap */
-    .row, .form-row, .field-row, .actions, .toolbar, .button-row,
-    .flex-row, .header-row, .actions-row {
-        flex-wrap: wrap !important;
-        gap: 0.5rem !important;
-    }
-
-    /* Inputs full width */
-    input[type=&quot;text&quot;], input[type=&quot;number&quot;], input[type=&quot;email&quot;],
-    input[type=&quot;search&quot;], input[type=&quot;url&quot;], input[type=&quot;tel&quot;],
-    input[type=&quot;date&quot;], input[type=&quot;time&quot;], input[type=&quot;datetime-local&quot;],
-    select, textarea {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    /* Tables become horizontally scrollable to prevent layout break */
-    table {
-        display: block;
-        width: 100% !important;
-        max-width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* Headings: smaller on mobile */
-    h1 { font-size: 1.5rem !important; line-height: 1.25 !important; }
-    h2 { font-size: 1.25rem !important; line-height: 1.3 !important; }
-    h3 { font-size: 1.1rem !important; line-height: 1.35 !important; }
-
-    /* Generic modals */
-    .modal, .dialog, [class*=&quot;modal-&quot;], [class*=&quot;dialog-&quot;] {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        border-radius: 12px !important;
-    }
-
-    /* Tabs: scroll horizontally */
-    .tabs, .tab-bar, .nav-tabs, [role=&quot;tablist&quot;] {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        flex-wrap: nowrap !important;
-        white-space: nowrap;
-    }
-
-    /* Sticky bottom action bar pattern (if present) */
-    .sticky-actions, .bottom-bar, .action-bar {
-        position: sticky;
-        bottom: 0;
-        background: rgba(255,255,255,0.96);
-        backdrop-filter: blur(6px);
-        padding: 10px;
-        z-index: 50;
-        box-shadow: 0 -4px 14px rgba(0,0,0,0.08);
-    }
-
-    /* Reduce noisy huge paddings (TailwindCSS common values) */
-    .p-12 { padding: 1rem !important; }
-    .p-10 { padding: 1rem !important; }
-    .p-8  { padding: 0.875rem !important; }
-    .p-6  { padding: 0.75rem !important; }
-    .px-12 { padding-left: 1rem !important; padding-right: 1rem !important; }
-    .px-10 { padding-left: 1rem !important; padding-right: 1rem !important; }
-    .px-8  { padding-left: 1rem !important; padding-right: 1rem !important; }
-    .py-12 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
-    .py-10 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
-    .py-8  { padding-top: 1rem !important; padding-bottom: 1rem !important; }
-
-    /* Buttons in tailwind layouts: full width */
-    .btn-full-mobile,
-    .actions button,
-    .actions .btn,
-    .button-group button,
-    .button-group .btn {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    body { padding: 8px 6px !important; }
-    h1 { font-size: 1.3rem !important; }
-    h2 { font-size: 1.1rem !important; }
-
-    /* Iconic buttons keep label short */
-    .label-mobile-hide { display: none !important; }
-
-    /* Card pads tighter */
-    .card, .panel, .section, .box, .bg-white {
-        padding: 0.85rem !important;
-        border-radius: 14px !important;
-    }
-}
-
-/* Reduce sticky huge gradient backgrounds (file2/3) on mobile */
-@media (max-width: 768px) {
-    body[style*=&quot;background&quot;] {
-        background-attachment: scroll !important;
-    }
-}
-&lt;/style&gt;
-
 &lt;/head&gt;
 &lt;body&gt;
 
@@ -8734,6 +8633,19 @@ input, select, textarea, button {
             &lt;div class=&quot;mc-f&quot;&gt;
                 &lt;input type=&quot;text&quot; id=&quot;mc-prod-code&quot; value=&quot;iBasic_Bra&quot; placeholder=&quot;VD: iBasic_Bra_T-Shirt_3-4&quot; style=&quot;font-weight:700;letter-spacing:.5px;&quot;&gt;
             &lt;/div&gt;
+
+            &lt;!-- ── AI GEN: Tiêu đề &amp; Slogan ── --&gt;
+            &lt;div class=&quot;mc-sec-hd&quot;&gt;✨ AI GEN — Tiêu đề &amp; Slogan&lt;/div&gt;
+            &lt;div class=&quot;mc-f&quot;&gt;
+                &lt;label&gt;Mô tả sản phẩm &lt;span style=&quot;font-weight:400;color:#9ca3af;text-transform:none;&quot;&gt;(AI dựa vào mô tả + hình chính + 3 icon + 3 lợi ích đã điền)&lt;/span&gt;&lt;/label&gt;
+                &lt;textarea id=&quot;mc-ai-desc&quot; rows=&quot;3&quot; placeholder=&quot;VD: Áo ngực T-shirt cup 3/4, mút mỏng nâng nhẹ, dây tháo rời, vải cotton thoáng mát...&quot; style=&quot;width:100%;box-sizing:border-box;font-size:11.5px;padding:8px 10px;border-radius:8px;border:1.5px solid var(--gray-200);font-family:inherit;resize:vertical;&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mc-f&quot;&gt;
+                &lt;label&gt;Gemini API Key &lt;span style=&quot;font-weight:400;color:#9ca3af;text-transform:none;&quot;&gt;(dùng chung với tab Marketing)&lt;/span&gt;&lt;/label&gt;
+                &lt;input type=&quot;password&quot; id=&quot;mc-ai-key&quot; placeholder=&quot;Dán Gemini API Key (free tại ai.google.dev)...&quot; oninput=&quot;saveKey(this.value)&quot; style=&quot;font-size:11px;padding:7px 10px;border-radius:8px;border:1.5px solid var(--gray-200);font-family:inherit;&quot;&gt;
+            &lt;/div&gt;
+            &lt;button type=&quot;button&quot; id=&quot;mc-ai-gen-btn&quot; onclick=&quot;mcAiGenContent()&quot; style=&quot;width:100%;margin-top:4px;padding:11px;border:none;border-radius:10px;background:#1a1a1a;color:#fff;font-family:inherit;font-weight:700;font-size:12px;letter-spacing:.8px;cursor:pointer;text-transform:uppercase;&quot;&gt;✨ AI Gen Tiêu đề &amp; Slogan&lt;/button&gt;
+            &lt;div id=&quot;mc-ai-status&quot; style=&quot;font-size:11px;min-height:15px;margin-top:6px;text-align:center;&quot;&gt;&lt;/div&gt;
 
             &lt;!-- ══ KHỐI 1: HERO ══ --&gt;
             &lt;div class=&quot;mc-sec-hd&quot;&gt;① HERO — Tiêu đề chính&lt;/div&gt;
@@ -9078,7 +8990,7 @@ function switchMode(mode) {
 let imgs = [];
 let currentBgStyle = &#x27;white&#x27;;
 const mktCards = {}; // {cardId: {imgObj, ai, customIcons:{idx:Image}}}
-const GEMINI_MODEL = &#x27;gemini-3.6-flash&#x27;;
+const GEMINI_MODEL = &#x27;gemini-3-flash-preview&#x27;;
 const API_TIMEOUT_MS = 45000;
 const MAX_RETRIES_429 = 5;
 const BETWEEN_IMAGES_DELAY_MS = 1200;
@@ -9587,59 +9499,68 @@ async function drawMarketing(imgObj,ai){
     const canvas=document.createElement(&#x27;canvas&#x27;);
     await renderMktCanvas(canvas, imgObj, ai, {});
 
-    // Build edit panel for each cue
+    // Build edit panel for each cue — SIDE-BY-SIDE EDITOR (v8)
     const cues=ai.visualCues||[];
     const editRows=cues.map((c,i)=&gt;`
-        &lt;div style=&quot;padding:8px 0;border-bottom:1px solid #f0f0f0;&quot;&gt;
-            &lt;div style=&quot;display:flex;align-items:center;gap:8px;margin-bottom:6px;&quot;&gt;
-                &lt;span style=&quot;font-size:11px;font-weight:700;color:#374151;min-width:16px;&quot;&gt;${i+1}&lt;/span&gt;
-                &lt;label style=&quot;cursor:pointer;background:#f5f5f5;border:1.5px dashed #1a1a1a;border-radius:7px;padding:4px 8px;font-size:10px;font-weight:700;color:#1a1a1a;white-space:nowrap;&quot;&gt;
-                    📎 Icon
+        &lt;div class=&quot;mkt-cue&quot;&gt;
+            &lt;div class=&quot;mkt-cue-top&quot;&gt;
+                &lt;span class=&quot;mkt-cue-num&quot;&gt;${i+1}&lt;/span&gt;
+                &lt;div class=&quot;mkt-cue-icprev&quot; id=&quot;${cardId}_iconprev_${i}&quot; title=&quot;Icon hiện tại&quot;&gt;${(typeof iconImageUrls!==&#x27;undefined&#x27;&amp;&amp;iconImageUrls[c.iconKey])?`&lt;img src=&quot;${iconImageUrls[c.iconKey]}&quot; alt=&quot;&quot;&gt;`:&#x27;lib&#x27;}&lt;/div&gt;
+                &lt;label class=&quot;mkt-cue-upbtn&quot; title=&quot;Upload icon riêng cho cue này&quot;&gt;
+                    📎 Đổi icon
                     &lt;input type=&quot;file&quot; accept=&quot;image/*,image/svg+xml&quot; style=&quot;display:none&quot; onchange=&quot;mktReplaceIcon(&#x27;${cardId}&#x27;,${i},this)&quot;&gt;
                 &lt;/label&gt;
-                &lt;div id=&quot;${cardId}_iconprev_${i}&quot; style=&quot;width:28px;height:28px;background:#eee;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:8px;color:#aaa;flex-shrink:0;&quot;&gt;lib&lt;/div&gt;
             &lt;/div&gt;
-            &lt;textarea id=&quot;${cardId}_lbl_${i}&quot;
-                style=&quot;width:100%;padding:6px 8px;border-radius:7px;border:1.5px solid #e5e7eb;font-size:11px;font-family:inherit;color:#1f2937;resize:vertical;line-height:1.5;min-height:48px;margin-bottom:6px;box-sizing:border-box;&quot;
+            &lt;textarea class=&quot;mkt-cue-lbl&quot; id=&quot;${cardId}_lbl_${i}&quot;
                 oninput=&quot;mktUpdateCue(&#x27;${cardId}&#x27;,${i},&#x27;label&#x27;,this.value)&quot;
             &gt;${c.label}&lt;/textarea&gt;
-            &lt;div style=&quot;display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:4px;&quot;&gt;
-                &lt;label style=&quot;font-size:10px;font-weight:600;color:#6b7280;&quot;&gt;
-                    📍 X điểm: &lt;span id=&quot;${cardId}_xval_${i}&quot;&gt;${Math.round(c.x)}&lt;/span&gt;%
+            &lt;div class=&quot;mkt-sliders&quot;&gt;
+                &lt;div class=&quot;mkt-sl&quot;&gt;
+                    &lt;div class=&quot;mkt-sl-hd&quot;&gt;
+                        &lt;span class=&quot;mkt-sl-name&quot;&gt;📍 X điểm&lt;/span&gt;
+                        &lt;span class=&quot;mkt-sl-val&quot;&gt;&lt;span id=&quot;${cardId}_xval_${i}&quot;&gt;${Math.round(c.x)}&lt;/span&gt;%&lt;/span&gt;
+                    &lt;/div&gt;
                     &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;${Math.round(c.x)}&quot;
-                        style=&quot;width:100%;accent-color:#1a1a1a;cursor:pointer;&quot;
                         oninput=&quot;document.getElementById(&#x27;${cardId}_xval_${i}&#x27;).textContent=this.value;mktUpdateCue(&#x27;${cardId}&#x27;,${i},&#x27;x&#x27;,+this.value)&quot;&gt;
-                &lt;/label&gt;
-                &lt;label style=&quot;font-size:10px;font-weight:600;color:#6b7280;&quot;&gt;
-                    📍 Y điểm: &lt;span id=&quot;${cardId}_yval_${i}&quot;&gt;${Math.round(c.y)}&lt;/span&gt;%
+                &lt;/div&gt;
+                &lt;div class=&quot;mkt-sl&quot;&gt;
+                    &lt;div class=&quot;mkt-sl-hd&quot;&gt;
+                        &lt;span class=&quot;mkt-sl-name&quot;&gt;📍 Y điểm&lt;/span&gt;
+                        &lt;span class=&quot;mkt-sl-val&quot;&gt;&lt;span id=&quot;${cardId}_yval_${i}&quot;&gt;${Math.round(c.y)}&lt;/span&gt;%&lt;/span&gt;
+                    &lt;/div&gt;
                     &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;${Math.round(c.y)}&quot;
-                        style=&quot;width:100%;accent-color:#1a1a1a;cursor:pointer;&quot;
                         oninput=&quot;document.getElementById(&#x27;${cardId}_yval_${i}&#x27;).textContent=this.value;mktUpdateCue(&#x27;${cardId}&#x27;,${i},&#x27;y&#x27;,+this.value)&quot;&gt;
-                &lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;mkt-sl wide&quot;&gt;
+                    &lt;div class=&quot;mkt-sl-hd&quot;&gt;
+                        &lt;span class=&quot;mkt-sl-name&quot;&gt;🔡 Vị trí chữ&lt;/span&gt;
+                        &lt;span class=&quot;mkt-sl-val&quot;&gt;&lt;span id=&quot;${cardId}_tval_${i}&quot;&gt;0&lt;/span&gt;px&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;input type=&quot;range&quot; min=&quot;-200&quot; max=&quot;400&quot; value=&quot;0&quot;
+                        oninput=&quot;document.getElementById(&#x27;${cardId}_tval_${i}&#x27;).textContent=this.value;mktUpdateCue(&#x27;${cardId}&#x27;,${i},&#x27;lblOffsetY&#x27;,+this.value)&quot;&gt;
+                &lt;/div&gt;
             &lt;/div&gt;
-            &lt;label style=&quot;font-size:10px;font-weight:600;color:#6b7280;display:block;&quot;&gt;
-                🔡 Vị trí chữ: &lt;span id=&quot;${cardId}_tval_${i}&quot;&gt;0&lt;/span&gt;px
-                &lt;input type=&quot;range&quot; min=&quot;-200&quot; max=&quot;400&quot; value=&quot;0&quot;
-                    style=&quot;width:100%;accent-color:#1a1a1a;cursor:pointer;&quot;
-                    oninput=&quot;document.getElementById(&#x27;${cardId}_tval_${i}&#x27;).textContent=this.value;mktUpdateCue(&#x27;${cardId}&#x27;,${i},&#x27;lblOffsetY&#x27;,+this.value)&quot;&gt;
-            &lt;/label&gt;
         &lt;/div&gt;
     `).join(&#x27;&#x27;);
 
+    card.classList.add(&#x27;mkt-card&#x27;);
     card.innerHTML=`
-        &lt;div class=&quot;result-head&quot; style=&quot;flex-direction:column;align-items:flex-start;gap:10px;&quot;&gt;
-            &lt;div style=&quot;display:flex;justify-content:space-between;align-items:center;width:100%;&quot;&gt;
-                &lt;span style=&quot;font-weight:900;color:var(--primary);font-size:1.2rem;&quot;&gt;${ai.headline}&lt;/span&gt;
-                &lt;button class=&quot;btn-dl&quot; onclick=&quot;mktDownload(&#x27;${cardId}&#x27;,&#x27;${imgObj.name}&#x27;)&quot;&gt;💾 XUẤT PNG (3:4)&lt;/button&gt;
-            &lt;/div&gt;
-            &lt;details style=&quot;width:100%;&quot;&gt;
-                &lt;summary style=&quot;cursor:pointer;font-size:11px;font-weight:700;color:#6b7280;user-select:none;&quot;&gt;✏️ Chỉnh sửa icons (${cues.length} cues)&lt;/summary&gt;
-                &lt;div style=&quot;padding:4px 0 0;&quot;&gt;${editRows}&lt;/div&gt;
-            &lt;/details&gt;
+        &lt;div class=&quot;mkt-head&quot;&gt;
+            &lt;span class=&quot;mkt-head-title&quot;&gt;${ai.headline}&lt;/span&gt;
+            &lt;button class=&quot;btn-dl&quot; onclick=&quot;mktDownload(&#x27;${cardId}&#x27;,&#x27;${imgObj.name}&#x27;)&quot;&gt;💾 XUẤT PNG (3:4)&lt;/button&gt;
         &lt;/div&gt;
-        &lt;div class=&quot;canvas-box&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;mkt-layout&quot;&gt;
+            &lt;div class=&quot;mkt-canvas-side&quot;&gt;&lt;/div&gt;
+            &lt;aside class=&quot;mkt-edit-side&quot;&gt;
+                &lt;div class=&quot;mkt-edit-head&quot;&gt;
+                    &lt;div class=&quot;ttl&quot;&gt;✏️ Chỉnh sửa icons&lt;/div&gt;
+                    &lt;div class=&quot;sub&quot;&gt;${cues.length} cues · kéo slider bên phải, canvas bên trái cập nhật ngay&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;mkt-edit-body&quot;&gt;${editRows}&lt;/div&gt;
+            &lt;/aside&gt;
+        &lt;/div&gt;
     `;
-    card.querySelector(&#x27;.canvas-box&#x27;).appendChild(canvas);
+    card.querySelector(&#x27;.mkt-canvas-side&#x27;).appendChild(canvas);
     area.appendChild(card);
 }
 
@@ -9851,6 +9772,117 @@ function mcSetTextUpper(id, val) {
     if (el) el.textContent = (val || &#x27;&#x27;).toUpperCase();
 }
 
+/* ════════════════════════════════════════════════
+   AI GEN — TIÊU ĐỀ &amp; SLOGAN
+   Dựa trên: mô tả sản phẩm + ảnh hình chính + label 3 icon + 3 lợi ích đã điền
+════════════════════════════════════════════════ */
+let mcHeroImgData = null;
+const _mcAiKeyEl = $(&#x27;mc-ai-key&#x27;);
+if (_mcAiKeyEl) _mcAiKeyEl.value = getKey();
+
+function mcAiStatus(msg, isErr) {
+    const el = $(&#x27;mc-ai-status&#x27;);
+    if (!el) return;
+    el.textContent = msg || &#x27;&#x27;;
+    el.style.color = isErr ? &#x27;#dc2626&#x27; : &#x27;#059669&#x27;;
+}
+
+async function mcAiGenContent() {
+    const key = getKey();
+    if (!key) {
+        mcAiStatus(&#x27;⚠️ Vui lòng nhập Gemini API Key trước.&#x27;, true);
+        const k = $(&#x27;mc-ai-key&#x27;); if (k) k.focus();
+        return;
+    }
+    // Thu thập nội dung đã fill
+    const desc = (($(&#x27;mc-ai-desc&#x27;) || {}).value || &#x27;&#x27;).trim();
+    const iconLabels = [0,1,2].map(i =&gt; ((($(&#x27;mc-lbl-&#x27; + i) || {}).value) || &#x27;&#x27;).trim()).filter(Boolean);
+    const b2Title = (($(&#x27;mc-i-b2-title&#x27;) || {}).value || &#x27;&#x27;).trim();
+    const benefits = [0,1,2].map(i =&gt; { const el = $(&#x27;mc-b2-text-&#x27; + i); return el ? el.textContent.trim() : &#x27;&#x27;; }).filter(Boolean);
+
+    const btn = $(&#x27;mc-ai-gen-btn&#x27;);
+    if (btn) { btn.disabled = true; btn.style.opacity = &#x27;.6&#x27;; }
+    mcAiStatus(&#x27;⏳ AI đang viết nội dung...&#x27;, false);
+
+    const prompt = `Bạn là copywriter cao cấp cho thương hiệu nội y iBasic Việt Nam (phong cách premium, tối giản, tinh tế).
+
+Nhiệm vụ: viết nội dung HERO cho tấm infographic mô tả sản phẩm, dựa trên TẤT CẢ thông tin đã có dưới đây${mcHeroImgData ? &#x27; (kèm ảnh sản phẩm chính để nhận diện sản phẩm)&#x27; : &#x27;&#x27;}:
+
+- Mô tả sản phẩm: ${desc || &#x27;(không có — hãy suy ra từ ảnh và lợi ích)&#x27;}
+- 3 USP (icon): ${iconLabels.length ? iconLabels.join(&#x27; | &#x27;) : &#x27;(chưa có)&#x27;}
+- Tiêu đề block lợi ích: ${b2Title || &#x27;(chưa có)&#x27;}
+- Lợi ích cốt lõi:
+${benefits.map((b, i) =&gt; `  ${i + 1}. ${b}`).join(&#x27;\n&#x27;) || &#x27;  (chưa có)&#x27;}
+
+YÊU CẦU BẮT BUỘC:
+A. &quot;title&quot;: Tiêu đề chính, VIẾT IN HOA TOÀN BỘ, TỐI ĐA 25 TỪ. Nêu loại sản phẩm + USP mạnh nhất. Ngắn gọn, sang trọng.
+B. &quot;slogan&quot;: Một câu slogan/quote giàu cảm xúc, TỐI ĐA 30 TỪ, viết thường (không in hoa), KHÔNG dùng dấu ngoặc kép.
+
+Trả về JSON thuần, không markdown: {&quot;title&quot;:&quot;...&quot;,&quot;slogan&quot;:&quot;...&quot;}`;
+
+    try {
+        const parts = [{ text: prompt }];
+        if (mcHeroImgData) {
+            const optimized = await downscaleImageDataUrl(mcHeroImgData, MAX_IMAGE_SIDE);
+            const m = optimized.dataUrl.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9+.-]+);base64,/);
+            parts.push({ inlineData: { mimeType: m ? m[1] : &#x27;image/jpeg&#x27;, data: optimized.dataUrl.split(&#x27;,&#x27;)[1] } });
+        }
+
+        let raw = null;
+        for (let attempt = 0; attempt &lt;= MAX_RETRIES_429; attempt++) {
+            const controller = new AbortController();
+            const tId = setTimeout(() =&gt; controller.abort(), API_TIMEOUT_MS);
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`, {
+                    method: &#x27;POST&#x27;,
+                    headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+                    signal: controller.signal,
+                    body: JSON.stringify({
+                        contents: [{ parts }],
+                        generationConfig: { responseMimeType: &#x27;application/json&#x27;, temperature: 0.7 }
+                    })
+                });
+                clearTimeout(tId);
+                if (!res.ok) {
+                    let detail = &#x27;&#x27;;
+                    try { detail = (await res.json())?.error?.message || &#x27;&#x27;; } catch (_) {}
+                    if ([429, 500, 503].includes(res.status) &amp;&amp; attempt &lt; MAX_RETRIES_429) { await sleep(getBackoffDelay(attempt)); continue; }
+                    throw new Error(`API Error ${res.status}${detail ? &#x27;: &#x27; + detail : &#x27;&#x27;}`);
+                }
+                const data = await res.json();
+                const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!text) throw new Error(&#x27;AI không trả về nội dung.&#x27;);
+                raw = JSON.parse(text.replace(/```json|```/g, &#x27;&#x27;).trim());
+                break;
+            } catch (e) {
+                clearTimeout(tId);
+                if (attempt &lt; MAX_RETRIES_429 &amp;&amp; /429|500|503|abort|network|fetch/i.test(e.message)) { await sleep(getBackoffDelay(attempt)); continue; }
+                throw e;
+            }
+        }
+
+        if (!raw || !raw.title) throw new Error(&#x27;AI trả về dữ liệu thiếu tiêu đề.&#x27;);
+
+        // A — Tiêu đề (IN HOA)
+        const title = String(raw.title).toUpperCase().replace(/\s+/g, &#x27; &#x27;).trim();
+        $(&#x27;mc-i-hero-1&#x27;).value = title;
+        mcSetTextUpper(&#x27;mc-hero-line1&#x27;, title);
+        mcFitHeroTitle();
+
+        // B — Slogan / Quote
+        if (raw.slogan) {
+            const slogan = String(raw.slogan).trim().replace(/^[&quot;&#x27;“”]+|[&quot;&#x27;“”]+$/g, &#x27;&#x27;);
+            $(&#x27;mc-i-hero-q&#x27;).value = slogan;
+            mcSetText(&#x27;mc-hero-quote-txt&#x27;, &#x27;\u201C&#x27; + slogan + &#x27;\u201D&#x27;);
+        }
+        mcAiStatus(&#x27;✅ Đã gen xong Tiêu đề &amp; Slogan!&#x27;, false);
+    } catch (e) {
+        mcAiStatus(&#x27;❌ &#x27; + (e.message || &#x27;Lỗi không xác định&#x27;), true);
+    } finally {
+        if (btn) { btn.disabled = false; btn.style.opacity = &#x27;1&#x27;; }
+    }
+}
+
 /* ── Material % auto-sync ── */
 function mcSyncMatPct(val) {
     const a = Math.min(99, Math.max(1, parseInt(val) || 1));
@@ -9867,6 +9899,7 @@ function mcLoadImg(slot, inp) {
     const fr = new FileReader();
     fr.onload = e =&gt; {
         const src = e.target.result;
+        if (slot === &#x27;hero&#x27;) mcHeroImgData = src; // lưu ảnh hình chính cho AI gen
         // 1) Update the actual preview image inside the card
         const wrapId = slot === &#x27;hero&#x27; ? &#x27;mc-b1-image&#x27; :
                        slot === &#x27;care&#x27; ? &#x27;mc-b4-image&#x27; : &#x27;mc-b5-image&#x27;;
@@ -10086,9 +10119,15 @@ document.querySelector(&#x27;[onclick=&quot;switchMode(\&#x27;mota\&#x27;)&quot;
 mcBuildSelects();
 
 &lt;/script&gt;
+
+
+&lt;script defer src=&quot;https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516&quot; integrity=&quot;sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==&quot; data-cf-beacon=&#x27;{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}&#x27; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot; src=&quot;https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495&quot; integrity=&quot;sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==&quot; data-cf-beacon=&#x27;{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;,&quot;spa&quot;:2}&#x27; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot; src=&quot;https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495&quot; integrity=&quot;sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==&quot; data-cf-beacon=&#x27;{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;,&quot;spa&quot;:2}&#x27; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot; src=&quot;https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495&quot; integrity=&quot;sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==&quot; data-cf-beacon=&#x27;{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;,&quot;spa&quot;:2}&#x27; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;
-"></iframe>
+&lt;/html&gt;"
+        </iframe>
         <iframe sandbox="allow-scripts allow-same-origin allow-downloads allow-popups allow-forms allow-modals" loading="lazy" id="file6" class="file-frame" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;vi&quot;&gt;
 &lt;head&gt;
@@ -14456,6 +14495,7 @@ input, select, textarea, button {
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
 </body>
 
 </html>
